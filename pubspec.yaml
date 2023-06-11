@@ -1,5 +1,5 @@
 name: bites
-description: A new Flutter project.
+description: Discover local food around you.
 publish_to: "none"
 version: 0.1.0
 
@@ -19,6 +19,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.13.0"
   flutter_lints: ^2.0.0
 
 flutter:
@@ -26,3 +27,10 @@ flutter:
   assets:
     - assets/
     - assets/data/italian_cities.json
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: false
+  image_path: "assets/logo.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true

@@ -1,3 +1,4 @@
+import 'package:bites/utils/food_details_page.dart';
 import 'package:bites/utils/location.dart';
 import 'package:bites/widget/draggable_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class MapViewState extends State<MapView> {
   late GeoFlutterFire geo;
   // late Stream<List<DocumentSnapshot>> stream;
   Map<CircleId, Circle> circles = <CircleId, Circle>{};
+  Set<CircleId> _selectedCircles = {};
 
 // when initializing the widget
   @override
@@ -68,17 +70,19 @@ class MapViewState extends State<MapView> {
     );
   }
 
-  void _addCircle(double lat, double lng) {
+  void _addCircle(double lat, double lng, Food food) {
     final id = CircleId(lat.toString() + lng.toString());
     final circle = Circle(
-      circleId: id,
-      center: LatLng(lat, lng),
-      radius: 3 * 1000, // 15 kms
-      strokeWidth: 2,
-      strokeColor: Theme.of(context).primaryColor,
-      fillColor: Theme.of(context).primaryColor.withOpacity(0.5),
-      onTap: () {},
-    );
+        circleId: id,
+        center: LatLng(lat, lng),
+        radius: 3 * 1000, // 15 kms
+        strokeWidth: 2,
+        strokeColor: Theme.of(context).primaryColor,
+        fillColor: Theme.of(context).primaryColor.withOpacity(0.5),
+        consumeTapEvents: true,
+        onTap: () {
+          _onCircleTap(id);
+        });
     setState(() {
       circles[id] = circle;
     });
@@ -87,7 +91,26 @@ class MapViewState extends State<MapView> {
   void updateCircles() {
     foods.forEach((key, value) {
       final point = LatLng(value['latitude'], value['longitude']);
-      _addCircle(point.latitude, point.longitude);
+      _addCircle(
+          point.latitude,
+          point.longitude,
+          Food(
+            name: value['name'],
+            image: value['image'],
+            city: value['city'],
+            distance: value['distance'],
+          ));
+    });
+  }
+
+  void _onCircleTap(CircleId circleId) {
+    setState(() {
+      if (_selectedCircles.contains(circleId)) {
+        _selectedCircles.remove(circleId);
+      } else {
+        _selectedCircles.clear();
+        _selectedCircles.add(circleId);
+      }
     });
   }
 
@@ -121,8 +144,23 @@ class MapViewState extends State<MapView> {
             ),
             zoomControlsEnabled: false,
             circles: Set<Circle>.of(circles.values),
-            onTap: (e) {
-              // clean up the search results
+            onTap: (LatLng position) {
+              // Check if the tap occurred on a circle
+              final CircleId tappedCircle = CircleId(position.toString());
+              final bool isCircleSelected =
+                  _selectedCircles.contains(tappedCircle);
+
+              // If the tap was on a circle, open the food details page
+              if (isCircleSelected) {
+                final food = foods[_selectedCircles.first.value];
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => FoodDetailsPage(food: food),
+                  ),
+                );
+              }
+
+              // If the tap did not occur on a circle, clean up the search results
               setState(() {
                 _filteredCities = [];
               });
