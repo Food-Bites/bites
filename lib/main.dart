@@ -1,5 +1,4 @@
 import 'package:bites/screens/initial_page.dart';
-import 'package:bites/screens/onboarder.dart';
 import 'package:bites/utils/color_scheme.dart';
 import 'package:flutter/material.dart';
 

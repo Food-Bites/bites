@@ -74,30 +74,6 @@ class OnboarderPageState extends State<OnboarderPage> {
     }
   }
 
-// TODO replace this with a real page
-  void _showPlaceholderModal() {
-    showDialog(
-      context: context,
-      builder: (context) => SimpleDialog(
-        title: const Text(
-          "We'd love to, but...",
-        ),
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text("...this is just a demo."),
-          ),
-          TextButton(
-            child: const Text("IT'S OKAY, I GET IT"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      ),
-    );
-  }
-
   void _setOnboarderSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarderSeen', true);
@@ -231,7 +207,7 @@ class OnboardStep extends StatelessWidget {
   final List<Widget> children;
   final Color? color;
 
-  OnboardStep(
+  const OnboardStep(
     this.children, {
     super.key,
     this.image,

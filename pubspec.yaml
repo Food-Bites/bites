@@ -11,6 +11,10 @@ dependencies:
     sdk: flutter
   dots_indicator: ^2.0.0
   shared_preferences:
+  geolocator:
+  geoflutterfire2:
+  google_maps_flutter: ^2.2.5
+  transparent_image: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -21,3 +25,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/data/italian_cities.json
