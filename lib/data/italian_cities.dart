@@ -11,6 +11,14 @@ class ItalianCities {
     required this.lat,
     required this.lng,
   });
+
+  factory ItalianCities.fromJson(Map<String, dynamic> json) {
+    return ItalianCities(
+      city: json['city'],
+      lat: json['lat'],
+      lng: json['lng'],
+    );
+  }
 }
 
 // load the json file into a map

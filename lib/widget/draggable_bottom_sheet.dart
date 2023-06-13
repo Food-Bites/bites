@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:bites/utils/location.dart';
 import 'package:bites/widget/food_card.dart';
 import 'package:flutter/material.dart';
-import 'package:bites/data/foods.dart';
+import 'package:bites/data/typical_foods.dart';
 
 class DraggableBottomSheet extends StatefulWidget {
   const DraggableBottomSheet({super.key});
@@ -58,23 +58,23 @@ class DraggableBottomSheetState extends State<DraggableBottomSheet>
     // get current location of the user, if not available, use milan coordinates
     determinePosition().then((userPosition) {
       // sort the foods by distance
-      foods.forEach((key, value) {
+      typicalFoods.forEach((key, value) {
         final double distance = _calculateDistance(
           userPosition.latitude,
           userPosition.longitude,
           value['latitude'],
           value['longitude'],
         );
-        foods[key]['distance'] = distance;
+        typicalFoods[key]['distance'] = distance;
       });
       // sort the foods by distance
-      foods = Map.fromEntries(
-        foods.entries.toList()
+      typicalFoods = Map.fromEntries(
+        typicalFoods.entries.toList()
           ..sort(
               (e1, e2) => e1.value['distance'].compareTo(e2.value['distance'])),
       );
 
-      sortedFoods = foods;
+      sortedFoods = typicalFoods;
     });
   }
 

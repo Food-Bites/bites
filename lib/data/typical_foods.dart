@@ -1,4 +1,33 @@
-Map<String, dynamic> foods = {
+class TypicalFood {
+  final String id;
+  final String name;
+  final String image;
+  final double latitude;
+  final double longitude;
+  final String description;
+
+  TypicalFood({
+    required this.id,
+    required this.name,
+    required this.image,
+    required this.latitude,
+    required this.longitude,
+    required this.description,
+  });
+
+  factory TypicalFood.fromJson(Map<String, dynamic> json) {
+    return TypicalFood(
+      id: json['id'],
+      name: json['name'],
+      image: json['image'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      description: json['description'],
+    );
+  }
+}
+
+Map<String, dynamic> typicalFoods = {
   'food1': {
     // add a random uuid
     'id': '1234-5678-9012-3456',

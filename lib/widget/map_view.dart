@@ -6,7 +6,7 @@ import 'package:bites/widget/draggable_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:bites/data/foods.dart';
+import 'package:bites/data/typical_foods.dart';
 import 'package:bites/data/italian_cities.dart';
 
 class MapView extends StatefulWidget {
@@ -21,47 +21,44 @@ class MapViewState extends State<MapView> {
   final LatLng _milanCoordinates = const LatLng(45.4642, 9.1900);
 
   // getCities
-  List<ItalianCities> _cities = [];
-  List<ItalianCities> _filteredCities = [];
+  List<ItalianCities> cities = [];
+  List<ItalianCities> filteredCities = [];
 
-  late GoogleMapController _mapController;
-  late TextEditingController _latitudeController, _longitudeController;
+  late GoogleMapController mapController;
+  late TextEditingController latitudeController, longitudeController;
 
-  // firestore init
-  // final _firestore = FirebaseFirestore.instance;
   late GeoFlutterFire geo;
-  // late Stream<List<DocumentSnapshot>> stream;
   Map<CircleId, Circle> circles = <CircleId, Circle>{};
-  final Set<CircleId> _selectedCircles = {};
+  final Set<CircleId> selectedCircles = {};
 
 // when initializing the widget
   @override
   void initState() {
     super.initState();
-    _latitudeController = TextEditingController();
-    _longitudeController = TextEditingController();
+    latitudeController = TextEditingController();
+    longitudeController = TextEditingController();
   }
 
   // When destroying the widget
   @override
   void dispose() {
-    _latitudeController.dispose();
-    _longitudeController.dispose();
+    latitudeController.dispose();
+    longitudeController.dispose();
     super.dispose();
   }
 
-  void _onMapCreated(GoogleMapController controller) {
+  void onMapCreated(GoogleMapController controller) {
     setState(() {
-      _mapController = controller;
-      _showCurrentLocation();
+      mapController = controller;
+      moveToCurrentLocation();
       updateCircles();
     });
   }
 
-  void _showCurrentLocation() async {
+  void moveToCurrentLocation() async {
     var userPosition = await determinePosition();
 
-    _mapController.animateCamera(
+    mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
           target: LatLng(userPosition.latitude, userPosition.longitude),
@@ -71,7 +68,7 @@ class MapViewState extends State<MapView> {
     );
   }
 
-  void _addCircle(double lat, double lng, Food food) {
+  void addCircle(double lat, double lng, Food food) {
     final id = CircleId(lat.toString() + lng.toString());
     final circle = Circle(
         circleId: id,
@@ -82,7 +79,7 @@ class MapViewState extends State<MapView> {
         fillColor: Theme.of(context).primaryColor.withOpacity(0.5),
         consumeTapEvents: true,
         onTap: () {
-          _onCircleTap(id);
+          onCircleTap(id);
         });
     setState(() {
       circles[id] = circle;
@@ -90,9 +87,9 @@ class MapViewState extends State<MapView> {
   }
 
   void updateCircles() {
-    foods.forEach((key, value) {
+    typicalFoods.forEach((key, value) {
       final point = LatLng(value['latitude'], value['longitude']);
-      _addCircle(
+      addCircle(
           point.latitude,
           point.longitude,
           Food(
@@ -104,25 +101,29 @@ class MapViewState extends State<MapView> {
     });
   }
 
-  void _onCircleTap(CircleId circleId) {
+  void onCircleTap(CircleId circleId) {
     setState(() {
-      if (_selectedCircles.contains(circleId)) {
-        _selectedCircles.remove(circleId);
+      if (selectedCircles.contains(circleId)) {
+        selectedCircles.remove(circleId);
       } else {
-        _selectedCircles.clear();
-        _selectedCircles.add(circleId);
+        selectedCircles.clear();
+        selectedCircles.add(circleId);
       }
     });
   }
 
-  void _onSearch(String query) {
+  void onSearch(String query) {
     setState(() {
-      if (query.isEmpty) _filteredCities = [];
-      _filteredCities = _cities
+      filteredCities = cities
           .where(
               (city) => city.city.toLowerCase().contains(query.toLowerCase()))
           .take(3)
           .toList();
+      if (query.isEmpty) {
+        setState(() {
+          filteredCities = [];
+        });
+      }
     });
   }
 
@@ -131,15 +132,15 @@ class MapViewState extends State<MapView> {
     return Scaffold(
       floatingActionButton: !isTablet(context)
           ? FloatingActionButton(
-              onPressed: _showCurrentLocation,
+              onPressed: moveToCurrentLocation,
               child: const Icon(Icons.my_location),
             )
           : null,
-      bottomSheet: const DraggableBottomSheet(),
+      // bottomSheet: const DraggableBottomSheet(),
       body: Stack(
         children: [
           GoogleMap(
-            onMapCreated: _onMapCreated,
+            onMapCreated: onMapCreated,
             minMaxZoomPreference: const MinMaxZoomPreference(8, 12),
             initialCameraPosition: CameraPosition(
               target: _milanCoordinates,
@@ -147,11 +148,6 @@ class MapViewState extends State<MapView> {
             ),
             zoomControlsEnabled: false,
             circles: Set<Circle>.of(circles.values),
-            onTap: (latLng) {
-              setState(() {
-                _filteredCities = [];
-              });
-            },
           ),
           SafeArea(
             child: Column(
@@ -160,10 +156,10 @@ class MapViewState extends State<MapView> {
                   padding: const EdgeInsets.all(8.0),
                   child: SearchBar(
                     onChanged: (q) {
-                      _onSearch(q);
+                      onSearch(q);
                     },
                     onTap: () async {
-                      _cities = await getCities();
+                      cities = await getCities();
                     },
                     hintText: 'Search for a location',
                     trailing: const [
@@ -186,44 +182,60 @@ class MapViewState extends State<MapView> {
                   ),
                 ),
                 // show the list of filtered cities only if the user has typed something
-                if (_filteredCities.isNotEmpty)
+                if (filteredCities.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 0),
-                    child: SizedBox(
-                      height: 256,
-                      child: ListView.builder(
-                        itemCount: _filteredCities.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            child: ListTile(
-                              title: Text(_filteredCities[index].city),
-                              subtitle: Text(
-                                  '${_filteredCities[index].lat}, ${_filteredCities[index].lng}'),
-                              trailing: const Icon(Icons.arrow_forward),
-                              onTap: () {
-                                _mapController.animateCamera(
-                                  CameraUpdate.newCameraPosition(
-                                    CameraPosition(
-                                      target: LatLng(
-                                        double.parse(_filteredCities[index]
-                                            .lat
-                                            .toString()),
-                                        double.parse(_filteredCities[index]
-                                            .lng
-                                            .toString()),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 256,
+                          child: ListView.builder(
+                            itemCount: filteredCities.length,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                child: ListTile(
+                                  title: Text(filteredCities[index].city),
+                                  subtitle: Text(
+                                      '${filteredCities[index].lat}, ${filteredCities[index].lng}'),
+                                  trailing: const Icon(Icons.arrow_forward),
+                                  onTap: () {
+                                    mapController.animateCamera(
+                                      CameraUpdate.newCameraPosition(
+                                        CameraPosition(
+                                          target: LatLng(
+                                            double.parse(filteredCities[index]
+                                                .lat
+                                                .toString()),
+                                            double.parse(filteredCities[index]
+                                                .lng
+                                                .toString()),
+                                          ),
+                                          zoom: 12,
+                                        ),
                                       ),
-                                      zoom: 12,
-                                    ),
-                                  ),
-                                );
-                                setState(() {
-                                  _filteredCities = [];
-                                });
-                              },
-                            ),
-                          );
-                        },
-                      ),
+                                    );
+                                    setState(() {
+                                      filteredCities = [];
+                                    });
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        //TODO Clear query button may be unnecessary
+                        // const SizedBox(
+                        //   height: 8.0,
+                        // ),
+                        // ElevatedButton(
+                        //   onPressed: () {
+                        //     setState(() {
+                        //       filteredCities = [];
+                        //     });
+                        //   },
+                        //   child: const Text('Clear'),
+                        // )
+                      ],
                     ),
                   ),
               ],
