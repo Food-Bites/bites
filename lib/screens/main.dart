@@ -1,6 +1,7 @@
 import 'package:bites/screens/discover_page.dart';
 import 'package:bites/screens/map_page.dart';
 import 'package:bites/screens/market_page.dart';
+import 'package:bites/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 
@@ -12,20 +13,15 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  // add a button to cleare the shared preferences
   int _currentIndex = 0;
 
-  final List<Widget> _children = const [
+  final List<Widget> _pages = const [
     MapPage(),
     DiscoverPage(),
     MarketPage(),
   ];
 
   final PageController _pageController = PageController(initialPage: 0);
-
-  // get current viewport width and return true if it's a tablet
-  bool isTablet(BuildContext context) =>
-      MediaQuery.of(context).size.width >= 1024;
 
   void onTabTapped(int index) {
     final int lastIndex = _currentIndex;
@@ -105,7 +101,7 @@ class _MainState extends State<Main> {
               child: PageView(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
-                children: _children,
+                children: _pages,
               ),
             ),
           ),
