@@ -65,6 +65,7 @@ class _MainState extends State<Main> {
               leading: Column(
                 children: [
                   FloatingActionButton(
+                    heroTag: "NAVIGATION_RAIL_LOCATION_BUTTON",
                     onPressed: () {},
                     child: const Icon(Icons.my_location),
                   ),

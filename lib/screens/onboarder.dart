@@ -1,7 +1,7 @@
 import 'package:bites/screens/main.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboarderPage extends StatefulWidget {
@@ -122,48 +122,43 @@ class OnboarderPageState extends State<OnboarderPage> {
                     if (step.key == "GoToApp")
                       Column(
                         children: [
-                          CheckboxListTile(
-                            value: acceptedLicense,
-                            onChanged: (val) {
-                              setState(() {
-                                acceptedLicense = val ?? false;
-                              });
-                            },
-                            title: RichText(
-                              text: TextSpan(
-                                text: 'I accept the ',
-                                style: Theme.of(context).textTheme.bodyMedium,
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: 'license agreement',
-                                    style: TextStyle(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
+                          TextButton.icon(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => Dialog.fullscreen(
+                                    child: Scaffold(
+                                      appBar: AppBar(
+                                        title: const Text('License Agreement'),
+                                      ),
+                                      body: const Padding(
+                                        padding: EdgeInsets.all(16.0),
+                                        child: Center(
+                                          child: Text(
+                                              'This is where the license agreement would go.'),
+                                        ),
+                                      ),
                                     ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        // navigate to the license agreement page
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                Dialog.fullscreen(
-                                              child: Scaffold(
-                                                appBar: AppBar(
-                                                  title: const Text(
-                                                      'License Agreement'),
-                                                ),
-                                                body: const Padding(
-                                                  padding: EdgeInsets.all(16.0),
-                                                  child: Text(
-                                                      'This is where the license agreement would go.'),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
                                   ),
-                                ],
+                                ),
+                              );
+                            },
+                            icon: const HeroIcon(
+                                HeroIcons.clipboardDocumentCheck),
+                            label: const Text("Read the license agreement"),
+                          ),
+                          IntrinsicWidth(
+                            // max width of checkbox list tile
+                            child: CheckboxListTile(
+                              value: acceptedLicense,
+                              onChanged: (val) {
+                                setState(() {
+                                  acceptedLicense = val ?? false;
+                                });
+                              },
+                              title: Text(
+                                "I have read and accept the license agreement",
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
                           ),

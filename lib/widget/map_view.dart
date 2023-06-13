@@ -1,5 +1,6 @@
 import 'package:bites/screens/options_page.dart';
 import 'package:bites/utils/food_details_page.dart';
+import 'package:bites/utils/functions.dart';
 import 'package:bites/utils/location.dart';
 import 'package:bites/widget/draggable_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,6 @@ class MapViewState extends State<MapView> {
   }
 
   void _showCurrentLocation() async {
-    // get current location of the user, if not available, use milan coordinates
     var userPosition = await determinePosition();
 
     _mapController.animateCamera(
@@ -129,10 +129,12 @@ class MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showCurrentLocation,
-        child: const Icon(Icons.my_location),
-      ),
+      floatingActionButton: !isTablet(context)
+          ? FloatingActionButton(
+              onPressed: _showCurrentLocation,
+              child: const Icon(Icons.my_location),
+            )
+          : null,
       bottomSheet: const DraggableBottomSheet(),
       body: Stack(
         children: [
@@ -145,7 +147,6 @@ class MapViewState extends State<MapView> {
             ),
             zoomControlsEnabled: false,
             circles: Set<Circle>.of(circles.values),
-            liteModeEnabled: true,
             onTap: (latLng) {
               setState(() {
                 _filteredCities = [];

@@ -8,20 +8,12 @@
     "capital": "primary",
     "population": "2872800",
     "population_proper": "2872800"
-    "admin_name": "Lazio",
-    "capital": "primary",
-    "population": "2872800",
-    "population_proper": "2872800"
   },
   {
     "city": "Milan",
     "lat": "45.4669",
     "lng": "9.1900",
 
-    "admin_name": "Lombardy",
-    "capital": "admin",
-    "population": "1366180",
-    "population_proper": "1366180"
     "admin_name": "Lombardy",
     "capital": "admin",
     "population": "1366180",
