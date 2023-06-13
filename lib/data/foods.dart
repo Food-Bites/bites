@@ -1,5 +1,3 @@
-import 'package:geoflutterfire2/geoflutterfire2.dart';
-
 Map<String, dynamic> foods = {
   'food1': {
     // add a random uuid

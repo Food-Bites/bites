@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:bites/utils/location.dart';
 import 'package:bites/widget/food_card.dart';
 import 'package:flutter/material.dart';
-import 'package:bites/utils/foods.dart';
+import 'package:bites/data/foods.dart';
 
 class DraggableBottomSheet extends StatefulWidget {
   const DraggableBottomSheet({super.key});

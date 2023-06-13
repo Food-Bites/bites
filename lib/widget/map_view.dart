@@ -1,11 +1,12 @@
+import 'package:bites/screens/options_page.dart';
 import 'package:bites/utils/food_details_page.dart';
 import 'package:bites/utils/location.dart';
 import 'package:bites/widget/draggable_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:bites/utils/foods.dart';
-import 'package:bites/utils/italian_cities.dart';
+import 'package:bites/data/foods.dart';
+import 'package:bites/data/italian_cities.dart';
 
 class MapView extends StatefulWidget {
   const MapView({super.key});
@@ -30,7 +31,7 @@ class MapViewState extends State<MapView> {
   late GeoFlutterFire geo;
   // late Stream<List<DocumentSnapshot>> stream;
   Map<CircleId, Circle> circles = <CircleId, Circle>{};
-  Set<CircleId> _selectedCircles = {};
+  final Set<CircleId> _selectedCircles = {};
 
 // when initializing the widget
   @override
@@ -144,23 +145,8 @@ class MapViewState extends State<MapView> {
             ),
             zoomControlsEnabled: false,
             circles: Set<Circle>.of(circles.values),
-            onTap: (LatLng position) {
-              // Check if the tap occurred on a circle
-              final CircleId tappedCircle = CircleId(position.toString());
-              final bool isCircleSelected =
-                  _selectedCircles.contains(tappedCircle);
-
-              // If the tap was on a circle, open the food details page
-              if (isCircleSelected) {
-                final food = foods[_selectedCircles.first.value];
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => FoodDetailsPage(food: food),
-                  ),
-                );
-              }
-
-              // If the tap did not occur on a circle, clean up the search results
+            liteModeEnabled: true,
+            onTap: (latLng) {
               setState(() {
                 _filteredCities = [];
               });
@@ -186,7 +172,14 @@ class MapViewState extends State<MapView> {
                       ),
                     ],
                     leading: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // push the options page
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const OptionsPage(),
+                          ),
+                        );
+                      },
                       icon: const Icon(Icons.menu),
                     ),
                   ),

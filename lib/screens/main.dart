@@ -2,6 +2,7 @@ import 'package:bites/screens/discover_page.dart';
 import 'package:bites/screens/map_page.dart';
 import 'package:bites/screens/market_page.dart';
 import 'package:flutter/material.dart';
+import 'package:heroicons/heroicons.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -116,15 +117,17 @@ class _MainState extends State<Main> {
               onDestinationSelected: onTabTapped,
               destinations: const [
                 NavigationDestination(
-                  icon: Icon(Icons.home),
+                  icon: HeroIcon(
+                    HeroIcons.map,
+                  ),
                   label: 'Home',
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.search),
+                  icon: HeroIcon(HeroIcons.globeEuropeAfrica),
                   label: 'Search',
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.person),
+                  icon: HeroIcon(HeroIcons.buildingStorefront),
                   label: 'Profile',
                 ),
               ],

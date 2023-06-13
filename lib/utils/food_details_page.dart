@@ -65,19 +65,19 @@ class FoodDetailsPage extends StatelessWidget {
                   children: [
                     Text(
                       food.name,
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.titleLarge,
                       maxLines: 2,
                     ),
                     const SizedBox(height: 4),
                     if (food.distance != null)
                       Text(
                         '${food.distance!.toStringAsFixed(1)} km',
-                        style: Theme.of(context).textTheme.subtitle2,
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
                     if (food.city != null)
                       Text(
                         food.city!,
-                        style: Theme.of(context).textTheme.subtitle2,
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
                   ],
                 ),

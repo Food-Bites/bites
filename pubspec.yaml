@@ -15,6 +15,7 @@ dependencies:
   geoflutterfire2:
   google_maps_flutter: ^2.2.5
   transparent_image: ^2.0.1
+  heroicons:
 
 dev_dependencies:
   flutter_test:
