@@ -11,7 +11,6 @@ void main() {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
-  final apiKey = dotenv.env['API_KEY'];
 
   @override
   Widget build(BuildContext context) {
