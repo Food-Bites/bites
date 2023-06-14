@@ -1,5 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class Food {
   const Food({
@@ -43,11 +43,7 @@ class FoodCard extends StatelessWidget {
                         const Center(child: LinearProgressIndicator()),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: FadeInImage.memoryNetwork(
-                            placeholder: kTransparentImage,
-                            image: food.image ?? '',
-                            fit: BoxFit.cover,
-                          ),
+                          child: CachedNetworkImage(imageUrl: food.image ?? ''),
                         ),
                       ],
                     ),

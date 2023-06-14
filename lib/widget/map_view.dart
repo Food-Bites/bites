@@ -1,8 +1,8 @@
 import 'package:bites/screens/options_page.dart';
-import 'package:bites/utils/food_details_page.dart';
+import 'package:bites/screens/typical_food_details_page.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:bites/utils/location.dart';
-import 'package:bites/widget/draggable_bottom_sheet.dart';
+import 'package:bites/widget/place_card.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -68,7 +68,7 @@ class MapViewState extends State<MapView> {
     );
   }
 
-  void addCircle(double lat, double lng, Food food) {
+  void addCircle(double lat, double lng, TypicalFood food) {
     final id = CircleId(lat.toString() + lng.toString());
     final circle = Circle(
         circleId: id,
@@ -79,7 +79,11 @@ class MapViewState extends State<MapView> {
         fillColor: Theme.of(context).primaryColor.withOpacity(0.5),
         consumeTapEvents: true,
         onTap: () {
-          onCircleTap(id);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => TypicalFoodDetailsPage(food: food),
+            ),
+          );
         });
     setState(() {
       circles[id] = circle;
@@ -90,25 +94,17 @@ class MapViewState extends State<MapView> {
     typicalFoods.forEach((key, value) {
       final point = LatLng(value['latitude'], value['longitude']);
       addCircle(
-          point.latitude,
-          point.longitude,
-          Food(
-            name: value['name'],
-            image: value['image'],
-            city: value['city'],
-            distance: value['distance'],
-          ));
-    });
-  }
-
-  void onCircleTap(CircleId circleId) {
-    setState(() {
-      if (selectedCircles.contains(circleId)) {
-        selectedCircles.remove(circleId);
-      } else {
-        selectedCircles.clear();
-        selectedCircles.add(circleId);
-      }
+        point.latitude,
+        point.longitude,
+        TypicalFood(
+          id: value['id'],
+          name: value['name'],
+          image: value['image'],
+          latitude: value['latitude'],
+          longitude: value['longitude'],
+          description: value['description'],
+        ),
+      );
     });
   }
 
@@ -130,12 +126,13 @@ class MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: !isTablet(context)
-          ? FloatingActionButton(
-              onPressed: moveToCurrentLocation,
-              child: const Icon(Icons.my_location),
-            )
-          : null,
+      floatingActionButton: Visibility(
+        visible: !isTablet(context),
+        child: FloatingActionButton(
+          onPressed: moveToCurrentLocation,
+          child: const Icon(Icons.my_location),
+        ),
+      ),
       // bottomSheet: const DraggableBottomSheet(),
       body: Stack(
         children: [
@@ -161,7 +158,7 @@ class MapViewState extends State<MapView> {
                     onTap: () async {
                       cities = await getCities();
                     },
-                    hintText: 'Search for a location',
+                    hintText: 'Search a place',
                     trailing: const [
                       Padding(
                         padding: EdgeInsets.all(8.0),
@@ -170,7 +167,6 @@ class MapViewState extends State<MapView> {
                     ],
                     leading: IconButton(
                       onPressed: () {
-                        // push the options page
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => const OptionsPage(),
@@ -192,49 +188,19 @@ class MapViewState extends State<MapView> {
                           child: ListView.builder(
                             itemCount: filteredCities.length,
                             itemBuilder: (context, index) {
-                              return Card(
-                                child: ListTile(
-                                  title: Text(filteredCities[index].city),
-                                  subtitle: Text(
-                                      '${filteredCities[index].lat}, ${filteredCities[index].lng}'),
-                                  trailing: const Icon(Icons.arrow_forward),
-                                  onTap: () {
-                                    mapController.animateCamera(
-                                      CameraUpdate.newCameraPosition(
-                                        CameraPosition(
-                                          target: LatLng(
-                                            double.parse(filteredCities[index]
-                                                .lat
-                                                .toString()),
-                                            double.parse(filteredCities[index]
-                                                .lng
-                                                .toString()),
-                                          ),
-                                          zoom: 12,
-                                        ),
-                                      ),
-                                    );
-                                    setState(() {
-                                      filteredCities = [];
-                                    });
-                                  },
-                                ),
+                              return PlaceCard(
+                                city: filteredCities[index].city,
+                                latitude: double.parse(
+                                    filteredCities[index].lat.toString()),
+                                longitude: double.parse(
+                                    filteredCities[index].lng.toString()),
+                                onTap: () {
+                                  moveCameraTo(index);
+                                },
                               );
                             },
                           ),
                         ),
-                        //TODO Clear query button may be unnecessary
-                        // const SizedBox(
-                        //   height: 8.0,
-                        // ),
-                        // ElevatedButton(
-                        //   onPressed: () {
-                        //     setState(() {
-                        //       filteredCities = [];
-                        //     });
-                        //   },
-                        //   child: const Text('Clear'),
-                        // )
                       ],
                     ),
                   ),
@@ -244,5 +210,22 @@ class MapViewState extends State<MapView> {
         ],
       ),
     );
+  }
+
+  void moveCameraTo(int index) {
+    mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(
+            double.parse(filteredCities[index].lat.toString()),
+            double.parse(filteredCities[index].lng.toString()),
+          ),
+          zoom: 12,
+        ),
+      ),
+    );
+    setState(() {
+      filteredCities = [];
+    });
   }
 }
