@@ -17,6 +17,7 @@ dependencies:
   heroicons:
   provider:
   cached_network_image: ^3.2.3
+  android_intent:
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,4 @@
+import 'package:android_intent/android_intent.dart';
 import 'package:bites/data/typical_foods.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,15 @@ class TypicalFoodDetailsPage extends StatelessWidget {
   const TypicalFoodDetailsPage({Key? key, required this.food})
       : super(key: key);
   final TypicalFood food;
+
+  void _intentToGoogleMaps(latitude, longitude) {
+    final intent = AndroidIntent(
+      action: 'action_view',
+      data: 'geo:$latitude,$longitude',
+      package: 'com.google.android.apps.maps',
+    );
+    intent.launch();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +58,17 @@ class TypicalFoodDetailsPage extends StatelessWidget {
             child: Text(
               food.description,
               style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
+          // add an elevated button which makes an intent to open google maps with the location of the food
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ElevatedButton(
+              onPressed: () {
+                _intentToGoogleMaps(food.latitude, food.longitude);
+              },
+              child: const Text('Find it on Google Maps'),
             ),
           ),
         ],
