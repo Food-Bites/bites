@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 
 class ItalianCities {
   String city;
-  String lat;
-  String lng;
+  double lat;
+  double lng;
 
   ItalianCities({
     required this.city,
