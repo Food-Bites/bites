@@ -56,7 +56,8 @@ class MapViewState extends State<MapView> {
   }
 
   void moveToCurrentLocation() async {
-    var userPosition = await determinePosition();
+    BuildContext context = this.context;
+    var userPosition = await determinePosition(context);
 
     mapController.animateCamera(
       CameraUpdate.newCameraPosition(

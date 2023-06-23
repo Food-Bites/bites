@@ -16,7 +16,8 @@ class _LocationTextState extends State<LocationText> {
   @override
   void initState() {
     super.initState();
-    closestCity = findClosestCity();
+    BuildContext context = this.context;
+    closestCity = getClosestCity(context);
   }
 
   @override

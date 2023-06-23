@@ -56,7 +56,7 @@ class DraggableBottomSheetState extends State<DraggableBottomSheet>
   // write a function to sort the foods by distance
   void _sortFoodsByDistance() async {
     // get current location of the user, if not available, use milan coordinates
-    determinePosition().then((userPosition) {
+    determinePosition(context).then((userPosition) {
       // sort the foods by distance
       typicalFoods.forEach((key, value) {
         final double distance = _calculateDistance(
