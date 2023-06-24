@@ -24,7 +24,6 @@ class _LocationTextState extends State<LocationText> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
-        mainAxisSize: MainAxisSize.max,
         children: [
           FutureBuilder(
             future: closestCity,
@@ -43,12 +42,6 @@ class _LocationTextState extends State<LocationText> {
           ),
           const HelperText(
               text: "Find the closest city to you", icon: Icons.info),
-          const SizedBox(
-            height: 16.0,
-          ),
-          const Expanded(
-            child: Placeholder(),
-          ),
         ],
       ),
     );
