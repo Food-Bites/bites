@@ -25,24 +25,36 @@ class MarketView extends StatelessWidget {
           },
           onLongPress: () {
             Provider.of<Cart>(context, listen: false).add(food);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("${food.name} added to cart"),
+                // material 3 style
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            );
           },
           child: Card(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Hero(
-                    tag: food.id,
-                    child: CachedNetworkImage(
-                      placeholder: (context, url) => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      imageUrl: food.image,
-                      fit: BoxFit.cover,
-                    ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: Hero(
+              tag: food.id,
+              child: CachedNetworkImage(
+                useOldImageOnUrlChange: true,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    Center(
+                  child: CircularProgressIndicator(
+                    value: downloadProgress.progress,
                   ),
                 ),
-                Text(food.name),
-              ],
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                imageUrl: food.image,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         );

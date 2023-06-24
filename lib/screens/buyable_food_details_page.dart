@@ -18,7 +18,10 @@ class BuyableFoodDetailsPage extends StatelessWidget {
         children: [
           Hero(
             tag: foodItem.id,
-            child: CachedNetworkImage(imageUrl: foodItem.image),
+            child: CachedNetworkImage(
+              imageUrl: foodItem.image,
+              fit: BoxFit.cover,
+            ),
           ),
           Text(foodItem.name),
           Text(foodItem.price.toString()),
