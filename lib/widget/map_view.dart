@@ -114,8 +114,9 @@ class MapViewState extends State<MapView> {
       filteredCities = cities
           .where(
               (city) => city.city.toLowerCase().contains(query.toLowerCase()))
-          .take(3)
           .toList();
+      filteredCities.sort((a, b) => a.city.length.compareTo(b.city.length));
+      filteredCities = filteredCities.take(3).toList();
       if (query.isEmpty) {
         setState(() {
           filteredCities = [];
