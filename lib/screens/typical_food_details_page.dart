@@ -46,7 +46,16 @@ class TypicalFoodDetailsPage extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 ),
                 // TODO fix error widget  not showing
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+                errorWidget: (BuildContext context, String url, dynamic error) {
+                  return Container(
+                    width: 100.0,
+                    height: 100.0,
+                    color: Colors.grey,
+                    child: const Center(
+                      child: Icon(Icons.error),
+                    ),
+                  );
+                },
                 imageUrl: food.image,
                 fit: BoxFit.cover,
               ),

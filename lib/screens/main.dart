@@ -2,8 +2,10 @@ import 'package:bites/screens/discover_page.dart';
 import 'package:bites/screens/map_page.dart';
 import 'package:bites/screens/market_page.dart';
 import 'package:bites/utils/functions.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:provider/provider.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -14,6 +16,7 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   int _currentIndex = 0;
+  bool _isConnected = true;
 
   final List<Widget> _pages = const [
     MapPage(),
@@ -49,6 +52,21 @@ class _MainState extends State<Main> {
     );
   }
 
+  Future<void> initConnectivity() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {
+        _isConnected = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initConnectivity();
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -56,7 +74,61 @@ class _MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
+    // if (_isConnected == false) {
+    //   return Scaffold(
+    //     body: Center(
+    //       child: Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         children: [
+    //           const Icon(
+    //             Icons.wifi_off,
+    //             size: 64,
+    //           ),
+    //           const SizedBox(height: 16),
+    //           const Text(
+    //             "No internet connection",
+    //             style: TextStyle(
+    //               fontSize: 24,
+    //               fontWeight: FontWeight.bold,
+    //             ),
+    //           ),
+    //           const SizedBox(height: 16),
+    //           const Text(
+    //             "Please check your internet connection and try again",
+    //             textAlign: TextAlign.center,
+    //             style: TextStyle(
+    //               fontSize: 16,
+    //             ),
+    //           ),
+    //           const SizedBox(height: 16),
+    //           ElevatedButton(
+    //             onPressed: () {
+    //               initConnectivity();
+    //             },
+    //             child: const Text("Retry"),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   );
+    // }
     return Scaffold(
+      bottomSheet: !_isConnected
+          ? BottomSheet(
+              onClosing: () {
+                setState(() {
+                  _isConnected = true;
+                });
+              },
+              builder: (context) => Container(
+                height: 32,
+                color: Theme.of(context).colorScheme.errorContainer,
+                child: const Center(
+                  child: Text("No internet connection"),
+                ),
+              ),
+            )
+          : null,
       body: Row(
         children: [
           if (isTablet(context))

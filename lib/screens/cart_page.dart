@@ -11,7 +11,7 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  DateTime _selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class _CartPageState extends State<CartPage> {
                           dateLabelText: 'Date',
                           timeLabelText: 'Hour',
                           onChanged: (val) => setState(() {
-                            _selectedDate = DateTime.parse(val);
+                            selectedDate = DateTime.parse(val);
                           }),
                           validator: (val) {
                             // date time choosen must be in the future
@@ -79,7 +79,7 @@ class _CartPageState extends State<CartPage> {
                             return null;
                           },
                           onSaved: (val) => setState(() {
-                            _selectedDate = DateTime.parse(val!);
+                            selectedDate = DateTime.parse(val!);
                           }),
                           use24HourFormat: true,
                           decoration: const InputDecoration(
