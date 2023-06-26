@@ -1,7 +1,6 @@
 import 'package:bites/data/cart.dart';
 import 'package:bites/screens/cart_page.dart';
 import 'package:bites/widget/location_header.dart';
-import 'package:bites/widget/location_text.dart';
 import 'package:bites/widget/market_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,10 +27,12 @@ class MarketPage extends StatelessWidget {
         ),
       ),
       body: NestedScrollView(
+        clipBehavior: Clip.none,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverPersistentHeader(
               delegate: LocationHeaderDelegate(),
+              floating: false,
             ),
           ];
         },
