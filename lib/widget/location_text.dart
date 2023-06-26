@@ -1,6 +1,7 @@
 import 'package:bites/utils/location.dart';
 import 'package:bites/widget/headline.dart';
 import 'package:bites/widget/helper_text.dart';
+import 'package:bites/widget/shimmer_headline.dart';
 import 'package:flutter/material.dart';
 
 class LocationText extends StatefulWidget {
@@ -34,14 +35,16 @@ class _LocationTextState extends State<LocationText> {
               } else if (snapshot.hasError) {
                 return const Text("your location");
               }
-              return const LinearProgressIndicator();
+              return const ShimmerHeadline();
             },
           ),
           const SizedBox(
             height: 16.0,
           ),
           const HelperText(
-              text: "Find the closest city to you", icon: Icons.info),
+            text: "Find the closest city to you",
+            icon: Icons.info,
+          ),
         ],
       ),
     );

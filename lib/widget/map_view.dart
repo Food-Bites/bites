@@ -124,6 +124,23 @@ class MapViewState extends State<MapView> {
     });
   }
 
+  void moveCameraTo(int index) {
+    mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(
+            double.parse(filteredCities[index].lat.toString()),
+            double.parse(filteredCities[index].lng.toString()),
+          ),
+          zoom: 12,
+        ),
+      ),
+    );
+    setState(() {
+      filteredCities = [];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -211,22 +228,5 @@ class MapViewState extends State<MapView> {
         ],
       ),
     );
-  }
-
-  void moveCameraTo(int index) {
-    mapController.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(
-            double.parse(filteredCities[index].lat.toString()),
-            double.parse(filteredCities[index].lng.toString()),
-          ),
-          zoom: 12,
-        ),
-      ),
-    );
-    setState(() {
-      filteredCities = [];
-    });
   }
 }

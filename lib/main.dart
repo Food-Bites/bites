@@ -14,21 +14,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return ChangeNotifierProvider(
-    //   create: (_) => ThemeProvider(),
-    //   builder: (context, _) {
-    //     final themeProvider = Provider.of<ThemeProvider>(context);
-    //     themeProvider.loadThemeMode();
-    //     return MaterialApp(
-    //       theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
-    //       darkTheme:
-    //           ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
-    //       themeMode: themeProvider.themeMode,
-    //       home: const InitialPage(),
-    //     );
-    //   },
-    // );
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
@@ -39,7 +24,7 @@ class MainApp extends StatelessWidget {
           theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
           darkTheme:
               ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
-          themeMode: ThemeMode.system,
+          themeMode: Provider.of<ThemeProvider>(context).themeMode,
           home: const InitialPage(),
         );
       },
