@@ -9,6 +9,9 @@ class Cart extends ChangeNotifier {
   double get totalPrice => _totalPrice;
 
   void add(BuyableFood foodItem) {
+    if (_items.contains(foodItem)) {
+      return;
+    }
     _items.add(foodItem);
     _totalPrice += foodItem.price;
     notifyListeners();

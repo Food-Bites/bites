@@ -1,6 +1,8 @@
 import 'package:bites/data/buyable_foods.dart';
+import 'package:bites/data/cart.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BuyableFoodDetailsPage extends StatelessWidget {
   final BuyableFood foodItem;
@@ -28,6 +30,7 @@ class BuyableFoodDetailsPage extends StatelessWidget {
           // add a button that adds the food item to the cart
           ElevatedButton(
             onPressed: () {
+              Provider.of<Cart>(context, listen: false).add(foodItem);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text("${foodItem.name} added to cart"),
