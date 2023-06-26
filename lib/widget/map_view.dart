@@ -56,7 +56,8 @@ class MapViewState extends State<MapView> {
   }
 
   void moveToCurrentLocation() async {
-    var userPosition = await determinePosition();
+    BuildContext context = this.context;
+    var userPosition = await determinePosition(context);
 
     mapController.animateCamera(
       CameraUpdate.newCameraPosition(
@@ -113,13 +114,31 @@ class MapViewState extends State<MapView> {
       filteredCities = cities
           .where(
               (city) => city.city.toLowerCase().contains(query.toLowerCase()))
-          .take(3)
           .toList();
+      filteredCities.sort((a, b) => a.city.length.compareTo(b.city.length));
+      filteredCities = filteredCities.take(3).toList();
       if (query.isEmpty) {
         setState(() {
           filteredCities = [];
         });
       }
+    });
+  }
+
+  void moveCameraTo(int index) {
+    mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(
+            double.parse(filteredCities[index].lat.toString()),
+            double.parse(filteredCities[index].lng.toString()),
+          ),
+          zoom: 12,
+        ),
+      ),
+    );
+    setState(() {
+      filteredCities = [];
     });
   }
 
@@ -210,22 +229,5 @@ class MapViewState extends State<MapView> {
         ],
       ),
     );
-  }
-
-  void moveCameraTo(int index) {
-    mapController.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(
-            double.parse(filteredCities[index].lat.toString()),
-            double.parse(filteredCities[index].lng.toString()),
-          ),
-          zoom: 12,
-        ),
-      ),
-    );
-    setState(() {
-      filteredCities = [];
-    });
   }
 }

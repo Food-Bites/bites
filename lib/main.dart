@@ -1,5 +1,7 @@
+import 'package:bites/data/cart.dart';
 import 'package:bites/screens/initial_page.dart';
 import 'package:bites/utils/color_scheme.dart';
+import 'package:bites/utils/suggestions_switch.dart';
 import 'package:bites/utils/theme_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,19 +13,20 @@ void main() {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => SuggestionTipsProvider()),
+        ChangeNotifierProvider(create: (context) => Cart())
+      ],
       builder: (context, _) {
-        final themeProvider = Provider.of<ThemeProvider>(context);
-        themeProvider.loadThemeMode();
         return MaterialApp(
           theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
           darkTheme:
               ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
-          themeMode: themeProvider.themeMode,
+          themeMode: Provider.of<ThemeProvider>(context).themeMode,
           home: const InitialPage(),
         );
       },

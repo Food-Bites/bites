@@ -179,7 +179,7 @@ class OnboarderPageState extends State<OnboarderPage> {
               padding: const EdgeInsets.all(16.0),
               child: DotsIndicator(
                 dotsCount: 5,
-                position: innerScrollPosition,
+                position: innerScrollPosition.toInt(),
                 decorator: DotsDecorator(
                   size: const Size.square(9.0),
                   activeSize: const Size(18.0, 9.0),

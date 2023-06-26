@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  dots_indicator: ^2.0.0
+  dots_indicator: ^3.0.0
   shared_preferences:
   geolocator:
   geoflutterfire2:
@@ -17,6 +17,9 @@ dependencies:
   heroicons:
   provider:
   cached_network_image: ^3.2.3
+  android_intent:
+  connectivity: ^3.0.6
+  date_time_picker: ^2.1.0
 
 dev_dependencies:
   flutter_test:
