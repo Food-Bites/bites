@@ -1,6 +1,7 @@
 import 'package:bites/data/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -10,6 +11,8 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  DateTime _selectedDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,25 +53,40 @@ class _CartPageState extends State<CartPage> {
                         Row(
                           children: [
                             Text(
-                              '2. Choose the delivery time',
+                              '2. Choose the pick up time',
                               style: Theme.of(context).textTheme.titleMedium,
                               textAlign: TextAlign.left,
                             ),
                           ],
                         ),
                         const SizedBox(height: 8),
-                        TextField(
-                          decoration: const InputDecoration(
-                            labelText: 'Delivery Time',
-                            border: OutlineInputBorder(),
-                          ),
-                          onTap: () {
-                            showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.now(),
-                            );
+                        DateTimePicker(
+                          type: DateTimePickerType.dateTime,
+                          dateMask: 'd MMM, yyyy - hh:mm a',
+                          initialValue: DateTime.now().toString(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                          dateLabelText: 'Date',
+                          timeLabelText: 'Hour',
+                          onChanged: (val) => setState(() {
+                            _selectedDate = DateTime.parse(val);
+                          }),
+                          validator: (val) {
+                            // date time choosen must be in the future
+                            if (DateTime.parse(val!).isBefore(DateTime.now())) {
+                              return 'Please enter a valid date';
+                            }
+                            return null;
                           },
-                        ),
+                          onSaved: (val) => setState(() {
+                            _selectedDate = DateTime.parse(val!);
+                          }),
+                          use24HourFormat: true,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Pick up time',
+                          ),
+                        )
                       ],
                     ),
                     const SizedBox(height: 16),

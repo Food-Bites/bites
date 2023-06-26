@@ -1,3 +1,4 @@
+import 'package:bites/utils/suggestions_switch.dart';
 import 'package:bites/utils/theme_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,16 @@ class OptionsPage extends StatelessWidget {
               onChanged: (value) {
                 Provider.of<ThemeProvider>(context, listen: false)
                     .setThemeType(value ? ThemeType.dark : ThemeType.light);
+              },
+            ),
+          ),
+          ListTile(
+            title: const Text('Suggestions'),
+            trailing: Switch(
+              value: Provider.of<SuggestionTipsProvider>(context).showTips,
+              onChanged: (value) {
+                Provider.of<SuggestionTipsProvider>(context, listen: false)
+                    .setShowTips(value);
               },
             ),
           ),
