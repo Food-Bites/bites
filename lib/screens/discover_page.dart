@@ -8,11 +8,6 @@ class DiscoverPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Discover'),
-      ),
-      body: const DiscoverView(),
-    );
+    return const DiscoverView();
   }
 }
