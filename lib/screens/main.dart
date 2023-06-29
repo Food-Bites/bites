@@ -151,7 +151,7 @@ class _MainState extends State<Main> {
                 ),
                 NavigationRailDestination(
                   icon: Icon(Icons.search),
-                  label: Text('Search'),
+                  label: Text('Discover'),
                 ),
                 NavigationRailDestination(
                   icon: Icon(Icons.shopping_cart),
@@ -193,7 +193,7 @@ class _MainState extends State<Main> {
                 ),
                 NavigationDestination(
                   icon: HeroIcon(HeroIcons.globeEuropeAfrica),
-                  label: 'Search',
+                  label: 'Discover',
                 ),
                 NavigationDestination(
                   icon: HeroIcon(HeroIcons.buildingStorefront),

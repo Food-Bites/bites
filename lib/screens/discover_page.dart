@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:bites/widget/discover_view.dart';
 
 class DiscoverPage extends StatelessWidget {
   const DiscoverPage({super.key});
 
+  //TODO: Add Stories and intents to maps
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Discover'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Discover'),
       ),
+      body: DiscoverView(),
     );
   }
 }
