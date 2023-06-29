@@ -5,11 +5,13 @@ import 'package:bites/data/social.dart';
 import '../utils/data_service.dart';
 
 class DiscoverView extends StatefulWidget {
+  const DiscoverView({super.key});
+
   @override
-  _DiscoverViewState createState() => _DiscoverViewState();
+  State<DiscoverView> createState() => DiscoverViewState();
 }
 
-class _DiscoverViewState extends State<DiscoverView>
+class DiscoverViewState extends State<DiscoverView>
     with SingleTickerProviderStateMixin {
   final List<SocialFeed> socialFeeds = [];
   final DataService dataService = DataService();
@@ -22,11 +24,10 @@ class _DiscoverViewState extends State<DiscoverView>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
     _animationMap = {};
   }
-
   void fetchRestaurants() async {
     final fetchedRestaurants = await dataService.getRestaurants();
     setState(() {

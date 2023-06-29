@@ -10,9 +10,9 @@ class DiscoverPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Discover'),
+        title: const Text('Discover'),
       ),
-      body: DiscoverView(),
+      body: const DiscoverView(),
     );
   }
 }

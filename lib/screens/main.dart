@@ -5,7 +5,6 @@ import 'package:bites/utils/functions.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:provider/provider.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});

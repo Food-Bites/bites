@@ -15,15 +15,15 @@ class DiscoverPopUp extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Address: ${socialFeed.address}'),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text('Phone: ${socialFeed.phone}'),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text('Email: ${socialFeed.email}'),
         ],
       ),
       actions: [
         TextButton(
-          child: Text('Close'),
+          child: const Text('Close'),
           onPressed: () {
             Navigator.of(context).pop();
           },
