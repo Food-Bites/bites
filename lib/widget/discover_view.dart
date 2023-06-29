@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bites/widget/discover_card.dart';
 import 'package:bites/widget/discover_pop_up.dart';
 import 'package:bites/data/social.dart';
-
-import '../data/social.dart';
+import '../utils/data_service.dart';
 
 class DiscoverView extends StatefulWidget {
   @override
@@ -12,7 +11,8 @@ class DiscoverView extends StatefulWidget {
 
 class _DiscoverViewState extends State<DiscoverView>
     with SingleTickerProviderStateMixin {
-  //final List<SocialFeed> socialFeeds = SocialFeed.fromJson(socialFeed[key]);
+  final List<SocialFeed> socialFeeds = [];
+  final DataService dataService = DataService();
   final List<String> liked = [];
   late AnimationController _animationController;
   late Map<ObjectKey, Animation<double>> _animationMap;
@@ -27,19 +27,25 @@ class _DiscoverViewState extends State<DiscoverView>
     _animationMap = {};
   }
 
+  void fetchRestaurants() async {
+    final fetchedRestaurants = await dataService.getRestaurants();
+    setState(() {
+      socialFeeds.addAll(fetchedRestaurants);
+    });
+  }
+  
   void likeSocialFeed(ObjectKey key) {
     setState(() {
-      final index =
-      socialFeeds.indexWhere((socialFeed) => ObjectKey(socialFeed) == key);
+      final index = socialFeeds.indexWhere((restaurant) => ObjectKey(restaurant) == key);
       if (index != -1) {
-        final socialFeed = socialFeeds[index];
-        if (liked.contains(socialFeed.name)) {
-          socialFeed.likes--;
-          liked.remove(socialFeed.name);
+        final restaurant = socialFeeds[index];
+        if (liked.contains(restaurant.name)) {
+          restaurant.likes--;
+          liked.remove(restaurant.name);
           _animationMap.remove(key);
         } else {
-          socialFeed.likes++;
-          liked.add(socialFeed.name);
+          restaurant.likes++;
+          liked.add(restaurant.name);
           _animationController.reset();
           _animationMap.forEach((k, animation) {
             if (k != key) {
