@@ -3,6 +3,7 @@ import 'package:bites/widget/discover_card.dart';
 import 'package:bites/widget/discover_pop_up.dart';
 import 'package:bites/data/social.dart';
 import '../utils/data_service.dart';
+import 'package:bites/widget/discover_story.dart';
 
 class DiscoverView extends StatefulWidget {
   const DiscoverView({super.key});
@@ -89,24 +90,48 @@ class DiscoverViewState extends State<DiscoverView>
         if (snapshot.hasData) {
           return Container(
             constraints: const BoxConstraints(maxWidth: 600),
-            child: ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, index) {
-                final socialFeed = snapshot.data[index];
-                final isLiked = liked.contains(socialFeed.name);
-                final animationKey = ObjectKey(socialFeed);
-                final animation = _animationMap[animationKey];
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 150, // Adjust the height as per your requirement
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      final socialFeed = snapshot.data[index];
 
-                return DiscoverCard(
-                  key: animationKey,
-                  socialFeed: socialFeed,
-                  isLiked: isLiked,
-                  animation: animation,
-                  onDoubleTap: () => likeSocialFeed(animationKey),
-                  onPressedLike: () => likeSocialFeed(animationKey),
-                  onPressedDetails: () => showFeedItemDetails(socialFeed),
-                );
-              },
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Highlight(
+                          socialField: socialFeed, // Pass the images to the Highlight component
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      final socialFeed = snapshot.data[index];
+                      final isLiked = liked.contains(socialFeed.name);
+                      final animationKey = ObjectKey(socialFeed);
+                      final animation = _animationMap[animationKey];
+
+                      return DiscoverCard(
+                        key: animationKey,
+                        socialFeed: socialFeed,
+                        isLiked: isLiked,
+                        animation: animation,
+                        onDoubleTap: () => likeSocialFeed(animationKey),
+                        onPressedLike: () => likeSocialFeed(animationKey),
+                        onPressedDetails: () =>
+                            showFeedItemDetails(socialFeed),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           );
         } else {

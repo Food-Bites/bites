@@ -22,7 +22,7 @@ class DiscoverCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(maxWidth: 600),
+      constraints: const BoxConstraints(maxWidth: 600),
       child: Card(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
