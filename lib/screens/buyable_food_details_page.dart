@@ -21,6 +21,17 @@ class BuyableFoodDetailsPage extends StatelessWidget {
           Hero(
             tag: foodItem.id,
             child: CachedNetworkImage(
+              useOldImageOnUrlChange: true,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  Center(
+                child: CircularProgressIndicator(
+                  value: downloadProgress.progress,
+                ),
+              ),
+              errorWidget: (context, url, error) => Image.asset(
+                'assets/error.png',
+                fit: BoxFit.cover,
+              ),
               imageUrl: foodItem.image,
               fit: BoxFit.cover,
             ),
