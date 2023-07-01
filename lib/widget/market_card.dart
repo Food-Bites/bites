@@ -1,4 +1,4 @@
-import 'package:bites/data/buyable_foods.dart';
+import 'package:bites/data/purchasable_foods.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 

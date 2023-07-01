@@ -42,20 +42,17 @@ class TypicalFoodDetailsPage extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: CachedNetworkImage(
-                placeholder: (context, url) => const Center(
-                  child: CircularProgressIndicator(),
+                useOldImageOnUrlChange: true,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    Center(
+                  child: CircularProgressIndicator(
+                    value: downloadProgress.progress,
+                  ),
                 ),
-                // TODO fix error widget  not showing
-                errorWidget: (BuildContext context, String url, dynamic error) {
-                  return Container(
-                    width: 100.0,
-                    height: 100.0,
-                    color: Colors.grey,
-                    child: const Center(
-                      child: Icon(Icons.error),
-                    ),
-                  );
-                },
+                errorWidget: (context, url, error) => Image.asset(
+                  'assets/error.png',
+                  fit: BoxFit.cover,
+                ),
                 imageUrl: food.image,
                 fit: BoxFit.cover,
               ),

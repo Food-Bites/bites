@@ -42,7 +42,7 @@ class _LocationTextState extends State<LocationText> {
             },
           ),
           const HelperText(
-              text: "Find the closest city to you", icon: Icons.info),
+              text: "Tap to know more, hold to add to cart", icon: Icons.info),
         ],
       ),
     );
