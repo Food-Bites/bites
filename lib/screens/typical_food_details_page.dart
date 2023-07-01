@@ -17,6 +17,7 @@ class TypicalFoodDetailsPage extends StatelessWidget {
     intent.launch();
   }
 
+  // TODO fix the UI of this page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
