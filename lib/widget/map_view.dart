@@ -166,7 +166,8 @@ class MapViewState extends State<MapView> {
             circles: Set<Circle>.of(circles.values),
           ),
           SafeArea(
-            child: Column(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
