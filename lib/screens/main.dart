@@ -143,22 +143,34 @@ class _MainState extends State<Main> {
                   const SizedBox(height: 16),
                 ],
               ),
+              selectedIndex: _currentIndex,
+              onDestinationSelected: onTabTapped,
               destinations: const [
                 NavigationRailDestination(
-                  icon: Icon(Icons.map),
-                  label: Text('Home'),
+                  icon: HeroIcon(HeroIcons.map),
+                  selectedIcon: HeroIcon(
+                    HeroIcons.map,
+                    style: HeroIconStyle.solid,
+                  ),
+                  label: Text('Map'),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.search),
+                  icon: HeroIcon(HeroIcons.globeEuropeAfrica),
+                  selectedIcon: HeroIcon(
+                    HeroIcons.globeEuropeAfrica,
+                    style: HeroIconStyle.solid,
+                  ),
                   label: Text('Discover'),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.shopping_cart),
-                  label: Text('Profile'),
+                  icon: HeroIcon(HeroIcons.buildingStorefront),
+                  selectedIcon: HeroIcon(
+                    HeroIcons.buildingStorefront,
+                    style: HeroIconStyle.solid,
+                  ),
+                  label: Text('Market'),
                 ),
               ],
-              selectedIndex: _currentIndex,
-              onDestinationSelected: onTabTapped,
             ),
           Expanded(
             // add some border radius to the pageview
@@ -188,15 +200,27 @@ class _MainState extends State<Main> {
                   icon: HeroIcon(
                     HeroIcons.map,
                   ),
-                  label: 'Home',
+                  selectedIcon: HeroIcon(
+                    HeroIcons.map,
+                    style: HeroIconStyle.solid,
+                  ),
+                  label: 'Map',
                 ),
                 NavigationDestination(
                   icon: HeroIcon(HeroIcons.globeEuropeAfrica),
+                  selectedIcon: HeroIcon(
+                    HeroIcons.globeEuropeAfrica,
+                    style: HeroIconStyle.solid,
+                  ),
                   label: 'Discover',
                 ),
                 NavigationDestination(
                   icon: HeroIcon(HeroIcons.buildingStorefront),
-                  label: 'Profile',
+                  selectedIcon: HeroIcon(
+                    HeroIcons.buildingStorefront,
+                    style: HeroIconStyle.solid,
+                  ),
+                  label: 'Market',
                 ),
               ],
             )
