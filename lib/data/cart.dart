@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 class Cart extends ChangeNotifier {
   // ready to accept multiple items
-  final List<BuyableFood> _items = [];
+  final List<PurchasableFood> _items = [];
 
-  List<BuyableFood> get items => _items;
+  List<PurchasableFood> get items => _items;
 
-  void add(BuyableFood foodItem, BuildContext context) {
+  void add(PurchasableFood foodItem, BuildContext context) {
     if (_items.contains(foodItem) || _items.length == 1) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -47,7 +47,7 @@ class Cart extends ChangeNotifier {
     notifyListeners();
   }
 
-  void remove(BuyableFood foodItem) {
+  void remove(PurchasableFood foodItem) {
     _items.remove(foodItem);
     notifyListeners();
   }
@@ -57,7 +57,7 @@ class Cart extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool contains(BuyableFood foodItem) {
+  bool contains(PurchasableFood foodItem) {
     return _items.contains(foodItem);
   }
 

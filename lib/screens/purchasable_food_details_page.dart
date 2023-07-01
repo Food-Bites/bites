@@ -9,7 +9,7 @@ import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 
 class PurchasableFoodDetailsPage extends StatelessWidget {
-  final BuyableFood foodItem;
+  final PurchasableFood foodItem;
 
   const PurchasableFoodDetailsPage({Key? key, required this.foodItem})
       : super(key: key);
@@ -144,7 +144,7 @@ class PurchasableFoodDetailsPage extends StatelessWidget {
 
 class Details extends StatelessWidget {
   const Details({super.key, required this.food});
-  final BuyableFood food;
+  final PurchasableFood food;
 
   @override
   Widget build(BuildContext context) {

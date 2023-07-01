@@ -1,4 +1,4 @@
-class BuyableFood {
+class PurchasableFood {
   final String id;
   final String name;
   final String description;
@@ -6,7 +6,7 @@ class BuyableFood {
   final double price;
   final String owner;
 
-  BuyableFood({
+  PurchasableFood({
     required this.id,
     required this.name,
     required this.image,
@@ -15,8 +15,8 @@ class BuyableFood {
     required this.owner,
   });
 
-  factory BuyableFood.fromJson(Map<String, dynamic> json) {
-    return BuyableFood(
+  factory PurchasableFood.fromJson(Map<String, dynamic> json) {
+    return PurchasableFood(
       id: json['id'],
       name: json['name'],
       image: json['image'],

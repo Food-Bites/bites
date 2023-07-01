@@ -10,11 +10,11 @@ import 'package:provider/provider.dart';
 class MarketView extends StatelessWidget {
   const MarketView({super.key});
 
-  void _onLongPress(BuyableFood food, BuildContext context) {
+  void _onLongPress(PurchasableFood food, BuildContext context) {
     Provider.of<Cart>(context, listen: false).add(food, context);
   }
 
-  void _navigateToDetailsPage(BuyableFood food, BuildContext context) {
+  void _navigateToDetailsPage(PurchasableFood food, BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => PurchasableFoodDetailsPage(foodItem: food),
@@ -27,7 +27,7 @@ class MarketView extends StatelessWidget {
     return StaggeredGrid.count(
       crossAxisCount: isTablet(context) ? 4 : 2,
       children: purchasableFood.keys.map((key) {
-        final food = BuyableFood.fromJson(purchasableFood[key]);
+        final food = PurchasableFood.fromJson(purchasableFood[key]);
         return GestureDetector(
           onTap: () => _navigateToDetailsPage(food, context),
           onLongPress: () => _onLongPress(food, context),

@@ -2,13 +2,13 @@ import 'package:bites/data/purchasable_foods.dart';
 import 'package:flutter/material.dart';
 
 class Order extends ChangeNotifier {
-  final List<BuyableFood> _items = [];
+  final List<PurchasableFood> _items = [];
   double _totalPrice = 0;
 
-  List<BuyableFood> get items => _items;
+  List<PurchasableFood> get items => _items;
   double get totalPrice => _totalPrice;
 
-  void add(BuyableFood foodItem) {
+  void add(PurchasableFood foodItem) {
     if (_items.contains(foodItem)) {
       return;
     }
@@ -17,7 +17,7 @@ class Order extends ChangeNotifier {
     notifyListeners();
   }
 
-  void remove(BuyableFood foodItem) {
+  void remove(PurchasableFood foodItem) {
     _items.remove(foodItem);
     _totalPrice -= foodItem.price;
     notifyListeners();
@@ -29,7 +29,7 @@ class Order extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool contains(BuyableFood foodItem) {
+  bool contains(PurchasableFood foodItem) {
     return _items.contains(foodItem);
   }
 

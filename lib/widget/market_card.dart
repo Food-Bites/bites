@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class MarketCard extends StatelessWidget {
   const MarketCard({super.key, required this.food});
-  final BuyableFood food;
+  final PurchasableFood food;
 
   @override
   Widget build(BuildContext context) {

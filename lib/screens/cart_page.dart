@@ -18,7 +18,7 @@ class _CartPageState extends State<CartPage> {
   DateTime selectedDate = DateTime.now();
   String note = '';
   String contact = '';
-  BuyableFood food = BuyableFood(
+  PurchasableFood food = PurchasableFood(
     id: "",
     name: "",
     image: "",
@@ -27,7 +27,7 @@ class _CartPageState extends State<CartPage> {
     owner: "",
   );
 
-  void _addToCalendar(BuyableFood foodItem) {
+  void _addToCalendar(PurchasableFood foodItem) {
     // add to calendar
     final intent = AndroidIntent(
       action: 'android.intent.action.INSERT',
