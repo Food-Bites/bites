@@ -87,24 +87,27 @@ class DiscoverViewState extends State<DiscoverView>
       future: fetchRestaurants(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, index) {
-              final socialFeed = snapshot.data[index];
-              final isLiked = liked.contains(socialFeed.name);
-              final animationKey = ObjectKey(socialFeed);
-              final animation = _animationMap[animationKey];
+          return Container(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                final socialFeed = snapshot.data[index];
+                final isLiked = liked.contains(socialFeed.name);
+                final animationKey = ObjectKey(socialFeed);
+                final animation = _animationMap[animationKey];
 
-              return DiscoverCard(
-                key: animationKey,
-                socialFeed: socialFeed,
-                isLiked: isLiked,
-                animation: animation,
-                onDoubleTap: () => likeSocialFeed(animationKey),
-                onPressedLike: () => likeSocialFeed(animationKey),
-                onPressedDetails: () => showFeedItemDetails(socialFeed),
-              );
-            },
+                return DiscoverCard(
+                  key: animationKey,
+                  socialFeed: socialFeed,
+                  isLiked: isLiked,
+                  animation: animation,
+                  onDoubleTap: () => likeSocialFeed(animationKey),
+                  onPressedLike: () => likeSocialFeed(animationKey),
+                  onPressedDetails: () => showFeedItemDetails(socialFeed),
+                );
+              },
+            ),
           );
         } else {
           return const Center(child: CircularProgressIndicator());
@@ -112,6 +115,7 @@ class DiscoverViewState extends State<DiscoverView>
       },
     );
   }
+
 
   void showFeedItemDetails(SocialFeed socialFeed) {
     showDialog(
