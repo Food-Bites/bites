@@ -1,6 +1,7 @@
 import 'package:android_intent/android_intent.dart';
 import 'package:bites/data/cart.dart';
 import 'package:bites/data/purchasable_foods.dart';
+import 'package:bites/widget/helper_text.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
@@ -207,6 +208,11 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ],
               ),
+              const SizedBox(height: 16),
+              HelperText(
+                  icon: IconType.heroIcons(HeroIcons.informationCircle),
+                  text:
+                      'Your calendar will open to add a reminder in your calendar.'),
               const SizedBox(height: 16),
               FilledButton.icon(
                   onPressed: () {
