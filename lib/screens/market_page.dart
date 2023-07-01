@@ -38,17 +38,19 @@ class MarketPage extends StatelessWidget {
             ),
           ];
         },
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: HelperText(
-                text: "Tap to know more, hold to add to cart",
-                icon: IconType.heroIcons(HeroIcons.informationCircle),
-              ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                HelperText(
+                  text: "Tap to view details, long press to add to cart",
+                  icon: IconType.heroIcons(HeroIcons.informationCircle),
+                ),
+                const MarketView(),
+              ],
             ),
-            const MarketView(),
-          ],
+          ),
         ),
       ),
     );

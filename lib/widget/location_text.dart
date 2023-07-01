@@ -24,7 +24,6 @@ class _LocationTextState extends State<LocationText> {
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
           FutureBuilder(
             future: closestCity,

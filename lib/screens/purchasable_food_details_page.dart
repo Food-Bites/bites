@@ -1,6 +1,7 @@
 import 'package:android_intent/android_intent.dart';
 import 'package:bites/data/purchasable_foods.dart';
 import 'package:bites/data/cart.dart';
+import 'package:bites/utils/functions.dart';
 import 'package:bites/widget/helper_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -38,48 +39,69 @@ class PurchasableFoodDetailsPage extends StatelessWidget {
                 foodItem.name,
                 style: Theme.of(context).textTheme.displayMedium,
               ),
-              const SizedBox(height: 16),
-              Hero(
-                tag: foodItem.id,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: CachedNetworkImage(
-                    width: 256,
-                    useOldImageOnUrlChange: true,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) => Center(
-                      child: CircularProgressIndicator(
-                        value: downloadProgress.progress,
+              const SizedBox(height: 16.00),
+              isTablet(context)
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: SizedBox(
+                            width: 256,
+                            child: Hero(
+                              tag: foodItem.id,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: CachedNetworkImage(
+                                  width: 256,
+                                  useOldImageOnUrlChange: true,
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          Center(
+                                    child: CircularProgressIndicator(
+                                      value: downloadProgress.progress,
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
+                                    'assets/error.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                  imageUrl: foodItem.image,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(flex: 6, child: Details(food: foodItem)),
+                      ],
+                    )
+                  : Hero(
+                      tag: foodItem.id,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: CachedNetworkImage(
+                          width: 256,
+                          useOldImageOnUrlChange: true,
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Center(
+                            child: CircularProgressIndicator(
+                              value: downloadProgress.progress,
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => Image.asset(
+                            'assets/error.png',
+                            fit: BoxFit.cover,
+                          ),
+                          imageUrl: foodItem.image,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                    errorWidget: (context, url, error) => Image.asset(
-                      'assets/error.png',
-                      fit: BoxFit.cover,
-                    ),
-                    imageUrl: foodItem.image,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Container(
-                constraints: BoxConstraints.loose(
-                  const Size.fromWidth(960.00),
-                ),
-                child: Text(
-                  foodItem.description,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ),
-              const SizedBox(height: 16),
-              // add a badge that shows the price
-              Chip(
-                avatar: const HeroIcon(HeroIcons.currencyEuro),
-                label: Text(
-                  "${foodItem.price}",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ),
+              isTablet(context)
+                  ? const SizedBox.shrink()
+                  : Details(food: foodItem),
               const SizedBox(height: 16),
               HelperText(
                 icon: IconType.heroIcons(HeroIcons.informationCircle),
@@ -126,6 +148,40 @@ class PurchasableFoodDetailsPage extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class Details extends StatelessWidget {
+  const Details({super.key, required this.food});
+  final BuyableFood food;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: isTablet(context)
+            ? const EdgeInsets.all(16.0)
+            : const EdgeInsets.fromLTRB(0, 16, 0, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              food.description,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            const SizedBox(height: 16),
+            Chip(
+              avatar: const HeroIcon(HeroIcons.currencyEuro),
+              label: Text(
+                "${food.price}",
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ),
+          ],
         ),
       ),
     );
