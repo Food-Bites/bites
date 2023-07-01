@@ -1,5 +1,7 @@
+import 'package:android_intent/android_intent.dart';
 import 'package:bites/data/purchasable_foods.dart';
 import 'package:bites/data/cart.dart';
+import 'package:bites/widget/helper_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
@@ -10,6 +12,15 @@ class PurchasableFoodDetailsPage extends StatelessWidget {
 
   const PurchasableFoodDetailsPage({Key? key, required this.foodItem})
       : super(key: key);
+
+  void _intentToGoogleMaps(String place) {
+    final intent = AndroidIntent(
+      action: 'action_view',
+      data: 'geo:0,0?q=${place.replaceAll(" ", "+")}',
+      package: 'com.google.android.apps.maps',
+    );
+    intent.launch();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,26 +41,35 @@ class PurchasableFoodDetailsPage extends StatelessWidget {
               const SizedBox(height: 16),
               Hero(
                 tag: foodItem.id,
-                child: CachedNetworkImage(
-                  useOldImageOnUrlChange: true,
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      Center(
-                    child: CircularProgressIndicator(
-                      value: downloadProgress.progress,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: CachedNetworkImage(
+                    width: 256,
+                    useOldImageOnUrlChange: true,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => Center(
+                      child: CircularProgressIndicator(
+                        value: downloadProgress.progress,
+                      ),
                     ),
-                  ),
-                  errorWidget: (context, url, error) => Image.asset(
-                    'assets/error.png',
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/error.png',
+                      fit: BoxFit.cover,
+                    ),
+                    imageUrl: foodItem.image,
                     fit: BoxFit.cover,
                   ),
-                  imageUrl: foodItem.image,
-                  fit: BoxFit.cover,
                 ),
               ),
               const SizedBox(height: 16),
-              Text(
-                foodItem.description,
-                style: Theme.of(context).textTheme.bodyLarge,
+              Container(
+                constraints: BoxConstraints.loose(
+                  const Size.fromWidth(960.00),
+                ),
+                child: Text(
+                  foodItem.description,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
               ),
               const SizedBox(height: 16),
               // add a badge that shows the price
@@ -61,15 +81,27 @@ class PurchasableFoodDetailsPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              // add a button that adds the food item to the cart
+              HelperText(
+                icon: IconType.heroIcons(HeroIcons.informationCircle),
+                text: 'Tap the address to open in Google Maps',
+              ),
               Text(
                 "Where to buy:",
-                style: Theme.of(context).textTheme.headlineSmall,
+                style: Theme.of(context).textTheme.titleSmall,
               ),
               const SizedBox(height: 16),
-              Text(
-                foodItem.owner,
-                style: Theme.of(context).textTheme.bodyLarge,
+              Wrap(
+                children: [
+                  const HeroIcon(HeroIcons.mapPin),
+                  const SizedBox(width: 8),
+                  GestureDetector(
+                    onTap: () => _intentToGoogleMaps(foodItem.owner),
+                    child: Text(
+                      foodItem.owner,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
               FilledButton.icon(

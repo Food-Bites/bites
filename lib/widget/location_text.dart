@@ -1,6 +1,5 @@
 import 'package:bites/utils/location.dart';
 import 'package:bites/widget/headline.dart';
-import 'package:bites/widget/helper_text.dart';
 import 'package:flutter/material.dart';
 
 class LocationText extends StatefulWidget {
@@ -25,6 +24,7 @@ class _LocationTextState extends State<LocationText> {
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           FutureBuilder(
             future: closestCity,
@@ -41,8 +41,6 @@ class _LocationTextState extends State<LocationText> {
               );
             },
           ),
-          const HelperText(
-              text: "Tap to know more, hold to add to cart", icon: Icons.info),
         ],
       ),
     );

@@ -9,10 +9,10 @@ class LocationHeaderDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 200.0;
+  double get maxExtent => 150;
 
   @override
-  double get minExtent => 200.0;
+  double get minExtent => 150;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

@@ -36,7 +36,7 @@ Map<String, dynamic> purchasableFood = {
         'Cheese is a dairy product, derived from milk and produced in wide ranges of flavors, textures and forms by coagulation of the milk protein casein. It comprises proteins and fat from milk, usually the milk of cows, buffalo, goats, or sheep. During production, the milk is usually acidified and the enzymes of rennet (or bacterial enzymes with similar activity) are added to cause the milk proteins (casein) to coagulate. The solids (curd) are separated from the liquid (whey) and pressed into final form. Some cheeses have aromatic molds on the rind, the outer layer, or throughout. Most cheeses melt at cooking temperature.',
     'image':
         'https://raw.githubusercontent.com/Food-Bites/pictures/main/cheese.jpg',
-    'price': 5.0,
+    'price': 5.00,
     'owner': 'Ristorante Bella Tavola - Via Nazionale delle Dolomiti, 15',
   },
   // milk
@@ -46,17 +46,18 @@ Map<String, dynamic> purchasableFood = {
     'description': '',
     'image':
         'https://raw.githubusercontent.com/Food-Bites/pictures/main/milk.jpg',
-    'price': 1.0,
+    'price': 1.00,
     'owner': 'Agriturismo Nel Bosco - Località Foresta',
   },
   // bretzel
   'Bretzel': {
     'id': 'cf1fe85a-4c9e-49d3-b614-4de32cca3212',
     'name': 'Bretzel',
-    'description': '',
+    'description':
+        'Bretzels, also known as pretzels, are a type of baked bread product that originated in Europe. They are typically in the shape of a knot or twisted loop and have a crunchy exterior with a soft and chewy interior. Bretzels are often sprinkled with salt or other seasonings and are commonly served as a snack or with beer. They are a staple in German cuisine and have become popular in many other parts of the world as well.',
     'image':
         'https://raw.githubusercontent.com/Food-Bites/pictures/main/bretzel.jpg',
-    'price': 1.0,
+    'price': 1.00,
     'owner': 'Panificio La Dolce Vita - Via Nazionale delle Dolomiti, 21',
   },
   // Chianti Classico
@@ -67,7 +68,7 @@ Map<String, dynamic> purchasableFood = {
         'Chianti Classico is a red wine produced in the Chianti region of Tuscany, Italy. It is made primarily from the Sangiovese grape, with other grape varieties such as Canaiolo and Colorino sometimes blended in. Chianti Classico has a medium body and is known for its tart cherry, plum, and spice flavors, as well as its high acidity and firm tannins. It pairs well with a wide variety of Italian dishes, including pasta with meat sauce, pizza, and roasted meats.',
     'image':
         'https://raw.githubusercontent.com/Food-Bites/pictures/main/chianti.png',
-    'price': 25.0,
+    'price': 25.00,
     'owner': 'Villa Toscana Winery - Via del Vino, 123',
   }
 };
