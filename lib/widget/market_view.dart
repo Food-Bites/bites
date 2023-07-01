@@ -11,20 +11,7 @@ class MarketView extends StatelessWidget {
   const MarketView({super.key});
 
   void _onLongPress(BuyableFood food, BuildContext context) {
-    Provider.of<Cart>(context, listen: false).add(food);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("${food.name} added to cart"),
-        // material 3 style
-        behavior: SnackBarBehavior.floating,
-        dismissDirection: DismissDirection.horizontal,
-        duration: const Duration(seconds: 1),
-        showCloseIcon: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-    );
+    Provider.of<Cart>(context, listen: false).add(food, context);
   }
 
   void _navigateToDetailsPage(BuyableFood food, BuildContext context) {

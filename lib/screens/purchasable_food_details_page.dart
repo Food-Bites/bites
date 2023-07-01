@@ -130,20 +130,8 @@ class PurchasableFoodDetailsPage extends StatelessWidget {
                 icon: const Icon(Icons.add_shopping_cart),
                 label: const Text("Add to Cart"),
                 onPressed: () {
-                  Provider.of<Cart>(context, listen: false).add(foodItem);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("${foodItem.name} added to cart"),
-                      // material 3 style
-                      behavior: SnackBarBehavior.floating,
-                      dismissDirection: DismissDirection.horizontal,
-                      duration: const Duration(seconds: 1),
-                      showCloseIcon: true,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  );
+                  Provider.of<Cart>(context, listen: false)
+                      .add(foodItem, context);
                 },
               ),
             ],
