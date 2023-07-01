@@ -12,33 +12,31 @@ class Headline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RichText(
-                text: TextSpan(
-                  text: text,
-                  style: Theme.of(context).textTheme.displayMedium,
-                ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16.0, 32, 16.0, 32.0),
+      child: Expanded(
+        child: Wrap(
+          alignment: WrapAlignment.start,
+          children: [
+            RichText(
+              text: TextSpan(
+                text: text,
+                style: Theme.of(context).textTheme.displayMedium,
               ),
-              RichText(
-                text: TextSpan(
-                  text: closestCity,
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayMedium
-                      ?.copyWith(color: Theme.of(context).colorScheme.primary),
-                ),
+            ),
+            const SizedBox(width: 10.0),
+            RichText(
+              text: TextSpan(
+                text: closestCity,
+                style: Theme.of(context)
+                    .textTheme
+                    .displayMedium
+                    ?.copyWith(color: Theme.of(context).colorScheme.primary),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
