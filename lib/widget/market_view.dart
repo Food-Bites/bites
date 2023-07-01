@@ -51,8 +51,8 @@ class MarketView extends StatelessWidget {
     // );
     return StaggeredGrid.count(
       crossAxisCount: isTablet(context) ? 4 : 2,
-      children: buyableFoods.keys.map((key) {
-        final food = BuyableFood.fromJson(buyableFoods[key]);
+      children: purchasableFood.keys.map((key) {
+        final food = BuyableFood.fromJson(purchasableFood[key]);
         return GestureDetector(
           onTap: () => _navigateToDetailsPage(food, context),
           onLongPress: () => _onLongPress(food, context),

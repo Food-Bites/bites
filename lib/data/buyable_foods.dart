@@ -27,7 +27,7 @@ class BuyableFood {
   }
 }
 
-Map<String, dynamic> buyableFoods = {
+Map<String, dynamic> purchasableFood = {
   // cheese
   'Cheese': {
     'id': 'f32b9c9c-2685-4e47-a81a-b07e83d101d8',
@@ -66,8 +66,8 @@ Map<String, dynamic> buyableFoods = {
     'description':
         'Chianti Classico is a red wine produced in the Chianti region of Tuscany, Italy. It is made primarily from the Sangiovese grape, with other grape varieties such as Canaiolo and Colorino sometimes blended in. Chianti Classico has a medium body and is known for its tart cherry, plum, and spice flavors, as well as its high acidity and firm tannins. It pairs well with a wide variety of Italian dishes, including pasta with meat sauce, pizza, and roasted meats.',
     'image':
-        'https://raw.githubusercontent.com/Food-Bites/pictures/main/chianti.jpg',
+        'https://raw.githubusercontent.com/Food-Bites/pictures/main/chianti.png',
     'price': 25.0,
     'owner': 'Villa Toscana Winery - Via del Vino, 123',
-  },
+  }
 };
