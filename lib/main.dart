@@ -23,7 +23,7 @@ class MainApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => SuggestionTipsProvider()),
-        ChangeNotifierProvider(create: (context) => Cart())
+        ChangeNotifierProvider(create: (context) => CartProvider())
       ],
       builder: (context, _) {
         return MaterialApp(

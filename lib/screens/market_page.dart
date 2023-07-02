@@ -17,7 +17,7 @@ class MarketPage extends StatelessWidget {
     return Scaffold(
       floatingActionButton: Badge(
         label: Text(
-          Provider.of<Cart>(context).items.length.toString(),
+          Provider.of<CartProvider>(context).items.length.toString(),
         ),
         child: FloatingActionButton(
           onPressed: () {

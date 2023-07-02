@@ -169,7 +169,7 @@ class _CartPageState extends State<CartPage> {
                 ],
               ),
               const SizedBox(height: 16),
-              Consumer<Cart>(
+              Consumer<CartProvider>(
                 builder: (context, cart, child) {
                   return ListView.builder(
                     shrinkWrap: true,
@@ -253,9 +253,10 @@ class _CartPageState extends State<CartPage> {
                       );
                       return;
                     }
-                    food =
-                        Provider.of<Cart>(context, listen: false).items.first;
-                    Provider.of<Cart>(context, listen: false).clear();
+                    food = Provider.of<CartProvider>(context, listen: false)
+                        .items
+                        .first;
+                    Provider.of<CartProvider>(context, listen: false).clear();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Order placed successfully.'),

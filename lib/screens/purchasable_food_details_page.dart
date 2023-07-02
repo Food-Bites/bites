@@ -132,7 +132,7 @@ class PurchasableFoodDetailsPage extends StatelessWidget {
                 icon: const Icon(Icons.add_shopping_cart),
                 label: const Text("Add to Cart"),
                 onPressed: () {
-                  Provider.of<Cart>(context, listen: false)
+                  Provider.of<CartProvider>(context, listen: false)
                       .add(foodItem, context);
                 },
               ),
