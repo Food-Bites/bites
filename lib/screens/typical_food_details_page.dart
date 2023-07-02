@@ -1,5 +1,6 @@
 import 'package:android_intent/android_intent.dart';
 import 'package:bites/data/typical_foods.dart';
+import 'package:bites/utils/functions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,6 @@ class TypicalFoodDetailsPage extends StatelessWidget {
     intent.launch();
   }
 
-  // TODO fix the UI of this page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,32 +40,72 @@ class TypicalFoodDetailsPage extends StatelessWidget {
                 style: Theme.of(context).textTheme.displayMedium,
               ),
               const SizedBox(height: 16),
-              SizedBox(
-                height: 200,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: CachedNetworkImage(
-                    useOldImageOnUrlChange: true,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) => Center(
-                      child: CircularProgressIndicator(
-                        value: downloadProgress.progress,
+              isTablet(context)
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: SizedBox(
+                            width: 256,
+                            child: Hero(
+                              tag: food.id,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: CachedNetworkImage(
+                                  width: 256,
+                                  useOldImageOnUrlChange: true,
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          Center(
+                                    child: CircularProgressIndicator(
+                                      value: downloadProgress.progress,
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
+                                    'assets/error.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                  imageUrl: food.image,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 6,
+                          child: TypicalFoodDetails(food: food),
+                        ),
+                      ],
+                    )
+                  : Hero(
+                      tag: food.id,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: CachedNetworkImage(
+                          width: 256,
+                          useOldImageOnUrlChange: true,
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Center(
+                            child: CircularProgressIndicator(
+                              value: downloadProgress.progress,
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => Image.asset(
+                            'assets/error.png',
+                            fit: BoxFit.cover,
+                          ),
+                          imageUrl: food.image,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                    errorWidget: (context, url, error) => Image.asset(
-                      'assets/error.png',
-                      fit: BoxFit.cover,
-                    ),
-                    imageUrl: food.image,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+              isTablet(context)
+                  ? const SizedBox.shrink()
+                  : TypicalFoodDetails(food: food),
               const SizedBox(height: 16),
-              Text(
-                food.description,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
               // add an elevated button which makes an intent to open google maps with the location of the food
               const SizedBox(height: 16),
               Text(
@@ -82,6 +122,32 @@ class TypicalFoodDetailsPage extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class TypicalFoodDetails extends StatelessWidget {
+  const TypicalFoodDetails({super.key, required this.food});
+  final TypicalFood food;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: isTablet(context)
+            ? const EdgeInsets.all(16.0)
+            : const EdgeInsets.fromLTRB(0, 16, 0, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              food.description,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ],
         ),
       ),
     );

@@ -76,7 +76,9 @@ class PurchasableFoodDetailsPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Expanded(flex: 6, child: Details(food: foodItem)),
+                        Expanded(
+                            flex: 6,
+                            child: PurchasableFoodDetails(food: foodItem)),
                       ],
                     )
                   : Hero(
@@ -103,7 +105,7 @@ class PurchasableFoodDetailsPage extends StatelessWidget {
                     ),
               isTablet(context)
                   ? const SizedBox.shrink()
-                  : Details(food: foodItem),
+                  : PurchasableFoodDetails(food: foodItem),
               const SizedBox(height: 16),
               HelperText(
                 icon: IconType.heroIcons(HeroIcons.informationCircle),
@@ -144,8 +146,8 @@ class PurchasableFoodDetailsPage extends StatelessWidget {
   }
 }
 
-class Details extends StatelessWidget {
-  const Details({super.key, required this.food});
+class PurchasableFoodDetails extends StatelessWidget {
+  const PurchasableFoodDetails({super.key, required this.food});
   final PurchasableFood food;
 
   @override
