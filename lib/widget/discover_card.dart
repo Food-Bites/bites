@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bites/data/social.dart';
 import 'package:heroicons/heroicons.dart';
@@ -76,8 +77,20 @@ class DiscoverCardState extends State<DiscoverCard>
                 aspectRatio: 1.0,
                 child: GestureDetector(
                   onDoubleTap: _onDoubleTap,
-                  child: Image.network(
-                    widget.socialFeed.photoURL,
+                  child: CachedNetworkImage(
+                    width: 256,
+                    useOldImageOnUrlChange: true,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => Center(
+                      child: CircularProgressIndicator(
+                        value: downloadProgress.progress,
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/error.png',
+                      fit: BoxFit.cover,
+                    ),
+                    imageUrl: widget.socialFeed.photoURL,
                     fit: BoxFit.cover,
                   ),
                 ),

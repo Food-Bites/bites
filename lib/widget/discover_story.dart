@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_stories/flutter_stories.dart';
 import 'package:bites/data/social.dart';
 
@@ -44,9 +46,20 @@ class Highlight extends StatelessWidget {
                         onFlashBack: Navigator.of(context).pop,
                         momentCount: _momentCount,
                         momentDurationGetter: (idx) => _momentDuration,
-                        momentBuilder: (context, idx) => Image.network(
-                          //socialField.photoURL,
-                          urls[idx],
+                        momentBuilder: (context, idx) => CachedNetworkImage(
+                          width: 256,
+                          useOldImageOnUrlChange: true,
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Center(
+                            child: CircularProgressIndicator(
+                              value: downloadProgress.progress,
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => Image.asset(
+                            'assets/error.png',
+                            fit: BoxFit.contain,
+                          ),
+                          imageUrl: urls[idx],
                           fit: BoxFit.contain,
                         ),
                       ),
