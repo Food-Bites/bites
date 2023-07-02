@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 /// The [LocationText] class is a widget that displays the location of the user.
 /// {@category Widgets}
 class LocationText extends StatefulWidget {
-  const LocationText({super.key});
+  const LocationText({super.key, this.text = "Discover in"});
+  final String text;
 
   @override
   State<LocationText> createState() => _LocationTextState();
@@ -33,8 +34,9 @@ class _LocationTextState extends State<LocationText> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Headline(
-                      text: "Discover in",
-                      closestCity: snapshot.data as String);
+                    text: widget.text,
+                    closestCity: snapshot.data as String,
+                  );
                 } else if (snapshot.hasError) {
                   return const Text("your location");
                 }

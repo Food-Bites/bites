@@ -35,7 +35,7 @@ class MarketPage extends StatelessWidget {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverPersistentHeader(
-              delegate: LocationHeaderDelegate(),
+              delegate: LocationHeaderDelegate(text: "Buy in"),
               floating: false,
             ),
           ];
@@ -44,6 +44,7 @@ class MarketPage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 HelperText(
                   text: "Tap to view details, long press to add to cart",

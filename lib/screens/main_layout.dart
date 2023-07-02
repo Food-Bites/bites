@@ -75,44 +75,6 @@ class _MainLayoutState extends State<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
-    // if (_isConnected == false) {
-    //   return Scaffold(
-    //     body: Center(
-    //       child: Column(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         children: [
-    //           const Icon(
-    //             Icons.wifi_off,
-    //             size: 64,
-    //           ),
-    //           const SizedBox(height: 16),
-    //           const Text(
-    //             "No internet connection",
-    //             style: TextStyle(
-    //               fontSize: 24,
-    //               fontWeight: FontWeight.bold,
-    //             ),
-    //           ),
-    //           const SizedBox(height: 16),
-    //           const Text(
-    //             "Please check your internet connection and try again",
-    //             textAlign: TextAlign.center,
-    //             style: TextStyle(
-    //               fontSize: 16,
-    //             ),
-    //           ),
-    //           const SizedBox(height: 16),
-    //           ElevatedButton(
-    //             onPressed: () {
-    //               initConnectivity();
-    //             },
-    //             child: const Text("Retry"),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   );
-    // }
     return Scaffold(
       bottomSheet: !_isConnected
           ? BottomSheet(

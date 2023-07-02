@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 /// {@category Widgets}
 class LocationHeaderDelegate extends SliverPersistentHeaderDelegate {
   double _headerHeight = 200.0; // set a default height
+  final String text; // add a text parameter
+
+  LocationHeaderDelegate({required this.text}); // add a constructor
 
   @override
   Widget build(
@@ -13,7 +16,9 @@ class LocationHeaderDelegate extends SliverPersistentHeaderDelegate {
       builder: (context, constraints) {
         // update the header height based on the height of the Column
         _headerHeight = constraints.maxHeight;
-        return const LocationText();
+        return LocationText(
+          text: text,
+        );
       },
     );
   }

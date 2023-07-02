@@ -21,7 +21,7 @@ class MarketCard extends StatelessWidget {
           useOldImageOnUrlChange: true,
           progressIndicatorBuilder: (context, url, downloadProgress) => Center(
             child: AspectRatio(
-              aspectRatio: 1,
+              aspectRatio: 1.7,
               child: Center(
                 child: CircularProgressIndicator(
                   value: downloadProgress.progress,

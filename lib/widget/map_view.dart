@@ -177,8 +177,10 @@ class MapViewState extends State<MapView> {
           child: const Icon(Icons.my_location),
         ),
       ),
+      // NOT AVAILABLE FOR NOW
       // bottomSheet: const DraggableBottomSheet(),
       body: Stack(
+        alignment: Alignment.topCenter,
         children: [
           GoogleMap(
             onMapCreated: onMapCreated,

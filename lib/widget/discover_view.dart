@@ -45,7 +45,7 @@ class DiscoverViewState extends State<DiscoverView> {
       headerSliverBuilder: (context, innerBoxIsScrolled) {
         return [
           SliverPersistentHeader(
-            delegate: LocationHeaderDelegate(),
+            delegate: LocationHeaderDelegate(text: "Discover in"),
             floating: false,
           ),
         ];
@@ -90,7 +90,7 @@ class DiscoverViewState extends State<DiscoverView> {
                       ),
                       const SizedBox(height: 16.0),
                       StaggeredGrid.count(
-                        crossAxisCount: isTablet(context) ? 3 : 2,
+                        crossAxisCount: isTablet(context) ? 3 : 1,
                         mainAxisSpacing: 8.0,
                         crossAxisSpacing: 8.0,
                         children: snapshot.data.map<Widget>((socialFeed) {
