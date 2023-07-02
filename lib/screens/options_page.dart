@@ -1,6 +1,7 @@
 import 'package:bites/utils/suggestions_switch.dart';
 import 'package:bites/utils/theme_switch.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 
@@ -84,6 +85,20 @@ class _OptionsPageState extends State<OptionsPage> {
         );
       },
     );
+  }
+
+  void _displayNotification() async {
+    const AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails('your channel id', 'your channel name',
+            channelDescription: 'your channel description',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker');
+    const NotificationDetails notificationDetails =
+        NotificationDetails(android: androidNotificationDetails);
+    await FlutterLocalNotificationsPlugin().show(
+        0, 'plain title', 'plain body', notificationDetails,
+        payload: 'item x');
   }
 
   @override
@@ -209,6 +224,16 @@ class _OptionsPageState extends State<OptionsPage> {
               },
               icon: const HeroIcon(HeroIcons.rocketLaunch),
               label: const Text("Start to promote your business"),
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              "Developer options",
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 16.0),
+            FilledButton.tonal(
+              onPressed: _displayNotification,
+              child: const Text("Dislay notification"),
             ),
           ],
         ),
