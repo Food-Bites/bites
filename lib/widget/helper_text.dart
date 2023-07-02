@@ -17,11 +17,12 @@ class HelperText extends StatelessWidget {
     if (Provider.of<SuggestionTipsProvider>(context).showTips) {
       return Column(
         children: [
-          Row(
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               icon.getIconWidget(context),
               const SizedBox(
-                width: 8.0,
+                width: 4.0,
               ),
               Text(
                 text,

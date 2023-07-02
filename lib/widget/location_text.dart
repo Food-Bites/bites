@@ -38,9 +38,9 @@ class _LocationTextState extends State<LocationText> {
                 } else if (snapshot.hasError) {
                   return const Text("your location");
                 }
-                return const SizedBox(
-                  height: 64.0,
-                  child: Text("Loading your location..."),
+                return const Headline(
+                  closestCity: "your location",
+                  text: "Discover in",
                 );
               },
             ),
