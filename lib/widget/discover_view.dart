@@ -4,6 +4,8 @@ import 'package:bites/widget/discover_pop_up.dart';
 import 'package:bites/data/social.dart';
 import '../utils/data_service.dart';
 import 'package:bites/widget/discover_story.dart';
+import 'package:geolocator/geolocator.dart';
+
 
 class DiscoverView extends StatefulWidget {
   const DiscoverView({super.key});
@@ -19,6 +21,7 @@ class DiscoverViewState extends State<DiscoverView>
   final List<String> liked = [];
   late AnimationController _animationController;
   late Map<ObjectKey, Animation<double>> _animationMap;
+  late Position? userPosition;
 
   @override
   void initState() {
@@ -28,6 +31,7 @@ class DiscoverViewState extends State<DiscoverView>
       duration: const Duration(milliseconds: 500),
     );
     _animationMap = {};
+    getUserPosition();
   }
 
   fetchRestaurants() async {
@@ -84,36 +88,61 @@ class DiscoverViewState extends State<DiscoverView>
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: fetchRestaurants(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          return Container(
-            constraints: const BoxConstraints(maxWidth: 600),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 150, // Adjust the height as per your requirement
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (context, index) {
-                      final socialFeed = snapshot.data[index];
-
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Highlight(
-                          socialField: socialFeed, // Pass the images to the Highlight component
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: FutureBuilder(
+          future: fetchRestaurants(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              final nearbySocialFeeds = snapshot.data.where((socialFeed) {
+                final distance = Geolocator.distanceBetween(
+                  userPosition?.latitude ?? 0.0,
+                  userPosition?.longitude ?? 0.0,
+                  socialFeed.latitude,
+                  socialFeed.longitude,
+                );
+                return distance <= 100; // Adjust the distance as per your requirement
+              }).toList();
+              return Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 16.0, top: 16.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Highlights',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
-                      );
-                    },
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: snapshot.data.length,
+                  SizedBox(
+                    height: 150, // Adjust the height as per your requirement
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 1,
+                      itemBuilder: (context, index) {
+                        final socialFeed = snapshot.data[index];
+
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Highlight(
+                            socialField: socialFeed, // Pass the images to the Highlight component
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: nearbySocialFeeds.length,
                     itemBuilder: (context, index) {
-                      final socialFeed = snapshot.data[index];
+                      final socialFeed = nearbySocialFeeds[index];
                       final isLiked = liked.contains(socialFeed.name);
                       final animationKey = ObjectKey(socialFeed);
                       final animation = _animationMap[animationKey];
@@ -125,19 +154,18 @@ class DiscoverViewState extends State<DiscoverView>
                         animation: animation,
                         onDoubleTap: () => likeSocialFeed(animationKey),
                         onPressedLike: () => likeSocialFeed(animationKey),
-                        onPressedDetails: () =>
-                            showFeedItemDetails(socialFeed),
+                        onPressedDetails: () => showFeedItemDetails(socialFeed),
                       );
                     },
                   ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
+                ],
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+      ),
     );
   }
 
@@ -149,5 +177,14 @@ class DiscoverViewState extends State<DiscoverView>
         return DiscoverPopUp(socialFeed: socialFeed);
       },
     );
+  }
+
+  void getUserPosition() async {
+    final position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    setState(() {
+      userPosition = position;
+    });
   }
 }

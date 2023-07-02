@@ -43,10 +43,10 @@ class DiscoverCard extends StatelessWidget {
               onDoubleTap: onDoubleTap,
               child: Stack(
                 children: [
-                  Image.network(
+                  AspectRatio(aspectRatio: 1.0, child: Image.network(
                     socialFeed.photoURL,
                     fit: BoxFit.cover,
-                  ),
+                  ),),
                   if (isLiked && animation != null)
                     Positioned.fill(
                       child: AnimatedBuilder(

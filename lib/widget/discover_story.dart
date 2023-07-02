@@ -5,7 +5,11 @@ import 'package:bites/data/social.dart';
 
 class Highlight extends StatelessWidget {
   final SocialFeed socialField;
-  final _momentCount = 5;
+  final List<String> urls = [
+    'https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/noemi_ferrara.jpeg',
+    'https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/valle_dei_laghi.jpeg',
+  ];
+  final _momentCount = 2;
   final _momentDuration = const Duration(seconds: 5);
 
   Highlight({super.key, required this.socialField});
@@ -39,7 +43,8 @@ class Highlight extends StatelessWidget {
                       momentDurationGetter: (idx) => _momentDuration,
                       momentBuilder: (context, idx) =>
                           Image.network(
-                            socialField.photoURL,
+                            //socialField.photoURL,
+                            urls[idx],
                             fit: BoxFit.cover,
                           ),
                     ),
@@ -51,7 +56,7 @@ class Highlight extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(28.0),
                 image: DecorationImage(
-                  image: Image.network(socialField.photoURL).image,
+                  image: Image.network(urls.first).image,
                   fit: BoxFit.cover,
                 ),
               ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bites/data/social.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class DiscoverPopUp extends StatelessWidget {
   final SocialFeed socialFeed;
@@ -28,7 +30,27 @@ class DiscoverPopUp extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
+        GestureDetector(
+          onTap: () {
+            launchMapsUrl(socialFeed.latitude, socialFeed.longitude);
+          },
+          child: const TextButton(
+            child: Text('Open in Maps'),
+            onPressed: null,
+          ),
+        ),
       ],
     );
   }
+
+  void launchMapsUrl(double latitude, double longitude) async {
+    final url = 'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+
 }
