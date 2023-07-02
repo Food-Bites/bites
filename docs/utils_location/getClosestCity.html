@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the getClosestCity function from the location library, for the Dart programming language.">
+  <title>getClosestCity function - location library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">bites</a></li>
+    <li><a href="../utils_location/utils_location-library.html">location</a></li>
+    <li class="self-crumb">getClosestCity function</li>
+  </ol>
+  <div class="self-name">getClosestCity</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="utils_location&#47;utils_location-library-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-function">getClosestCity</span> function 
+ 
+    <span class="category utils cp-3 linked" title="This is part of the Utils topic."><a href="../topics/Utils-topic.html">Utils</a></span>
+</h1></div>
+
+    <section class="multi-line-signature">
+        
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>
+<span class="name ">getClosestCity</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="getClosestCity-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span></li>
+</ol>)
+
+        
+
+    </section>
+    
+<section class="desc markdown">
+  <p>The <a href="../utils_location/getClosestCity.html">getClosestCity</a> function returns the closest city to the user's current location.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; getClosestCity(BuildContext context) async {
+  &#47;&#47; Get current location
+  final currentPosition = await determinePosition(context);
+  final cities = await getCities();
+  ItalianCities closestCity = cities[0];
+
+  &#47;&#47; Calculate distance to each city using Haversine formula
+  double minDistance = double.infinity;
+  for (final city in cities) {
+    final lat1 = currentPosition.latitude;
+    final lon1 = currentPosition.longitude;
+    final lat2 = city.lat;
+    final lon2 = city.lng;
+
+    &#47;&#47; Calculate distance
+    const R = 6372.8; &#47;&#47; In kilometers
+    final dLat = toRad(lat2 - lat1);
+    final dLon = toRad(lon2 - lon1);
+    final a = sin(dLat &#47; 2) * sin(dLat &#47; 2) +
+        cos(toRad(lat1)) * cos(toRad(lat2)) * sin(dLon &#47; 2) * sin(dLon &#47; 2);
+    final c = 2 * asin(sqrt(a));
+    final distance = R * c;
+
+    &#47;&#47; Check if distance is the minimum
+    if (distance &lt; minDistance) {
+      minDistance = distance;
+      closestCity = city;
+    }
+  }
+
+  return closestCity.city;
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">bites</a></li>
+    <li><a href="../utils_location/utils_location-library.html">location</a></li>
+    <li class="self-crumb">getClosestCity function</li>
+</ol>
+
+
+    <h5>location library</h5>
+  </div><!--/.sidebar-offcanvas-left-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    bites
+      0.7.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+
