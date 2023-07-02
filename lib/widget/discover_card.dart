@@ -6,7 +6,6 @@ class DiscoverCard extends StatelessWidget {
   final bool isLiked;
   final Animation<double>? animation;
   final VoidCallback onDoubleTap;
-  final VoidCallback onPressedLike;
   final VoidCallback onPressedDetails;
 
   const DiscoverCard({
@@ -15,79 +14,84 @@ class DiscoverCard extends StatelessWidget {
     required this.isLiked,
     this.animation,
     required this.onDoubleTap,
-    required this.onPressedLike,
     required this.onPressedDetails,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(maxWidth: 600),
-      child: Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ListTile(
-              title: GestureDetector(
-                onTap: onPressedDetails,
-                child: Text(
-                  socialFeed.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: onPressedDetails,
+              child: Text(
+                socialFeed.name,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
-            GestureDetector(
-              onDoubleTap: onDoubleTap,
-              child: Stack(
-                children: [
-                  AspectRatio(aspectRatio: 1.0, child: Image.network(
+          ),
+          GestureDetector(
+            onDoubleTap: onDoubleTap,
+            child: Stack(
+              children: [
+                AspectRatio(
+                  aspectRatio: 1.0,
+                  child: Image.network(
                     socialFeed.photoURL,
                     fit: BoxFit.cover,
-                  ),),
-                  if (isLiked && animation != null)
-                    Positioned.fill(
-                      child: AnimatedBuilder(
-                        animation: animation!,
-                        builder: (context, child) {
-                          return Opacity(
-                            opacity: 1.0 - animation!.value,
-                            child: Transform.scale(
-                              scale: animation!.value,
-                              child: const Icon(
-                                Icons.favorite,
-                                color: Colors.white,
-                                size: 50.0,
-                              ),
+                  ),
+                ),
+                if (isLiked && animation != null)
+                  Positioned.fill(
+                    child: AnimatedBuilder(
+                      animation: animation!,
+                      builder: (context, child) {
+                        return Opacity(
+                          opacity: 1.0 - animation!.value,
+                          child: Transform.scale(
+                            scale: animation!.value,
+                            child: const Icon(
+                              Icons.favorite,
+                              color: Colors.white,
+                              size: 50.0,
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
-            ListTile(
-              title: Text(socialFeed.name),
-              subtitle: Text(socialFeed.description),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
+          ),
+          Column(
+            children: [
+              Row(
                 children: [
                   IconButton(
                     icon: Icon(
                       isLiked ? Icons.favorite : Icons.favorite_border,
                       color: isLiked ? Colors.red : null,
                     ),
-                    onPressed: onPressedLike,
+                    onPressed: onDoubleTap,
                   ),
                   Text('Likes: ${socialFeed.likes}'),
                 ],
               ),
-            ),
-          ],
-        ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Wrap(
+                  children: [
+                    Text(socialFeed.name),
+                    Text(socialFeed.description),
+                  ],
+                ),
+              )
+            ],
+          )
+        ],
       ),
     );
   }
