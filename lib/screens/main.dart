@@ -5,7 +5,6 @@ import 'package:bites/utils/functions.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:provider/provider.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -151,7 +150,7 @@ class _MainState extends State<Main> {
                 ),
                 NavigationRailDestination(
                   icon: Icon(Icons.search),
-                  label: Text('Search'),
+                  label: Text('Discover'),
                 ),
                 NavigationRailDestination(
                   icon: Icon(Icons.shopping_cart),
@@ -193,7 +192,7 @@ class _MainState extends State<Main> {
                 ),
                 NavigationDestination(
                   icon: HeroIcon(HeroIcons.globeEuropeAfrica),
-                  label: 'Search',
+                  label: 'Discover',
                 ),
                 NavigationDestination(
                   icon: HeroIcon(HeroIcons.buildingStorefront),
