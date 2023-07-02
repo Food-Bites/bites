@@ -10,6 +10,10 @@ void main() {
   runApp(const MainApp());
 }
 
+/// The MainApp class is the root widget of the app. It is a stateless widget. It is wrapped in a MultiProvider widget which provides the app with the following providers:
+/// 1. ThemeProvider: This provider provides the app with the theme mode of the app. It is used to switch between light and dark mode.
+/// 2. SuggestionTipsProvider: This provider provides the app with the state of the suggestion tips switch. It is used to switch between showing and hiding the suggestion tips.
+/// 3. Cart: This provider provides the app with the state of the cart. It is used to store the items in the cart.
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 

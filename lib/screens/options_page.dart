@@ -3,6 +3,8 @@ import 'package:bites/utils/theme_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// The [OptionsPage] class is the page that displays the settings of the app.
+/// {@category Screens}
 class OptionsPage extends StatelessWidget {
   const OptionsPage({super.key});
 

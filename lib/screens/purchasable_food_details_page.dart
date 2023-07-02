@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 
+/// The [PurchasableFoodDetailsPage] class is the page that displays the details of a purchasable food item.
+/// {@category Screens}
 class PurchasableFoodDetailsPage extends StatelessWidget {
   final PurchasableFood foodItem;
 

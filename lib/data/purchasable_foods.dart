@@ -1,3 +1,11 @@
+/// A [PurchasableFood] class that represents a food item that can be purchased.
+///
+/// The [PurchasableFood] class has properties for the food item's unique identifier,
+/// name, description, image URL, price, and owner. It also provides a factory method
+/// for creating a [PurchasableFood] instance from a JSON object.
+///
+/// {@category Data}
+
 class PurchasableFood {
   final String id;
   final String name;

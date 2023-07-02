@@ -1,0 +1,14 @@
+dartdoc:
+  categories:
+    "Widgets":
+      markdown: widgets.md
+      name: Widgets
+    "Utils":
+      markdown: utils.md
+      name: Utils
+    "Screens":
+      markdown: screens.md
+      name: Screens
+    "Data":
+      markdown: data.md
+      name: Data

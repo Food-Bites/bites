@@ -5,6 +5,10 @@ import 'package:bites/widget/food_card.dart';
 import 'package:flutter/material.dart';
 import 'package:bites/data/typical_foods.dart';
 
+/// The [DraggableBottomSheet] class is the widget that displays the draggable bottom sheet.
+/// It contains a list of [FoodCard]s.
+/// `NOT AVAILABLE IN THIS VERSION`
+/// {@category Widgets}
 class DraggableBottomSheet extends StatefulWidget {
   const DraggableBottomSheet({super.key});
 

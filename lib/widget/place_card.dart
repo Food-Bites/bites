@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// The [PlaceCard] class is a utility widget to display a card with a city name, latitude, and longitude.
+/// {@category Widgets}
 class PlaceCard extends StatelessWidget {
   final String city;
   final double latitude;

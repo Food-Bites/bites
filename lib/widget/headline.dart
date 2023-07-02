@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// The [Headline] class is a widget that displays a headline with a city name.
+/// {@category Widgets}
 class Headline extends StatelessWidget {
   const Headline({
     super.key,

@@ -6,14 +6,16 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 
-class Main extends StatefulWidget {
-  const Main({super.key});
+/// The [MainLayout] class is the root widget of the app. It is a stateful widget which handles the responsive layout and connectivity check.
+/// {@category Screens}
+class MainLayout extends StatefulWidget {
+  const MainLayout({super.key});
 
   @override
-  State<Main> createState() => _MainState();
+  State<MainLayout> createState() => _MainLayoutState();
 }
 
-class _MainState extends State<Main> {
+class _MainLayoutState extends State<MainLayout> {
   int _currentIndex = 0;
   bool _isConnected = true;
 

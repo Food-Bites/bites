@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 
+/// MarketPage is the page that displays the list of purchasable products.
+/// {@category Screens}
 class MarketPage extends StatelessWidget {
   const MarketPage({super.key});
 

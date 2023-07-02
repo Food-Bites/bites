@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// The [ShimmerHeadline] class is a utility widget to display a shimmering headline.
+/// {@category Widgets}
 class ShimmerHeadline extends StatefulWidget {
   const ShimmerHeadline({Key? key}) : super(key: key);
 

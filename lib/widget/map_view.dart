@@ -9,6 +9,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:bites/data/typical_foods.dart';
 import 'package:bites/data/italian_cities.dart';
 
+/// The [MapView] class is the page that displays the map.
+/// {@category Widgets}
 class MapView extends StatefulWidget {
   const MapView({super.key});
 
@@ -47,6 +49,11 @@ class MapViewState extends State<MapView> {
     super.dispose();
   }
 
+  /// The [onMapCreated] function is called when the map is created.
+  /// It sets the [mapController] and moves the camera to the current location.
+  /// It also updates the circles on the map.
+  /// @param controller The [GoogleMapController] object.
+  /// {@category Functions}
   void onMapCreated(GoogleMapController controller) {
     setState(() {
       mapController = controller;
@@ -55,6 +62,9 @@ class MapViewState extends State<MapView> {
     });
   }
 
+  /// The [moveToCurrentLocation] function moves the camera to the current location of the user.
+  /// It uses the [determinePosition] function from the [location.dart] file.
+  /// {@category Functions}
   void moveToCurrentLocation() async {
     BuildContext context = this.context;
     var userPosition = await determinePosition(context);
@@ -69,6 +79,11 @@ class MapViewState extends State<MapView> {
     );
   }
 
+  /// The [addCircle] function adds a circle to the map.
+  /// @param lat The latitude of the circle.
+  /// @param lng The longitude of the circle.
+  /// @param food The [TypicalFood] object.
+  /// {@category Functions}
   void addCircle(double lat, double lng, TypicalFood food) {
     final id = CircleId(lat.toString() + lng.toString());
     final circle = Circle(
@@ -91,6 +106,9 @@ class MapViewState extends State<MapView> {
     });
   }
 
+  /// The [updateCircles] function updates the circles on the map.
+  /// It uses the [typicalFoods] map from the [typical_foods.dart] file.
+  /// {@category Functions}
   void updateCircles() {
     typicalFoods.forEach((key, value) {
       final point = LatLng(value['latitude'], value['longitude']);
@@ -109,6 +127,10 @@ class MapViewState extends State<MapView> {
     });
   }
 
+  /// The [onSearch] function is called when the user types something in the search bar.
+  /// It filters the cities based on the query.
+  /// @param query The query string.
+  /// {@category Functions}
   void onSearch(String query) {
     setState(() {
       filteredCities = cities
@@ -125,6 +147,9 @@ class MapViewState extends State<MapView> {
     });
   }
 
+  /// The [moveCameraTo] function moves the camera to the location of the city.
+  /// @param index The index of the city in the [filteredCities] list.
+  /// {@category Functions}
   void moveCameraTo(int index) {
     mapController.animateCamera(
       CameraUpdate.newCameraPosition(

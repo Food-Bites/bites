@@ -1,9 +1,11 @@
-import 'package:bites/screens/main.dart';
+import 'package:bites/screens/main_layout.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// The [OnboarderPage] class is the root widget of the onboarder. It is a stateful widget. It is wrapped in a [PageView] widget.
+/// {@category Screens}
 class OnboarderPage extends StatefulWidget {
   const OnboarderPage({Key? key}) : super(key: key);
 
@@ -40,12 +42,12 @@ class OnboarderPageState extends State<OnboarderPage> {
     "Map": OnBoardScreen(
         title: "Explore",
         description:
-            "See what's around you on the map, and tap on a marker to find out more.",
+            "See what's around you on the map, and tap on an area to find out more.",
         image: "assets/map21.png"),
     "Discover": OnBoardScreen(
       title: "Discover",
       description:
-          "Get to know the food events happening around you, and review palces you visited.",
+          "Get to know the food events happening around you, and review places you visited.",
       image: "assets/discover21.png",
     ),
     "Market": OnBoardScreen(
@@ -61,6 +63,7 @@ class OnboarderPageState extends State<OnboarderPage> {
     ),
   };
 
+  /// The _nextPage function is used to navigate to the next page in the onboarder.
   void _nextPage() {
     if (innerScrollPosition < steps.length - 1) {
       setState(() {
@@ -74,13 +77,14 @@ class OnboarderPageState extends State<OnboarderPage> {
     }
   }
 
+  /// The _setOnboarderSeen function is used to set the onboarder as seen and navigate to the main layout.
   void _setOnboarderSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarderSeen', true);
     // ignore: use_build_context_synchronously
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => const Main(),
+        builder: (context) => const MainLayout(),
       ),
     );
   }

@@ -2,6 +2,8 @@ import 'package:bites/data/purchasable_foods.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+/// The [MarketCard] class is a utility widget to display a [PurchasableFood] in a card.
+/// {@category Widgets}
 class MarketCard extends StatelessWidget {
   const MarketCard({super.key, required this.food});
   final PurchasableFood food;
