@@ -1,35 +1,63 @@
-import 'package:bites/data/buyable_foods.dart';
+import 'package:bites/data/purchasable_foods.dart';
 import 'package:flutter/material.dart';
 
 class Cart extends ChangeNotifier {
-  final List<BuyableFood> _items = [];
-  double _totalPrice = 0;
+  // ready to accept multiple items
+  final List<PurchasableFood> _items = [];
 
-  List<BuyableFood> get items => _items;
-  double get totalPrice => _totalPrice;
+  List<PurchasableFood> get items => _items;
 
-  void add(BuyableFood foodItem) {
-    if (_items.contains(foodItem)) {
+  void add(PurchasableFood foodItem, BuildContext context) {
+    if (_items.contains(foodItem) || _items.length == 1) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "You can only order one item at a time",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onErrorContainer,
+            ),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.errorContainer,
+          behavior: SnackBarBehavior.floating,
+          dismissDirection: DismissDirection.horizontal,
+          duration: const Duration(seconds: 5),
+          showCloseIcon: true,
+          closeIconColor: Theme.of(context).colorScheme.onErrorContainer,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      );
       return;
     }
     _items.add(foodItem);
-    _totalPrice += foodItem.price;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("${foodItem.name} added to cart"),
+        // material 3 style
+        behavior: SnackBarBehavior.floating,
+        dismissDirection: DismissDirection.horizontal,
+        duration: const Duration(seconds: 1),
+        showCloseIcon: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+    );
     notifyListeners();
   }
 
-  void remove(BuyableFood foodItem) {
+  void remove(PurchasableFood foodItem) {
     _items.remove(foodItem);
-    _totalPrice -= foodItem.price;
     notifyListeners();
   }
 
   void clear() {
     _items.clear();
-    _totalPrice = 0;
     notifyListeners();
   }
 
-  bool contains(BuyableFood foodItem) {
+  bool contains(PurchasableFood foodItem) {
     return _items.contains(foodItem);
   }
 

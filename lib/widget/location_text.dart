@@ -1,6 +1,5 @@
 import 'package:bites/utils/location.dart';
 import 'package:bites/widget/headline.dart';
-import 'package:bites/widget/helper_text.dart';
 import 'package:flutter/material.dart';
 
 class LocationText extends StatefulWidget {
@@ -24,6 +23,7 @@ class _LocationTextState extends State<LocationText> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FutureBuilder(
             future: closestCity,
@@ -34,14 +34,12 @@ class _LocationTextState extends State<LocationText> {
               } else if (snapshot.hasError) {
                 return const Text("your location");
               }
-              return const LinearProgressIndicator();
+              return const SizedBox(
+                height: 64.0,
+                child: Text("Loading your location..."),
+              );
             },
           ),
-          const SizedBox(
-            height: 16.0,
-          ),
-          const HelperText(
-              text: "Find the closest city to you", icon: Icons.info),
         ],
       ),
     );
