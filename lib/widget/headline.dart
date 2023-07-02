@@ -4,40 +4,38 @@ import 'package:flutter/material.dart';
 /// {@category Widgets}
 class Headline extends StatelessWidget {
   const Headline({
-    super.key,
+    Key? key,
     required this.closestCity,
     required this.text,
-  });
+  }) : super(key: key);
 
   final String closestCity;
   final String text;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16.0, 32, 16.0, 32.0),
-      child: Expanded(
-        child: Wrap(
-          alignment: WrapAlignment.start,
-          children: [
-            RichText(
-              text: TextSpan(
-                text: text,
+    return Expanded(
+      child: Wrap(
+        alignment: WrapAlignment.start,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text.rich(
+              TextSpan(
+                text: '$text ',
                 style: Theme.of(context).textTheme.displayMedium,
+                children: [
+                  TextSpan(
+                    text: closestCity,
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.primary),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(width: 10.0),
-            RichText(
-              text: TextSpan(
-                text: closestCity,
-                style: Theme.of(context)
-                    .textTheme
-                    .displayMedium
-                    ?.copyWith(color: Theme.of(context).colorScheme.primary),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

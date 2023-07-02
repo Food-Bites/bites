@@ -24,25 +24,28 @@ class _LocationTextState extends State<LocationText> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          FutureBuilder(
-            future: closestCity,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Headline(
-                    text: "Discover in", closestCity: snapshot.data as String);
-              } else if (snapshot.hasError) {
-                return const Text("your location");
-              }
-              return const SizedBox(
-                height: 64.0,
-                child: Text("Loading your location..."),
-              );
-            },
-          ),
-        ],
+      child: IntrinsicHeight(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FutureBuilder(
+              future: closestCity,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Headline(
+                      text: "Discover in",
+                      closestCity: snapshot.data as String);
+                } else if (snapshot.hasError) {
+                  return const Text("your location");
+                }
+                return const SizedBox(
+                  height: 64.0,
+                  child: Text("Loading your location..."),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
