@@ -1,4 +1,3 @@
-import 'package:bites/utils/location.dart';
 import 'package:flutter/material.dart';
 import 'package:bites/widget/discover_card.dart';
 import 'package:bites/widget/discover_pop_up.dart';
@@ -101,7 +100,7 @@ class DiscoverViewState extends State<DiscoverView>
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 600),
+        constraints: const BoxConstraints(maxWidth: 200),
         child: FutureBuilder(
           future: fetchRestaurants(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -181,9 +180,9 @@ class DiscoverViewState extends State<DiscoverView>
   }
 
   void getUserPosition() async {
-    final position = await determinePosition(context);
-    setState(() {
-      userPosition = position;
-    });
+    // final position = await determinePosition(context);
+    // setState(() {
+    //   userPosition = position;
+    // });
   }
 }
