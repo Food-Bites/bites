@@ -7,6 +7,8 @@ enum ThemeType {
   dark,
 }
 
+/// The [ThemeProvider] class is a utility class to provide the value of the themeMode variable.
+/// {@category Utilities}
 class ThemeProvider with ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   ThemeType _themeType = ThemeType.system;

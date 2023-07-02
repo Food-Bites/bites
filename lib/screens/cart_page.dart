@@ -7,6 +7,8 @@ import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
+/// The [CartPage] class is the page that displays the cart.
+/// {@category Screens}
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
 

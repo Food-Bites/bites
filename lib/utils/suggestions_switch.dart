@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// The [SuggestionTipsProvider] class is a utility class to provide the value of the showTips variable.
+/// {@category Utilities}
 class SuggestionTipsProvider with ChangeNotifier {
   bool _showTips = true;
 

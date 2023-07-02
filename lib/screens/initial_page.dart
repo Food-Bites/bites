@@ -1,8 +1,10 @@
-import 'package:bites/screens/main.dart';
+import 'package:bites/screens/main_layout.dart';
 import 'package:bites/screens/onboarder.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// The [InitialPage] class is the initial widget of the app. It handles the logic for checking if the user has seen the onboarding screen before.
+/// {@category Screens}
 class InitialPage extends StatefulWidget {
   const InitialPage({super.key});
 
@@ -17,7 +19,7 @@ class _InitialPageState extends State<InitialPage> {
 
     if (seen) {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const Main()));
+          MaterialPageRoute(builder: (context) => const MainLayout()));
     } else {
       await prefs.setBool('seen', true);
       Navigator.of(context).pushReplacement(

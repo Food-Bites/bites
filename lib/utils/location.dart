@@ -9,7 +9,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 /// Determine the current position of the device.
 ///
 /// When the location services are not enabled or permissions
-/// are denied the `Future` will return an error.
+/// are denied an [AlertDialog] is shown.
+/// {@category Utils}
 Future<Position> determinePosition(context) async {
   bool serviceEnabled;
   LocationPermission permission;
@@ -130,6 +131,8 @@ Future<Position> determinePosition(context) async {
   return await Geolocator.getCurrentPosition();
 }
 
+/// The [getClosestCity] function returns the closest city to the user's current location.
+/// {@category Utils}
 Future<String> getClosestCity(BuildContext context) async {
   // Get current location
   final currentPosition = await determinePosition(context);

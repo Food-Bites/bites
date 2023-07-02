@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
+/// The [MarketView] class is the view that displays a [StaggeredGrid] of purchasable products.
+/// {@category Widgets}
 class MarketView extends StatelessWidget {
   const MarketView({super.key});
 

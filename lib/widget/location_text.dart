@@ -2,6 +2,8 @@ import 'package:bites/utils/location.dart';
 import 'package:bites/widget/headline.dart';
 import 'package:flutter/material.dart';
 
+/// The [LocationText] class is a widget that displays the location of the user.
+/// {@category Widgets}
 class LocationText extends StatefulWidget {
   const LocationText({super.key});
 

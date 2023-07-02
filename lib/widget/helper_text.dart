@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 
+/// The [HelperText] class is a widget that displays a helper text with an icon.
+/// {@category Widgets}
 class HelperText extends StatelessWidget {
   const HelperText({Key? key, required this.icon, required this.text})
       : super(key: key);

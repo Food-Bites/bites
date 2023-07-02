@@ -15,6 +15,10 @@ class Food {
   final double? distance;
 }
 
+/// The [FoodCard] class is a widget that displays a food item.
+/// It is used in the [DraggableBottomSheet] widget.
+/// `NOT AVAILABLE IN THIS VERSION`
+/// {@category Widgets}
 class FoodCard extends StatelessWidget {
   const FoodCard({super.key, required this.food});
 

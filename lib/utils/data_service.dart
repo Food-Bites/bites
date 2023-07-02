@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:bites/data/social.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
+/// The [DataService] class is a service that provides data to the app.
+/// {@category Utils}
 class DataService {
   Future<List<SocialFeed>> getRestaurants() async {
     final jsonString =

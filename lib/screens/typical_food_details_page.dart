@@ -3,6 +3,8 @@ import 'package:bites/data/typical_foods.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+/// The [TypicalFoodDetailsPage] class is the page that displays the details of a typical food item.
+/// {@category Screens}
 class TypicalFoodDetailsPage extends StatelessWidget {
   const TypicalFoodDetailsPage({Key? key, required this.food})
       : super(key: key);
