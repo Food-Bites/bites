@@ -32,6 +32,7 @@ class MainApp extends StatelessWidget {
               ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
           themeMode: Provider.of<ThemeProvider>(context).themeMode,
           home: const InitialPage(),
+          debugShowCheckedModeBanner: false,
         );
       },
     );
