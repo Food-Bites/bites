@@ -1,3 +1,4 @@
+import 'package:bites/utils/location.dart';
 import 'package:flutter/material.dart';
 import 'package:bites/widget/discover_card.dart';
 import 'package:bites/widget/discover_pop_up.dart';
@@ -5,7 +6,6 @@ import 'package:bites/data/social.dart';
 import '../utils/data_service.dart';
 import 'package:bites/widget/discover_story.dart';
 import 'package:geolocator/geolocator.dart';
-
 
 class DiscoverView extends StatefulWidget {
   const DiscoverView({super.key});
@@ -21,7 +21,17 @@ class DiscoverViewState extends State<DiscoverView>
   final List<String> liked = [];
   late AnimationController _animationController;
   late Map<ObjectKey, Animation<double>> _animationMap;
-  late Position? userPosition;
+  late Position userPosition = Position(
+    latitude: 45.4642,
+    longitude: 9.1900,
+    timestamp: DateTime.now(),
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+    isMocked: false,
+  );
 
   @override
   void initState() {
@@ -31,6 +41,7 @@ class DiscoverViewState extends State<DiscoverView>
       duration: const Duration(milliseconds: 500),
     );
     _animationMap = {};
+
     getUserPosition();
   }
 
@@ -95,15 +106,6 @@ class DiscoverViewState extends State<DiscoverView>
           future: fetchRestaurants(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              final nearbySocialFeeds = snapshot.data.where((socialFeed) {
-                final distance = Geolocator.distanceBetween(
-                  userPosition?.latitude ?? 0.0,
-                  userPosition?.longitude ?? 0.0,
-                  socialFeed.latitude,
-                  socialFeed.longitude,
-                );
-                return distance <= 100; // Adjust the distance as per your requirement
-              }).toList();
               return Column(
                 children: [
                   const Padding(
@@ -121,17 +123,17 @@ class DiscoverViewState extends State<DiscoverView>
                     ),
                   ),
                   SizedBox(
-                    height: 150, // Adjust the height as per your requirement
+                    height: 70, // Adjust the height as per your requirement
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 1,
+                      itemCount: 10,
                       itemBuilder: (context, index) {
                         final socialFeed = snapshot.data[index];
-
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Highlight(
-                            socialField: socialFeed, // Pass the images to the Highlight component
+                            socialField:
+                                socialFeed, // Pass the images to the Highlight component
                           ),
                         );
                       },
@@ -140,9 +142,9 @@ class DiscoverViewState extends State<DiscoverView>
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: nearbySocialFeeds.length,
+                    itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
-                      final socialFeed = nearbySocialFeeds[index];
+                      final socialFeed = snapshot.data[index];
                       final isLiked = liked.contains(socialFeed.name);
                       final animationKey = ObjectKey(socialFeed);
                       final animation = _animationMap[animationKey];
@@ -169,7 +171,6 @@ class DiscoverViewState extends State<DiscoverView>
     );
   }
 
-
   void showFeedItemDetails(SocialFeed socialFeed) {
     showDialog(
       context: context,
@@ -180,9 +181,7 @@ class DiscoverViewState extends State<DiscoverView>
   }
 
   void getUserPosition() async {
-    final position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
+    final position = await determinePosition(context);
     setState(() {
       userPosition = position;
     });

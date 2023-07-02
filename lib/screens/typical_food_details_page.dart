@@ -45,7 +45,6 @@ class TypicalFoodDetailsPage extends StatelessWidget {
                 placeholder: (context, url) => const Center(
                   child: CircularProgressIndicator(),
                 ),
-                // TODO fix error widget  not showing
                 errorWidget: (BuildContext context, String url, dynamic error) {
                   return Container(
                     width: 100.0,
