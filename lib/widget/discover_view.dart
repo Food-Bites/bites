@@ -1,10 +1,13 @@
 import 'package:bites/utils/functions.dart';
 import 'package:bites/widget/discover_story.dart';
+import 'package:bites/widget/helper_text.dart';
+import 'package:bites/widget/location_header.dart';
 import 'package:flutter/material.dart';
 import 'package:bites/widget/discover_card.dart';
 import 'package:bites/widget/discover_pop_up.dart';
 import 'package:bites/data/social.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:heroicons/heroicons.dart';
 import '../utils/data_service.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -38,72 +41,85 @@ class DiscoverViewState extends State<DiscoverView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: fetchRestaurants(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 16.0, top: 16.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Stories',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+    return NestedScrollView(
+      clipBehavior: Clip.none,
+      headerSliverBuilder: (context, innerBoxIsScrolled) {
+        return [
+          SliverPersistentHeader(
+            delegate: LocationHeaderDelegate(),
+            floating: false,
+          ),
+        ];
+      },
+      body: SingleChildScrollView(
+        child: FutureBuilder(
+          future: fetchRestaurants(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Events near you',
+                          style: Theme.of(context).textTheme.titleSmall,
                         ),
-                        textAlign: TextAlign.left,
                       ),
-                    ),
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      SizedBox(
+                        height: 70, // Adjust the height as per your requirement
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 10,
+                          itemBuilder: (context, index) {
+                            final socialFeed = snapshot.data[index];
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Highlight(
+                                socialField: socialFeed,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 16.0),
+                      StaggeredGrid.count(
+                        crossAxisCount: isTablet(context) ? 3 : 2,
+                        mainAxisSpacing: 8.0,
+                        crossAxisSpacing: 8.0,
+                        children: snapshot.data.map<Widget>((socialFeed) {
+                          final isLiked = liked.contains(socialFeed.name);
+                          return DiscoverCard(
+                            socialFeed: socialFeed,
+                            isLiked: isLiked,
+                            onPressedDetails: () =>
+                                showFeedItemDetails(socialFeed),
+                          );
+                        }).toList(),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    height: 70, // Adjust the height as per your requirement
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        final socialFeed = snapshot.data[index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Highlight(
-                            socialField: socialFeed,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 16.0),
-                  StaggeredGrid.count(
-                    crossAxisCount: isTablet(context) ? 3 : 2,
-                    mainAxisSpacing: 8.0,
-                    crossAxisSpacing: 8.0,
-                    children: snapshot.data.map<Widget>((socialFeed) {
-                      final isLiked = liked.contains(socialFeed.name);
-                      return DiscoverCard(
-                        socialFeed: socialFeed,
-                        isLiked: isLiked,
-                        onPressedDetails: () => showFeedItemDetails(socialFeed),
-                      );
-                    }).toList(),
+                ),
+              );
+            } else {
+              return const Column(
+                children: [
+                  Center(
+                    child: CircularProgressIndicator(),
                   ),
                 ],
-              ),
-            ),
-          );
-        } else {
-          return const Column(
-            children: [
-              Center(child: CircularProgressIndicator()),
-            ],
-          );
-        }
-      },
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 
