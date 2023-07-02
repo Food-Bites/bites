@@ -15,13 +15,10 @@ class DiscoverView extends StatefulWidget {
   State<DiscoverView> createState() => DiscoverViewState();
 }
 
-class DiscoverViewState extends State<DiscoverView>
-    with SingleTickerProviderStateMixin {
+class DiscoverViewState extends State<DiscoverView> {
   late List<SocialFeed> socialFeeds = [];
   final DataService dataService = DataService();
   final List<String> liked = [];
-  late AnimationController _animationController;
-  late Map<ObjectKey, Animation<double>> _animationMap;
   late Position userPosition = Position(
     latitude: 45.4642,
     longitude: 9.1900,
@@ -34,74 +31,9 @@ class DiscoverViewState extends State<DiscoverView>
     isMocked: false,
   );
 
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
-    _animationMap = {};
-
-    getUserPosition();
-  }
-
   fetchRestaurants() async {
     final fetchedRestaurants = await dataService.getRestaurants();
     return fetchedRestaurants;
-  }
-
-  void likeSocialFeed(ObjectKey key) {
-    setState(() {
-      final index = socialFeeds.indexWhere((feed) => ObjectKey(feed) == key);
-      if (index != -1) {
-        final feed = socialFeeds[index];
-        if (liked.contains(feed.name)) {
-          feed.likes--;
-          liked.remove(feed.name);
-          _animationMap.remove(key);
-        } else {
-          feed.likes++;
-          liked.add(feed.name);
-          _resetAnimations(key);
-          _animationMap[key] = Tween<double>(begin: 0.0, end: 1.0).animate(
-            CurvedAnimation(
-              parent: _animationController,
-              curve: Curves.easeInOut,
-            ),
-          )..addStatusListener((status) {
-              if (status == AnimationStatus.completed) {
-                _resetAnimations(null);
-              }
-            });
-          _animationController.forward();
-        }
-      }
-    });
-  }
-
-  void _resetAnimations(ObjectKey? exclude) {
-    _animationController.reset();
-    _animationMap.forEach((key, animation) {
-      if (key != exclude) {
-        animation.removeStatusListener(_animationStatusListener);
-        _animationMap.remove(key);
-      }
-    });
-  }
-
-  void _animationStatusListener(AnimationStatus status) {
-    if (status == AnimationStatus.completed) {
-      setState(() {
-        _animationMap.clear();
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
   }
 
   @override
@@ -111,54 +43,57 @@ class DiscoverViewState extends State<DiscoverView>
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 16.0, top: 16.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Stories',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 16.0, top: 16.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Stories',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      textAlign: TextAlign.left,
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 70, // Adjust the height as per your requirement
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      final socialFeed = snapshot.data[index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Highlight(
-                          socialField: socialFeed,
-                        ),
-                      );
-                    },
+                  SizedBox(
+                    height: 70, // Adjust the height as per your requirement
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        final socialFeed = snapshot.data[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Highlight(
+                            socialField: socialFeed,
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-                StaggeredGrid.count(
-                  crossAxisCount: isTablet(context) ? 4 : 2,
-                  children: snapshot.data.map<Widget>((socialFeed) {
-                    final key = ObjectKey(socialFeed);
-                    final isLiked = liked.contains(socialFeed.name);
-                    return DiscoverCard(
-                      socialFeed: socialFeed,
-                      isLiked: isLiked,
-                      animation: _animationMap[key],
-                      onDoubleTap: () => likeSocialFeed(key),
-                      onPressedDetails: () => showFeedItemDetails(socialFeed),
-                    );
-                  }).toList(),
-                ),
-              ],
+                  const SizedBox(height: 16.0),
+                  StaggeredGrid.count(
+                    crossAxisCount: isTablet(context) ? 3 : 2,
+                    mainAxisSpacing: 8.0,
+                    crossAxisSpacing: 8.0,
+                    children: snapshot.data.map<Widget>((socialFeed) {
+                      final isLiked = liked.contains(socialFeed.name);
+                      return DiscoverCard(
+                        socialFeed: socialFeed,
+                        isLiked: isLiked,
+                        onPressedDetails: () => showFeedItemDetails(socialFeed),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
             ),
           );
         } else {
@@ -179,12 +114,5 @@ class DiscoverViewState extends State<DiscoverView>
         return DiscoverPopUp(socialFeed: socialFeed);
       },
     );
-  }
-
-  void getUserPosition() async {
-    // final position = await determinePosition(context);
-    // setState(() {
-    //   userPosition = position;
-    // });
   }
 }

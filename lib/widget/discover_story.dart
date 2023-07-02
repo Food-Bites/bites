@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_stories/flutter_stories.dart';
 import 'package:bites/data/social.dart';
 
-
 class Highlight extends StatelessWidget {
   final SocialFeed socialField;
   final List<String> urls = [
@@ -36,17 +35,21 @@ class Highlight extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return CupertinoPageScaffold(
-                    child: Story(
-                      onFlashForward: Navigator.of(context).pop,
-                      onFlashBack: Navigator.of(context).pop,
-                      momentCount: _momentCount,
-                      momentDurationGetter: (idx) => _momentDuration,
-                      momentBuilder: (context, idx) =>
-                          Image.network(
-                            //socialField.photoURL,
-                            urls[idx],
-                            fit: BoxFit.cover,
-                          ),
+                    child: GestureDetector(
+                      onVerticalDragEnd: (details) {
+                        Navigator.of(context).pop();
+                      },
+                      child: Story(
+                        onFlashForward: Navigator.of(context).pop,
+                        onFlashBack: Navigator.of(context).pop,
+                        momentCount: _momentCount,
+                        momentDurationGetter: (idx) => _momentDuration,
+                        momentBuilder: (context, idx) => Image.network(
+                          //socialField.photoURL,
+                          urls[idx],
+                          fit: BoxFit.contain,
+                        ),
+                      ),
                     ),
                   );
                 },

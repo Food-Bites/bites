@@ -1,21 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:bites/data/social.dart';
+import 'package:heroicons/heroicons.dart';
 
-class DiscoverCard extends StatelessWidget {
+class DiscoverCard extends StatefulWidget {
   final SocialFeed socialFeed;
   final bool isLiked;
-  final Animation<double>? animation;
-  final VoidCallback onDoubleTap;
   final VoidCallback onPressedDetails;
 
   const DiscoverCard({
     Key? key,
     required this.socialFeed,
     required this.isLiked,
-    this.animation,
-    required this.onDoubleTap,
     required this.onPressedDetails,
   }) : super(key: key);
+
+  @override
+  State<DiscoverCard> createState() => DiscoverCardState();
+}
+
+class DiscoverCardState extends State<DiscoverCard>
+    with SingleTickerProviderStateMixin {
+  bool _isLiked = false;
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _isLiked = widget.isLiked;
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+  }
+
+  void _onDoubleTap() {
+    setState(() {
+      _isLiked = !_isLiked;
+      // add to widget.socialFeed.likes if _isLiked is true
+      widget.socialFeed.likes += _isLiked ? 1 : -1;
+
+      if (_isLiked) {
+        _controller.reset();
+        _controller.forward();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,45 +63,46 @@ class DiscoverCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
-              onTap: onPressedDetails,
+              onTap: widget.onPressedDetails,
               child: Text(
-                socialFeed.name,
+                widget.socialFeed.name,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
-          GestureDetector(
-            onDoubleTap: onDoubleTap,
-            child: Stack(
-              children: [
-                AspectRatio(
-                  aspectRatio: 1.0,
+          Stack(
+            children: [
+              AspectRatio(
+                aspectRatio: 1.0,
+                child: GestureDetector(
+                  onDoubleTap: _onDoubleTap,
                   child: Image.network(
-                    socialFeed.photoURL,
+                    widget.socialFeed.photoURL,
                     fit: BoxFit.cover,
                   ),
                 ),
-                if (isLiked && animation != null)
-                  Positioned.fill(
-                    child: AnimatedBuilder(
-                      animation: animation!,
-                      builder: (context, child) {
-                        return Opacity(
-                          opacity: 1.0 - animation!.value,
-                          child: Transform.scale(
-                            scale: animation!.value,
-                            child: const Icon(
-                              Icons.favorite,
-                              color: Colors.white,
-                              size: 50.0,
-                            ),
+              ),
+              if (_isLiked)
+                Positioned.fill(
+                  child: AnimatedBuilder(
+                    animation: _animation,
+                    builder: (context, child) {
+                      return Opacity(
+                        opacity: 1.0 - _animation.value,
+                        child: Transform.scale(
+                          scale: _animation.value,
+                          child: const HeroIcon(
+                            HeroIcons.heart,
+                            color: Colors.red,
+                            size: 100.0,
+                            style: HeroIconStyle.solid,
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
           Column(
             children: [
@@ -72,20 +110,23 @@ class DiscoverCard extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: Icon(
-                      isLiked ? Icons.favorite : Icons.favorite_border,
-                      color: isLiked ? Colors.red : null,
+                      _isLiked ? Icons.favorite : Icons.favorite_border,
+                      color: _isLiked ? Colors.red : null,
                     ),
-                    onPressed: onDoubleTap,
+                    onPressed: _onDoubleTap,
                   ),
-                  Text('Likes: ${socialFeed.likes}'),
+                  Text('${widget.socialFeed.likes}'),
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Wrap(
                   children: [
-                    Text(socialFeed.name),
-                    Text(socialFeed.description),
+                    GestureDetector(
+                      onTap: widget.onPressedDetails,
+                      child: Text(widget.socialFeed.name),
+                    ),
+                    Text(widget.socialFeed.description),
                   ],
                 ),
               )
