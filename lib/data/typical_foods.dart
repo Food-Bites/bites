@@ -89,7 +89,8 @@ Map<String, dynamic> typicalFoods = {
     "name": "Risotto alla Trentina",
     "description":
         "Risotto alla Trentina is a traditional dish from the Trentino region. It is made with locally grown rice, such as Arborio or Carnaroli, and flavored with ingredients like butter, Parmesan cheese, and speck (smoked ham).",
-    "image": "https://placehold.co/600x400/orange/white",
+    "image":
+        "https://raw.githubusercontent.com/Food-Bites/pictures/main/risotto_alla_trentina.jpg",
     "latitude": 46.074976443080544,
     "longitude": 11.121041688190743
   },

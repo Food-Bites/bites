@@ -57,6 +57,7 @@ class _CartPageState extends State<CartPage> {
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Form(
                 child: Column(
@@ -168,7 +169,7 @@ class _CartPageState extends State<CartPage> {
                 ],
               ),
               const SizedBox(height: 16),
-              Consumer<Cart>(
+              Consumer<CartProvider>(
                 builder: (context, cart, child) {
                   return ListView.builder(
                     shrinkWrap: true,
@@ -180,7 +181,11 @@ class _CartPageState extends State<CartPage> {
                         child: ListTile(
                           leading: Hero(
                             tag: foodItem.name,
-                            child: Image.network(foodItem.image),
+                            child: ClipRRect(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(8),
+                                ),
+                                child: Image.network(foodItem.image)),
                           ),
                           title: Text(foodItem.name),
                           subtitle: Text('€ ${foodItem.price}'),
@@ -212,9 +217,9 @@ class _CartPageState extends State<CartPage> {
               ),
               const SizedBox(height: 16),
               HelperText(
-                  icon: IconType.heroIcons(HeroIcons.informationCircle),
-                  text:
-                      'Your calendar will open to add a reminder in your calendar.'),
+                icon: IconType.heroIcons(HeroIcons.informationCircle),
+                text: 'Your calendar will open to add a reminder in it.',
+              ),
               const SizedBox(height: 16),
               FilledButton.icon(
                   onPressed: () {
@@ -248,9 +253,10 @@ class _CartPageState extends State<CartPage> {
                       );
                       return;
                     }
-                    food =
-                        Provider.of<Cart>(context, listen: false).items.first;
-                    Provider.of<Cart>(context, listen: false).clear();
+                    food = Provider.of<CartProvider>(context, listen: false)
+                        .items
+                        .first;
+                    Provider.of<CartProvider>(context, listen: false).clear();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Order placed successfully.'),

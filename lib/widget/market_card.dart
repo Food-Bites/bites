@@ -20,8 +20,13 @@ class MarketCard extends StatelessWidget {
         child: CachedNetworkImage(
           useOldImageOnUrlChange: true,
           progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-            child: CircularProgressIndicator(
-              value: downloadProgress.progress,
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Center(
+                child: CircularProgressIndicator(
+                  value: downloadProgress.progress,
+                ),
+              ),
             ),
           ),
           errorWidget: (context, url, error) => Image.asset(

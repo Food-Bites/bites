@@ -23,7 +23,7 @@ class MainApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => SuggestionTipsProvider()),
-        ChangeNotifierProvider(create: (context) => Cart())
+        ChangeNotifierProvider(create: (context) => CartProvider())
       ],
       builder: (context, _) {
         return MaterialApp(
@@ -32,6 +32,7 @@ class MainApp extends StatelessWidget {
               ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
           themeMode: Provider.of<ThemeProvider>(context).themeMode,
           home: const InitialPage(),
+          debugShowCheckedModeBanner: false,
         );
       },
     );

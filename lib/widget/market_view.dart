@@ -13,7 +13,7 @@ class MarketView extends StatelessWidget {
   const MarketView({super.key});
 
   void _onLongPress(PurchasableFood food, BuildContext context) {
-    Provider.of<Cart>(context, listen: false).add(food, context);
+    Provider.of<CartProvider>(context, listen: false).add(food, context);
   }
 
   void _navigateToDetailsPage(PurchasableFood food, BuildContext context) {
