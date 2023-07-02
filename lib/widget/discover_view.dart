@@ -1,13 +1,11 @@
 import 'package:bites/utils/functions.dart';
 import 'package:bites/widget/discover_story.dart';
-import 'package:bites/widget/helper_text.dart';
 import 'package:bites/widget/location_header.dart';
 import 'package:flutter/material.dart';
 import 'package:bites/widget/discover_card.dart';
 import 'package:bites/widget/discover_pop_up.dart';
 import 'package:bites/data/social.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:heroicons/heroicons.dart';
 import '../utils/data_service.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -22,6 +20,7 @@ class DiscoverViewState extends State<DiscoverView> {
   late List<SocialFeed> socialFeeds = [];
   final DataService dataService = DataService();
   final List<String> liked = [];
+  // get the user position in the next version
   late Position userPosition = Position(
     latitude: 45.4642,
     longitude: 9.1900,
@@ -97,6 +96,7 @@ class DiscoverViewState extends State<DiscoverView> {
                         children: snapshot.data.map<Widget>((socialFeed) {
                           final isLiked = liked.contains(socialFeed.name);
                           return DiscoverCard(
+                            key: ValueKey(socialFeed.name),
                             socialFeed: socialFeed,
                             isLiked: isLiked,
                             onPressedDetails: () =>

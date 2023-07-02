@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bites/data/social.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DiscoverCard extends StatefulWidget {
   final SocialFeed socialFeed;
@@ -29,6 +30,19 @@ class DiscoverCardState extends State<DiscoverCard>
   void initState() {
     super.initState();
     _isLiked = widget.isLiked;
+    // retrieve the like status from shared preferences
+    SharedPreferences.getInstance().then((prefs) {
+      bool? isLiked = prefs.getBool(widget.socialFeed.name.toString());
+      if (isLiked != null) {
+        setState(() {
+          _isLiked = isLiked;
+          // update the likes count if the card was previously liked
+          if (_isLiked) {
+            widget.socialFeed.likes += 1;
+          }
+        });
+      }
+    });
     _controller = AnimationController(
       duration: const Duration(milliseconds: 1000),
       vsync: this,
@@ -36,7 +50,7 @@ class DiscoverCardState extends State<DiscoverCard>
     _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
   }
 
-  void _onDoubleTap() {
+  void _onDoubleTap() async {
     setState(() {
       _isLiked = !_isLiked;
       // add to widget.socialFeed.likes if _isLiked is true
@@ -47,6 +61,10 @@ class DiscoverCardState extends State<DiscoverCard>
         _controller.forward();
       }
     });
+
+    // save the like status in shared preferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(widget.socialFeed.name.toString(), _isLiked);
   }
 
   @override
