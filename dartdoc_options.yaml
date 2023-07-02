@@ -12,6 +12,3 @@ dartdoc:
     "Data":
       markdown: data.md
       name: Data
-    "Functions":
-      markdown: functions.md
-      name: Functions

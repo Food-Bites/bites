@@ -1,7 +1,7 @@
 import 'package:bites/widget/location_text.dart';
 import 'package:flutter/material.dart';
 
-/// The [LocationHeaderDelegate] class is a utility widget to handle the scrolling of [Locationtext] and other elements on the page.
+/// The [LocationHeaderDelegate] class is a utility widget to handle the scrolling of [LocationText] and other elements on the page.
 /// {@category Widgets}
 class LocationHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
