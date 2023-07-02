@@ -1,8 +1,11 @@
+import 'package:bites/utils/location.dart';
 import 'package:flutter/material.dart';
 import 'package:bites/widget/discover_card.dart';
 import 'package:bites/widget/discover_pop_up.dart';
 import 'package:bites/data/social.dart';
 import '../utils/data_service.dart';
+import 'package:bites/widget/discover_story.dart';
+import 'package:geolocator/geolocator.dart';
 
 class DiscoverView extends StatefulWidget {
   const DiscoverView({super.key});
@@ -18,6 +21,17 @@ class DiscoverViewState extends State<DiscoverView>
   final List<String> liked = [];
   late AnimationController _animationController;
   late Map<ObjectKey, Animation<double>> _animationMap;
+  late Position userPosition = Position(
+    latitude: 45.4642,
+    longitude: 9.1900,
+    timestamp: DateTime.now(),
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+    isMocked: false,
+  );
 
   @override
   void initState() {
@@ -27,6 +41,8 @@ class DiscoverViewState extends State<DiscoverView>
       duration: const Duration(milliseconds: 500),
     );
     _animationMap = {};
+
+    getUserPosition();
   }
 
   fetchRestaurants() async {
@@ -83,33 +99,75 @@ class DiscoverViewState extends State<DiscoverView>
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: fetchRestaurants(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, index) {
-              final socialFeed = snapshot.data[index];
-              final isLiked = liked.contains(socialFeed.name);
-              final animationKey = ObjectKey(socialFeed);
-              final animation = _animationMap[animationKey];
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: FutureBuilder(
+          future: fetchRestaurants(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 16.0, top: 16.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Highlights',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 70, // Adjust the height as per your requirement
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        final socialFeed = snapshot.data[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Highlight(
+                            socialField:
+                                socialFeed, // Pass the images to the Highlight component
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      final socialFeed = snapshot.data[index];
+                      final isLiked = liked.contains(socialFeed.name);
+                      final animationKey = ObjectKey(socialFeed);
+                      final animation = _animationMap[animationKey];
 
-              return DiscoverCard(
-                key: animationKey,
-                socialFeed: socialFeed,
-                isLiked: isLiked,
-                animation: animation,
-                onDoubleTap: () => likeSocialFeed(animationKey),
-                onPressedLike: () => likeSocialFeed(animationKey),
-                onPressedDetails: () => showFeedItemDetails(socialFeed),
+                      return DiscoverCard(
+                        key: animationKey,
+                        socialFeed: socialFeed,
+                        isLiked: isLiked,
+                        animation: animation,
+                        onDoubleTap: () => likeSocialFeed(animationKey),
+                        onPressedLike: () => likeSocialFeed(animationKey),
+                        onPressedDetails: () => showFeedItemDetails(socialFeed),
+                      );
+                    },
+                  ),
+                ],
               );
-            },
-          );
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+      ),
     );
   }
 
@@ -120,5 +178,12 @@ class DiscoverViewState extends State<DiscoverView>
         return DiscoverPopUp(socialFeed: socialFeed);
       },
     );
+  }
+
+  void getUserPosition() async {
+    final position = await determinePosition(context);
+    setState(() {
+      userPosition = position;
+    });
   }
 }

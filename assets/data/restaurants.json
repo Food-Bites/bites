@@ -1,7 +1,7 @@
 [
   {
     "name": "Ristorante Trentino",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/cheese.jpg",
+    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/valle_dei_laghi.jpeg",
     "description": "🍽️ Traditional Trentino cuisine with a modern twist. 🍴✨ Join us for a delightful culinary journey that blends rich flavors with contemporary flair. 🌟 Like if you're craving a taste of Trentino! ❤️🇮🇹 #RistoranteTrentino #TasteOfTradition #ModernTwist",
     "likes": 432,
     "address": "Via Garibaldi 1",
@@ -152,5 +152,25 @@
     "phone": "+39 123 456789",
     "latitude": 41.9028,
     "longitude": 12.4964
+  },
+  {
+    "name": "Trattoria Ferrarese",
+    "latitude": 44.8381,
+    "longitude": 11.6198,
+    "description": "Indulge in the authentic flavors of Ferrara at Trattoria Ferrarese. Our Cappellacci Al Ragù is a true culinary masterpiece. Delicate pasta pockets filled with a rich mixture of ricotta cheese, Parmesan cheese, spinach, and nutmeg, served with a savory ragù sauce made from slow-cooked meat, tomatoes, onions, carrots, and herbs. Experience the taste of tradition in every bite. 🍝🌟 #TrattoriaFerrarese #CappellacciAlRagu #TasteOfTradition",
+    "likes": 892,
+    "address": "Via Roma 1",
+    "phone": "+39 123 456789",
+    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/noemi_ferrara.jpeg"
+  },
+  {
+    "name": "Dolci Ferraresi",
+    "latitude": 44.8381,
+    "longitude": 11.6198,
+    "description": "Experience the sweet side of Ferrara at Dolci Ferraresi. Our Tenerina is a chocolate lover's dream. Made with dark chocolate, butter, sugar, eggs, and a touch of flour, this traditional chocolate cake has a rich and intense flavor with a soft and tender texture. Indulge in a slice of pure chocolate bliss and savor the sweetness of Ferrara. 🍫🍰 #DolciFerraresi #Tenerina #ChocolateBliss",
+    "likes": 712,
+    "address": "Via Garibaldi 2",
+    "phone": "+39 123 987654",
+    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/cheese.jpg"
   }
 ]
