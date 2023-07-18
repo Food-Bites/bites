@@ -5,8 +5,19 @@ import 'package:flutter/material.dart';
 /// The [LocationText] class is a widget that displays the location of the user.
 /// {@category Widgets}
 class LocationText extends StatefulWidget {
-  const LocationText({super.key, this.text = "Discover in"});
+  const LocationText({
+    super.key,
+    this.text = "Discover in",
+    this.isSmall = false,
+    this.lat = 0.0,
+    this.lng = 0.0,
+    this.hasCustomCity = false,
+  });
   final String text;
+  final bool hasCustomCity;
+  final bool isSmall;
+  final double lat;
+  final double lng;
 
   @override
   State<LocationText> createState() => _LocationTextState();
@@ -19,7 +30,12 @@ class _LocationTextState extends State<LocationText> {
   void initState() {
     super.initState();
     BuildContext context = this.context;
-    closestCity = getClosestCity(context);
+    if (widget.hasCustomCity) {
+      closestCity =
+          getClosestCityByCoordinates(widget.lat, widget.lng, context);
+    } else {
+      closestCity = getClosestCityByCurrentLocation(context);
+    }
   }
 
   @override
@@ -36,13 +52,15 @@ class _LocationTextState extends State<LocationText> {
                   return Headline(
                     text: widget.text,
                     closestCity: snapshot.data as String,
+                    isSmall: widget.isSmall,
                   );
                 } else if (snapshot.hasError) {
                   return const Text("your location");
                 }
-                return const Headline(
+                return Headline(
                   closestCity: "your location",
-                  text: "Discover in",
+                  text: widget.text,
+                  isSmall: widget.isSmall,
                 );
               },
             ),

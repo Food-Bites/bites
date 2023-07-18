@@ -7,10 +7,12 @@ class Headline extends StatelessWidget {
     Key? key,
     required this.closestCity,
     required this.text,
+    this.isSmall = false,
   }) : super(key: key);
 
   final String closestCity;
   final String text;
+  final bool isSmall;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +26,17 @@ class Headline extends StatelessWidget {
             child: Text.rich(
               TextSpan(
                 text: '$text ',
-                style: Theme.of(context).textTheme.displayMedium,
+                style: isSmall
+                    ? Theme.of(context).textTheme.headlineMedium
+                    : Theme.of(context).textTheme.displayMedium,
                 children: [
                   TextSpan(
                     text: closestCity,
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.primary),
+                    style: isSmall
+                        ? Theme.of(context).textTheme.headlineMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.primary)
+                        : Theme.of(context).textTheme.displayMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.primary),
                   ),
                 ],
               ),

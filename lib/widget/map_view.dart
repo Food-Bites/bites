@@ -2,6 +2,7 @@ import 'package:bites/screens/options_page.dart';
 import 'package:bites/screens/typical_food_details_page.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:bites/utils/location.dart';
+import 'package:bites/widget/location_text.dart';
 import 'package:bites/widget/place_card.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
@@ -58,7 +59,7 @@ class MapViewState extends State<MapView> {
     setState(() {
       mapController = controller;
       moveToCurrentLocation();
-      updateCircles();
+      renderCircles();
     });
   }
 
@@ -79,12 +80,7 @@ class MapViewState extends State<MapView> {
     );
   }
 
-  /// The [addCircle] function adds a circle to the map.
-  /// @param lat The latitude of the circle.
-  /// @param lng The longitude of the circle.
-  /// @param food The [TypicalFood] object.
-  /// {@category Functions}
-  void addCircle(double lat, double lng, TypicalFood food) {
+  void addCircle(double lat, double lng, List<TypicalFood> foods) {
     final id = CircleId(lat.toString() + lng.toString());
     final circle = Circle(
         circleId: id,
@@ -95,10 +91,99 @@ class MapViewState extends State<MapView> {
         fillColor: Theme.of(context).primaryColor.withOpacity(0.5),
         consumeTapEvents: true,
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => TypicalFoodDetailsPage(food: food),
+          BuildContext context = this.context;
+          // show a bottom sheet with the list of foods
+          ScaffoldState scaffoldState = Scaffold.of(context);
+          scaffoldState.showBottomSheet(
+            enableDrag: true,
+            constraints: const BoxConstraints(
+              minHeight: 256,
+              maxHeight: 256,
             ),
+            (context) {
+              return SizedBox(
+                height: 256,
+                child: Column(
+                  children: [
+                    // add handle to the bottom sheet
+                    Container(
+                      height: 4,
+                      width: 32,
+                      margin: const EdgeInsets.symmetric(vertical: 22),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surfaceVariant
+                            .withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                    ),
+                    LocationText(
+                      text: "Typical foods in",
+                      hasCustomCity: true,
+                      lat: lat,
+                      lng: lng,
+                      isSmall: true,
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: foods.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(foods[index].name),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => TypicalFoodDetailsPage(
+                                    food: foods[index],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            //   context: context,
+            //   isDismissible: true,
+            //   showDragHandle: true,
+            //   useSafeArea: true,
+            //   builder: (context) {
+            //     return SizedBox(
+            //       height: 256,
+            //       child: Column(
+            //         children: [
+            //           const LocationText(
+            //             text: "Typical foods in",
+            //           ),
+            //           Expanded(
+            //             child: ListView.builder(
+            //               itemCount: foods.length,
+            //               itemBuilder: (context, index) {
+            //                 return ListTile(
+            //                   title: Text(foods[index].name),
+            //                   onTap: () {
+            //                     Navigator.of(context).push(
+            //                       MaterialPageRoute(
+            //                         builder: (context) => TypicalFoodDetailsPage(
+            //                           food: foods[index],
+            //                         ),
+            //                       ),
+            //                     );
+            //                   },
+            //                 );
+            //               },
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     );
+            //   },
+            // );
           );
         });
     setState(() {
@@ -106,24 +191,30 @@ class MapViewState extends State<MapView> {
     });
   }
 
-  /// The [updateCircles] function updates the circles on the map.
-  /// It uses the [typicalFoods] map from the [typical_foods.dart] file.
-  /// {@category Functions}
-  void updateCircles() {
-    typicalFoods.forEach((key, value) {
-      final point = LatLng(value['latitude'], value['longitude']);
-      addCircle(
-        point.latitude,
-        point.longitude,
-        TypicalFood(
-          id: value['id'],
-          name: value['name'],
-          image: value['image'],
-          latitude: value['latitude'],
-          longitude: value['longitude'],
-          description: value['description'],
-        ),
-      );
+  /// The [renderCircles] function renders the circles on the map.
+  /// It fetches the typical foods from the database and builds a map with the locations of the foods as keys and the foods in that location as values.
+  void renderCircles() async {
+    // fetch typical foods
+    List<TypicalFood> foods = await fetchTypicalFoods();
+
+    // build a map with the locations of the foods as keys and the foods in that location as values
+    Map<String, dynamic> foodsByLocation = {};
+
+    for (var food in foods) {
+      String location = "${food.latitude}-${food.longitude}";
+      if (foodsByLocation.containsKey(location)) {
+        foodsByLocation[location].add(food);
+      } else {
+        foodsByLocation[location] = [food];
+      }
+    }
+
+    // for each map entry, add a circle to the map
+    foodsByLocation.forEach((key, value) {
+      List<String> coordinates = key.split('-');
+      double lat = double.parse(coordinates[0]);
+      double lng = double.parse(coordinates[1]);
+      addCircle(lat, lng, value);
     });
   }
 
