@@ -3,6 +3,7 @@ import 'package:bites/screens/typical_food_details_page.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:bites/utils/location.dart';
 import 'package:bites/widget/location_text.dart';
+import 'package:bites/widget/magic_image.dart';
 import 'package:bites/widget/place_card.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';
@@ -96,10 +97,6 @@ class MapViewState extends State<MapView> {
           ScaffoldState scaffoldState = Scaffold.of(context);
           scaffoldState.showBottomSheet(
             enableDrag: true,
-            constraints: const BoxConstraints(
-              minHeight: 256,
-              maxHeight: 256,
-            ),
             (context) {
               return SizedBox(
                 height: 256,
@@ -109,12 +106,9 @@ class MapViewState extends State<MapView> {
                     Container(
                       height: 4,
                       width: 32,
-                      margin: const EdgeInsets.symmetric(vertical: 22),
+                      margin: const EdgeInsets.fromLTRB(0, 22, 0, 8),
                       decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .surfaceVariant
-                            .withOpacity(0.4),
+                        color: Theme.of(context).colorScheme.surfaceVariant,
                         borderRadius: BorderRadius.circular(24),
                       ),
                     ),
@@ -130,6 +124,10 @@ class MapViewState extends State<MapView> {
                         itemCount: foods.length,
                         itemBuilder: (context, index) {
                           return ListTile(
+                            leading: MagicImage(
+                              food: foods[index],
+                              width: 40,
+                            ),
                             title: Text(foods[index].name),
                             onTap: () {
                               Navigator.of(context).push(
