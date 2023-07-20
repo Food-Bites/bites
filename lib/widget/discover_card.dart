@@ -1,9 +1,13 @@
+import 'package:android_intent/android_intent.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bites/data/social.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// The [DiscoverCard] widget displays a [SocialFeed] object.
+/// It is used in the [DiscoverView] widget.
+/// {@category Widgets}
 class DiscoverCard extends StatefulWidget {
   final SocialFeed socialFeed;
   final bool isLiked;
@@ -25,6 +29,31 @@ class DiscoverCardState extends State<DiscoverCard>
   bool _isLiked = false;
   late AnimationController _controller;
   late Animation<double> _animation;
+
+  void _intentToGoogleMaps(String address) {
+    final intent = AndroidIntent(
+      action: 'action_view',
+      data: 'geo:0,0?q=$address',
+      package: 'com.google.android.apps.maps',
+    );
+    intent.launch();
+  }
+
+  void _intentToPhone(String phone) {
+    final intent = AndroidIntent(
+      action: 'action_view',
+      data: 'tel:$phone',
+    );
+    intent.launch();
+  }
+
+  void _intentToMail(String email) {
+    final intent = AndroidIntent(
+      action: 'action_view',
+      data: 'mailto:$email',
+    );
+    intent.launch();
+  }
 
   @override
   void initState() {
@@ -85,7 +114,7 @@ class DiscoverCardState extends State<DiscoverCard>
               onTap: widget.onPressedDetails,
               child: Text(
                 widget.socialFeed.name,
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
           ),
@@ -150,16 +179,48 @@ class DiscoverCardState extends State<DiscoverCard>
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 12.0),
                 child: Wrap(
                   children: [
-                    GestureDetector(
-                      onTap: widget.onPressedDetails,
-                      child: Text(widget.socialFeed.name),
-                    ),
                     Text(widget.socialFeed.description),
                   ],
                 ),
+              ),
+              const Divider(),
+              Wrap(
+                alignment: WrapAlignment.start,
+                children: [
+                  TextButton.icon(
+                    onPressed: () {
+                      _intentToGoogleMaps(widget.socialFeed.address);
+                    },
+                    style: ButtonStyle(
+                      iconSize: MaterialStateProperty.all(16.0),
+                    ),
+                    icon: const HeroIcon(HeroIcons.mapPin),
+                    label: Text(widget.socialFeed.address),
+                  ),
+                  TextButton.icon(
+                    onPressed: () {
+                      _intentToPhone(widget.socialFeed.phone);
+                    },
+                    style: ButtonStyle(
+                      iconSize: MaterialStateProperty.all(16.0),
+                    ),
+                    icon: const HeroIcon(HeroIcons.phone),
+                    label: Text(widget.socialFeed.phone),
+                  ),
+                  TextButton.icon(
+                    onPressed: () {
+                      _intentToMail(widget.socialFeed.email);
+                    },
+                    style: ButtonStyle(
+                      iconSize: MaterialStateProperty.all(16.0),
+                    ),
+                    icon: const HeroIcon(HeroIcons.envelope),
+                    label: Text(widget.socialFeed.email),
+                  ),
+                ],
               )
             ],
           )

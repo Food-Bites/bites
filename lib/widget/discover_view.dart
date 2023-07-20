@@ -33,6 +33,9 @@ class DiscoverViewState extends State<DiscoverView> {
     isMocked: false,
   );
 
+  /// Fetches the restaurants from the data service.
+  /// Returns a list of [Restaurant] objects.
+  /// {@category Functions}
   fetchRestaurants() async {
     final fetchedRestaurants = await dataService.getRestaurants();
     return fetchedRestaurants;
