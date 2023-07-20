@@ -1,5 +1,22 @@
 [
   {
+    "id": "5b5861e7-cae6-4434-abcd-6b52ce86f10d",
+    "name": "Ristorante Montichiari",
+    "photoURL": "https://placehold.co/400x400/yellow/black.png?text=Ristorante+Montichiari&font=playfair-display",
+    "description": "🍽️ Fine dining experience in the heart of the historic Montichiari square. 🏛️✨ Indulge in culinary excellence amidst the grandeur of ancient Rome. 😍❤️ Tag someone who would love to dine in this iconic location! #RistoranteMontichiari #LuxuryEats #HistoricAmbiance",
+    "likes": 100,
+    "address": "Via Trieste, 15",
+    "email": "monti-food@example.com",
+    "phone": "+39 123 456789",
+    "latitude": 45.4148,
+    "longitude": 10.3928,
+    "foods": [
+      "2c52a605-66a4-4aef-9ea4-48ef74114fe8",
+      "2c52a605-66a4-4aef-9ea4-48ef74114fe9",
+      "2c52a605-66a4-4aef-9ea4-48ef74114ff9"
+    ]
+  },
+  {
     "name": "Ristorante Trentino",
     "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/forsterbrau_trento.jpeg",
     "description": "🍽️ Traditional Trentino cuisine with a modern twist. 🍴✨ Join us for a delightful culinary journey that blends rich flavors with contemporary flair. 🌟 Like if you're craving a taste of Trentino! ❤️🇮🇹 #RistoranteTrentino #TasteOfTradition #ModernTwist",

@@ -1,9 +1,6 @@
 import 'package:bites/screens/options_page.dart';
-import 'package:bites/screens/typical_food_details_page.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:bites/utils/location.dart';
-import 'package:bites/widget/location_text.dart';
-import 'package:bites/widget/magic_image.dart';
 import 'package:bites/widget/place_card.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire2/geoflutterfire2.dart';

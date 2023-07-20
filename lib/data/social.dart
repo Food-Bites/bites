@@ -1,4 +1,5 @@
 class SocialFeed {
+  final String id;
   final String name;
   final String photoURL;
   final String description;
@@ -8,8 +9,10 @@ class SocialFeed {
   final String phone;
   final double latitude;
   final double longitude;
+  final List<String> foods;
 
   SocialFeed({
+    required this.id,
     required this.name,
     required this.photoURL,
     required this.description,
@@ -19,10 +22,14 @@ class SocialFeed {
     required this.phone,
     required this.latitude,
     required this.longitude,
+    required this.foods,
   });
 
   factory SocialFeed.fromJson(Map<String, dynamic> json) {
+    final foodsList = (json['foods'] as List?)?.cast<String>() ?? [];
+
     return SocialFeed(
+      id: json['id'] ?? '',
       name: json['name'] ?? '',
       photoURL: json['photoURL'] ?? '',
       description: json['description'] ?? '',
@@ -32,6 +39,7 @@ class SocialFeed {
       phone: json['phone'] ?? '',
       latitude: json['latitude'] ?? 0,
       longitude: json['longitude'] ?? 0,
+      foods: foodsList,
     );
   }
 }

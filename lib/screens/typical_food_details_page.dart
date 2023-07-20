@@ -1,5 +1,7 @@
 import 'package:android_intent/android_intent.dart';
+import 'package:bites/data/social.dart';
 import 'package:bites/data/typical_foods.dart';
+import 'package:bites/utils/data_service.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -112,12 +114,63 @@ class TypicalFoodDetailsPage extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               const SizedBox(height: 16),
-              FilledButton.icon(
-                icon: const Icon(Icons.location_on),
-                onPressed: () {
-                  _intentToGoogleMaps(food.latitude, food.longitude);
+              FutureBuilder(
+                future: DataService().getRestaurants(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<SocialFeed> social = snapshot.data as List<SocialFeed>;
+                    final foodId = food.id;
+                    // filter the list of restaurants based on the food id
+                    social = social
+                        .where((element) => element.foods.contains(foodId))
+                        .toList();
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: social.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage: CachedNetworkImageProvider(
+                                  social[index].photoURL,
+                                ),
+                              ),
+                              title: Text(
+                                social[index].name,
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                              subtitle: Text(
+                                social[index].address,
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                              trailing: IconButton(
+                                onPressed: () {
+                                  _intentToGoogleMaps(
+                                    social[index].latitude,
+                                    social[index].longitude,
+                                  );
+                                },
+                                icon: const Icon(Icons.directions),
+                              ),
+                            ),
+                            const Divider(),
+                          ],
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('Error'),
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
                 },
-                label: const Text('Search a place on Google Maps'),
               ),
             ],
           ),

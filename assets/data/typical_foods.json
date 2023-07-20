@@ -181,7 +181,8 @@
     "description": "Pumpkin risotto is a delicious autumn dish where creamy risotto is cooked with pureed pumpkin and flavored with shallots, white wine, Parmesan cheese, and a hint of nutmeg. It's a perfect blend of comforting and seasonal flavors.",
     "image": "https://placehold.co/600x400/blue/white.png",
     "latitude": 45.4148,
-    "longitude": 10.3928
+    "longitude": 10.3928,
+    "restaurants": ["5b5861e7-cae6-4434-abcd-6b52ce86f10d"]
   },
   {
     "id": "2c52a605-66a4-4aef-9ea4-48ef74114fe9",
@@ -189,7 +190,8 @@
     "description": "Pumpkin risotto is a delicious autumn dish where creamy risotto is cooked with pureed pumpkin and flavored with shallots, white wine, Parmesan cheese, and a hint of nutmeg. It's a perfect blend of comforting and seasonal flavors.",
     "image": "https://placehold.co/500x400/red/white.png",
     "latitude": 45.4148,
-    "longitude": 10.3928
+    "longitude": 10.3928,
+    "restaurants": ["5b5861e7-cae6-4434-abcd-6b52ce86f10d"]
   },
   {
     "id": "2c52a605-66a4-4aef-9ea4-48ef74114ff9",
@@ -197,6 +199,7 @@
     "description": "Pumpkin risotto is a delicious autumn dish where creamy risotto is cooked with pureed pumpkin and flavored with shallots, white wine, Parmesan cheese, and a hint of nutmeg. It's a perfect blend of comforting and seasonal flavors.",
     "image": "https://placehold.co/200x600/yellow/black.png",
     "latitude": 45.4148,
-    "longitude": 10.3928
+    "longitude": 10.3928,
+    "restaurants": ["5b5861e7-cae6-4434-abcd-6b52ce86f10d"]
   }
 ]
