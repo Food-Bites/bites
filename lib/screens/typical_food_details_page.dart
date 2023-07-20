@@ -110,7 +110,6 @@ class TypicalFoodDetailsPage extends StatelessWidget {
                   ? const SizedBox.shrink()
                   : TypicalFoodDetails(food: food),
               const SizedBox(height: 16),
-              const SizedBox(height: 16),
               Text(
                 "Where to eat:",
                 style: Theme.of(context).textTheme.titleSmall,

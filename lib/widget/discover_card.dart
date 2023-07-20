@@ -1,4 +1,5 @@
 import 'package:android_intent/android_intent.dart';
+import 'package:bites/screens/restaurant_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bites/data/social.dart';
@@ -96,6 +97,16 @@ class DiscoverCardState extends State<DiscoverCard>
     await prefs.setBool(widget.socialFeed.name.toString(), _isLiked);
   }
 
+  void _onTapDetails() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => RestaurantDetailsPage(
+          socialFeed: widget.socialFeed,
+        ),
+      ),
+    );
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -104,127 +115,133 @@ class DiscoverCardState extends State<DiscoverCard>
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: widget.onPressedDetails,
-              child: Text(
-                widget.socialFeed.name,
-                style: Theme.of(context).textTheme.titleMedium,
+    return GestureDetector(
+      onTap: _onTapDetails,
+      child: Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: widget.onPressedDetails,
+                child: Text(
+                  widget.socialFeed.name,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ),
             ),
-          ),
-          Stack(
-            children: [
-              AspectRatio(
-                aspectRatio: 1.0,
-                child: GestureDetector(
-                  onDoubleTap: _onDoubleTap,
-                  child: CachedNetworkImage(
-                    width: 256,
-                    useOldImageOnUrlChange: true,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) => Center(
-                      child: CircularProgressIndicator(
-                        value: downloadProgress.progress,
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => Image.asset(
-                      'assets/error.png',
-                      fit: BoxFit.cover,
-                    ),
-                    imageUrl: widget.socialFeed.photoURL,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              if (_isLiked)
-                Positioned.fill(
-                  child: AnimatedBuilder(
-                    animation: _animation,
-                    builder: (context, child) {
-                      return Opacity(
-                        opacity: 1.0 - _animation.value,
-                        child: Transform.scale(
-                          scale: _animation.value,
-                          child: const HeroIcon(
-                            HeroIcons.heart,
-                            color: Colors.red,
-                            size: 100.0,
-                            style: HeroIconStyle.solid,
+            Stack(
+              children: [
+                AspectRatio(
+                  aspectRatio: 1.0,
+                  child: GestureDetector(
+                    onDoubleTap: _onDoubleTap,
+                    child: Hero(
+                      tag: widget.socialFeed.name,
+                      child: CachedNetworkImage(
+                        width: 256,
+                        useOldImageOnUrlChange: true,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) => Center(
+                          child: CircularProgressIndicator(
+                            value: downloadProgress.progress,
                           ),
                         ),
-                      );
-                    },
+                        errorWidget: (context, url, error) => Image.asset(
+                          'assets/error.png',
+                          fit: BoxFit.cover,
+                        ),
+                        imageUrl: widget.socialFeed.photoURL,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ),
-            ],
-          ),
-          Column(
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      _isLiked ? Icons.favorite : Icons.favorite_border,
-                      color: _isLiked ? Colors.red : null,
+                if (_isLiked)
+                  Positioned.fill(
+                    child: AnimatedBuilder(
+                      animation: _animation,
+                      builder: (context, child) {
+                        return Opacity(
+                          opacity: 1.0 - _animation.value,
+                          child: Transform.scale(
+                            scale: _animation.value,
+                            child: const HeroIcon(
+                              HeroIcons.heart,
+                              color: Colors.red,
+                              size: 100.0,
+                              style: HeroIconStyle.solid,
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    onPressed: _onDoubleTap,
                   ),
-                  Text('${widget.socialFeed.likes}'),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 12.0),
-                child: Wrap(
+              ],
+            ),
+            Column(
+              children: [
+                Row(
                   children: [
-                    Text(widget.socialFeed.description),
+                    IconButton(
+                      icon: Icon(
+                        _isLiked ? Icons.favorite : Icons.favorite_border,
+                        color: _isLiked ? Colors.red : null,
+                      ),
+                      onPressed: _onDoubleTap,
+                    ),
+                    Text('${widget.socialFeed.likes}'),
                   ],
                 ),
-              ),
-              const Divider(),
-              Wrap(
-                alignment: WrapAlignment.start,
-                children: [
-                  TextButton.icon(
-                    onPressed: () {
-                      _intentToGoogleMaps(widget.socialFeed.address);
-                    },
-                    style: ButtonStyle(
-                      iconSize: MaterialStateProperty.all(16.0),
-                    ),
-                    icon: const HeroIcon(HeroIcons.mapPin),
-                    label: Text(widget.socialFeed.address),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 12.0),
+                  child: Wrap(
+                    children: [
+                      Text(widget.socialFeed.description),
+                    ],
                   ),
-                  TextButton.icon(
-                    onPressed: () {
-                      _intentToPhone(widget.socialFeed.phone);
-                    },
-                    style: ButtonStyle(
-                      iconSize: MaterialStateProperty.all(16.0),
+                ),
+                const Divider(),
+                Wrap(
+                  alignment: WrapAlignment.start,
+                  children: [
+                    TextButton.icon(
+                      onPressed: () {
+                        _intentToGoogleMaps(widget.socialFeed.address);
+                      },
+                      style: ButtonStyle(
+                        iconSize: MaterialStateProperty.all(16.0),
+                      ),
+                      icon: const HeroIcon(HeroIcons.mapPin),
+                      label: Text(widget.socialFeed.address),
                     ),
-                    icon: const HeroIcon(HeroIcons.phone),
-                    label: Text(widget.socialFeed.phone),
-                  ),
-                  TextButton.icon(
-                    onPressed: () {
-                      _intentToMail(widget.socialFeed.email);
-                    },
-                    style: ButtonStyle(
-                      iconSize: MaterialStateProperty.all(16.0),
+                    TextButton.icon(
+                      onPressed: () {
+                        _intentToPhone(widget.socialFeed.phone);
+                      },
+                      style: ButtonStyle(
+                        iconSize: MaterialStateProperty.all(16.0),
+                      ),
+                      icon: const HeroIcon(HeroIcons.phone),
+                      label: Text(widget.socialFeed.phone),
                     ),
-                    icon: const HeroIcon(HeroIcons.envelope),
-                    label: Text(widget.socialFeed.email),
-                  ),
-                ],
-              )
-            ],
-          )
-        ],
+                    TextButton.icon(
+                      onPressed: () {
+                        _intentToMail(widget.socialFeed.email);
+                      },
+                      style: ButtonStyle(
+                        iconSize: MaterialStateProperty.all(16.0),
+                      ),
+                      icon: const HeroIcon(HeroIcons.envelope),
+                      label: Text(widget.socialFeed.email),
+                    ),
+                  ],
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

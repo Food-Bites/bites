@@ -1,6 +1,9 @@
 import 'package:android_intent/android_intent.dart';
 import 'package:bites/data/social.dart';
+import 'package:bites/data/typical_foods.dart';
+import 'package:bites/screens/typical_food_details_page.dart';
 import 'package:bites/utils/functions.dart';
+import 'package:bites/widget/magic_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
@@ -61,31 +64,40 @@ class RestaurantDetailsPage extends StatelessWidget {
                       children: [
                         Expanded(
                           flex: 3,
-                          child: SizedBox(
-                            width: 256,
-                            child: Hero(
-                              tag: socialFeed.name,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: CachedNetworkImage(
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                SizedBox(
                                   width: 256,
-                                  useOldImageOnUrlChange: true,
-                                  progressIndicatorBuilder:
-                                      (context, url, downloadProgress) =>
-                                          Center(
-                                    child: CircularProgressIndicator(
-                                      value: downloadProgress.progress,
+                                  child: Hero(
+                                    tag: socialFeed.name,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: CachedNetworkImage(
+                                        width: 256,
+                                        useOldImageOnUrlChange: true,
+                                        progressIndicatorBuilder:
+                                            (context, url, downloadProgress) =>
+                                                Center(
+                                          child: CircularProgressIndicator(
+                                            value: downloadProgress.progress,
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Image.asset(
+                                          'assets/error.png',
+                                          fit: BoxFit.cover,
+                                        ),
+                                        imageUrl: socialFeed.photoURL,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
-                                  errorWidget: (context, url, error) =>
-                                      Image.asset(
-                                    'assets/error.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                                  imageUrl: socialFeed.photoURL,
-                                  fit: BoxFit.cover,
                                 ),
-                              ),
+                                const FakePicture(),
+                                const FakePicture(),
+                              ],
                             ),
                           ),
                         ),
@@ -95,26 +107,36 @@ class RestaurantDetailsPage extends StatelessWidget {
                         ),
                       ],
                     )
-                  : Hero(
-                      tag: socialFeed.name,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: CachedNetworkImage(
-                          width: 256,
-                          useOldImageOnUrlChange: true,
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) => Center(
-                            child: CircularProgressIndicator(
-                              value: downloadProgress.progress,
+                  : SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Hero(
+                            tag: socialFeed.name,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: CachedNetworkImage(
+                                width: 256,
+                                useOldImageOnUrlChange: true,
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) => Center(
+                                  child: CircularProgressIndicator(
+                                    value: downloadProgress.progress,
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    Image.asset(
+                                  'assets/error.png',
+                                  fit: BoxFit.cover,
+                                ),
+                                imageUrl: socialFeed.photoURL,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                          errorWidget: (context, url, error) => Image.asset(
-                            'assets/error.png',
-                            fit: BoxFit.cover,
-                          ),
-                          imageUrl: socialFeed.photoURL,
-                          fit: BoxFit.cover,
-                        ),
+                          const FakePicture(),
+                          const FakePicture(),
+                        ],
                       ),
                     ),
               isTablet(context)
@@ -157,7 +179,88 @@ class RestaurantDetailsPage extends StatelessWidget {
                     label: Text(socialFeed.email),
                   ),
                 ],
-              )
+              ),
+              const SizedBox(height: 16),
+              Text(
+                "What to eat:",
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              const SizedBox(height: 16),
+              FutureBuilder(
+                future: fetchTypicalFoods(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<TypicalFood> foods =
+                        snapshot.data as List<TypicalFood>;
+                    // filter the list of foods based on the restaurant's id
+                    foods = foods
+                        .where(
+                          (food) => food.restaurants.contains(socialFeed.id),
+                        )
+                        .toList();
+
+                    if (foods.isEmpty) {
+                      return const Center(
+                        child: Column(
+                          children: [
+                            Text(
+                                'No foods found! We are constantly adding new typical dishes. You may try using Google Maps to discover some restaurants.'),
+                          ],
+                        ),
+                      );
+                    }
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: foods.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                // TODO implement check if food is already opened in the stack
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        TypicalFoodDetailsPage(
+                                      food: foods[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundColor: Colors.transparent,
+                                    child: MagicImage(food: foods[index]),
+                                  ),
+                                  title: Text(
+                                    foods[index].name,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                  trailing: const HeroIcon(
+                                    HeroIcons.informationCircle,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('Error fetching data. Please try again.'),
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
             ],
           ),
         ),
@@ -188,6 +291,19 @@ class RestaurantDetails extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class FakePicture extends StatelessWidget {
+  const FakePicture({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      width: 256,
+      height: 256,
+      child: Placeholder(),
     );
   }
 }
