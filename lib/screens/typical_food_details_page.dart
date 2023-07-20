@@ -1,10 +1,12 @@
 import 'package:android_intent/android_intent.dart';
 import 'package:bites/data/social.dart';
 import 'package:bites/data/typical_foods.dart';
+import 'package:bites/screens/restaurant_details_page.dart';
 import 'package:bites/utils/data_service.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:heroicons/heroicons.dart';
 
 /// The [TypicalFoodDetailsPage] class is the page that displays the details of a typical food item.
 /// {@category Screens}
@@ -125,6 +127,28 @@ class TypicalFoodDetailsPage extends StatelessWidget {
                         .where((element) => element.foods.contains(foodId))
                         .toList();
 
+                    if (social.isEmpty) {
+                      return Center(
+                        child: Column(
+                          children: [
+                            const Text(
+                                'No restaurants found! We are constantly adding new restaurants. You may try using Google Maps to discover some restaurants.'),
+                            const SizedBox(height: 16),
+                            TextButton.icon(
+                              onPressed: () {
+                                _intentToGoogleMaps(
+                                  food.latitude,
+                                  food.longitude,
+                                );
+                              },
+                              icon: const HeroIcon(HeroIcons.magnifyingGlass),
+                              label: const Text('Open Google Maps'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -132,38 +156,40 @@ class TypicalFoodDetailsPage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return Column(
                           children: [
-                            ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: CachedNetworkImageProvider(
-                                  social[index].photoURL,
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => RestaurantDetailsPage(
+                                      socialFeed: social[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                child: ListTile(
+                                  title: Text(
+                                    social[index].name,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                  subtitle: Text(
+                                    social[index].address,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  trailing:
+                                      const HeroIcon(HeroIcons.arrowRight),
                                 ),
                               ),
-                              title: Text(
-                                social[index].name,
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                              subtitle: Text(
-                                social[index].address,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              trailing: IconButton(
-                                onPressed: () {
-                                  _intentToGoogleMaps(
-                                    social[index].latitude,
-                                    social[index].longitude,
-                                  );
-                                },
-                                icon: const Icon(Icons.directions),
-                              ),
                             ),
-                            const Divider(),
                           ],
                         );
                       },
                     );
                   } else if (snapshot.hasError) {
                     return const Center(
-                      child: Text('Error'),
+                      child: Text('Error fetching data. Please try again.'),
                     );
                   } else {
                     return const Center(
