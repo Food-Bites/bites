@@ -72,25 +72,43 @@ class FoodBottomSheet extends StatelessWidget {
                     child: Card(
                       elevation: 0,
                       child: SizedBox(
-                        width: 128,
                         child: Stack(
                           children: [
-                            MagicImage(
-                              food: food,
-                              width: 128,
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  food.name,
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                  textAlign: TextAlign.center,
-                                ),
+                            AspectRatio(
+                              aspectRatio: 4 / 3,
+                              child: MagicImage(
+                                food: food,
+                                width: 128,
                               ),
                             ),
+                            // TODO find a way to display the name of the food
+                            // Positioned(
+                            //   bottom: 0,
+                            //   left: 0,
+                            //   child: Padding(
+                            //     padding: const EdgeInsets.all(4.0),
+                            //     child: Container(
+                            //       decoration: BoxDecoration(
+                            //         color: Theme.of(context)
+                            //             .colorScheme
+                            //             .surfaceVariant,
+                            //         borderRadius: BorderRadius.circular(4),
+                            //       ),
+                            //       padding:
+                            //           const EdgeInsets.fromLTRB(2, 0.5, 2, 0.5),
+                            //       child: SizedBox(
+                            //         width: 120,
+
+                            //         child: Text(
+                            //           food.name,
+                            //           style:
+                            //               Theme.of(context).textTheme.bodySmall,
+                            //           textAlign: TextAlign.center,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
