@@ -202,6 +202,8 @@ class MapViewState extends State<MapView> {
               zoom: 8,
             ),
             zoomControlsEnabled: false,
+            myLocationEnabled: true,
+            rotateGesturesEnabled: false,
             circles: Set<Circle>.of(circles.values),
           ),
           SafeArea(
