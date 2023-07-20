@@ -1,3 +1,4 @@
+import 'package:bites/screens/restaurant_details_page.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:bites/widget/discover_story.dart';
 import 'package:bites/widget/location_header.dart';
@@ -102,8 +103,16 @@ class DiscoverViewState extends State<DiscoverView> {
                             key: ValueKey(socialFeed.name),
                             socialFeed: socialFeed,
                             isLiked: isLiked,
-                            onPressedDetails: () =>
-                                showFeedItemDetails(socialFeed),
+                            onPressedDetails: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RestaurantDetailsPage(
+                                    socialFeed: socialFeed,
+                                  ),
+                                ),
+                              );
+                            },
                           );
                         }).toList(),
                       ),

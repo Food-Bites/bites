@@ -1,21 +1,36 @@
 import 'package:android_intent/android_intent.dart';
-import 'package:bites/data/typical_foods.dart';
+import 'package:bites/data/social.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:heroicons/heroicons.dart';
 
-/// The [TypicalFoodDetailsPage] class is the page that displays the details of a typical food item.
-/// {@category Screens}
-class TypicalFoodDetailsPage extends StatelessWidget {
-  const TypicalFoodDetailsPage({Key? key, required this.food})
+class RestaurantDetailsPage extends StatelessWidget {
+  const RestaurantDetailsPage({Key? key, required this.socialFeed})
       : super(key: key);
-  final TypicalFood food;
+  final SocialFeed socialFeed;
 
-  void _intentToGoogleMaps(latitude, longitude) {
+  void _intentToGoogleMaps(String address) {
     final intent = AndroidIntent(
       action: 'action_view',
-      data: 'geo:$latitude,$longitude',
+      data: 'geo:0,0?q=$address',
       package: 'com.google.android.apps.maps',
+    );
+    intent.launch();
+  }
+
+  void _intentToPhone(String phone) {
+    final intent = AndroidIntent(
+      action: 'action_view',
+      data: 'tel:$phone',
+    );
+    intent.launch();
+  }
+
+  void _intentToMail(String email) {
+    final intent = AndroidIntent(
+      action: 'action_view',
+      data: 'mailto:$email',
     );
     intent.launch();
   }
@@ -36,7 +51,7 @@ class TypicalFoodDetailsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                food.name,
+                socialFeed.name,
                 style: Theme.of(context).textTheme.displayMedium,
               ),
               const SizedBox(height: 16),
@@ -49,7 +64,7 @@ class TypicalFoodDetailsPage extends StatelessWidget {
                           child: SizedBox(
                             width: 256,
                             child: Hero(
-                              tag: food.id,
+                              tag: socialFeed.name,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: CachedNetworkImage(
@@ -67,7 +82,7 @@ class TypicalFoodDetailsPage extends StatelessWidget {
                                     'assets/error.png',
                                     fit: BoxFit.cover,
                                   ),
-                                  imageUrl: food.image,
+                                  imageUrl: socialFeed.photoURL,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -76,12 +91,12 @@ class TypicalFoodDetailsPage extends StatelessWidget {
                         ),
                         Expanded(
                           flex: 6,
-                          child: TypicalFoodDetails(food: food),
+                          child: RestaurantDetails(socialFeed: socialFeed),
                         ),
                       ],
                     )
                   : Hero(
-                      tag: food.id,
+                      tag: socialFeed.name,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: CachedNetworkImage(
@@ -97,28 +112,52 @@ class TypicalFoodDetailsPage extends StatelessWidget {
                             'assets/error.png',
                             fit: BoxFit.cover,
                           ),
-                          imageUrl: food.image,
+                          imageUrl: socialFeed.photoURL,
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
               isTablet(context)
                   ? const SizedBox.shrink()
-                  : TypicalFoodDetails(food: food),
+                  : RestaurantDetails(
+                      socialFeed: socialFeed,
+                    ),
               const SizedBox(height: 16),
-              const SizedBox(height: 16),
-              Text(
-                "Where to eat:",
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-              const SizedBox(height: 16),
-              FilledButton.icon(
-                icon: const Icon(Icons.location_on),
-                onPressed: () {
-                  _intentToGoogleMaps(food.latitude, food.longitude);
-                },
-                label: const Text('Search a place on Google Maps'),
-              ),
+              Wrap(
+                alignment: WrapAlignment.start,
+                children: [
+                  TextButton.icon(
+                    onPressed: () {
+                      _intentToGoogleMaps(socialFeed.address);
+                    },
+                    style: ButtonStyle(
+                      iconSize: MaterialStateProperty.all(16.0),
+                    ),
+                    icon: const HeroIcon(HeroIcons.mapPin),
+                    label: Text(socialFeed.address),
+                  ),
+                  TextButton.icon(
+                    onPressed: () {
+                      _intentToPhone(socialFeed.phone);
+                    },
+                    style: ButtonStyle(
+                      iconSize: MaterialStateProperty.all(16.0),
+                    ),
+                    icon: const HeroIcon(HeroIcons.phone),
+                    label: Text(socialFeed.phone),
+                  ),
+                  TextButton.icon(
+                    onPressed: () {
+                      _intentToMail(socialFeed.email);
+                    },
+                    style: ButtonStyle(
+                      iconSize: MaterialStateProperty.all(16.0),
+                    ),
+                    icon: const HeroIcon(HeroIcons.envelope),
+                    label: Text(socialFeed.email),
+                  ),
+                ],
+              )
             ],
           ),
         ),
@@ -127,9 +166,9 @@ class TypicalFoodDetailsPage extends StatelessWidget {
   }
 }
 
-class TypicalFoodDetails extends StatelessWidget {
-  const TypicalFoodDetails({super.key, required this.food});
-  final TypicalFood food;
+class RestaurantDetails extends StatelessWidget {
+  const RestaurantDetails({super.key, required this.socialFeed});
+  final SocialFeed socialFeed;
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +182,7 @@ class TypicalFoodDetails extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              food.description,
+              socialFeed.description,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ],
