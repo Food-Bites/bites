@@ -10,6 +10,7 @@ import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:bites/data/typical_foods.dart';
 import 'package:bites/data/italian_cities.dart';
+import 'package:bites/widget/food_bottom_sheet.dart';
 
 /// The [MapView] class is the page that displays the map.
 /// {@category Widgets}
@@ -24,7 +25,6 @@ class MapViewState extends State<MapView> {
   // write an object to represent latitude and longitude of milan
   final LatLng _milanCoordinates = const LatLng(45.4642, 9.1900);
 
-  // getCities
   List<ItalianCities> cities = [];
   List<ItalianCities> filteredCities = [];
 
@@ -81,109 +81,35 @@ class MapViewState extends State<MapView> {
     );
   }
 
+  /// The [addCircle] function adds a circle to the map, that can open the [FoodBottomSheet].
+  /// @param lat The latitude of the circle.
+  /// @param lng The longitude of the circle.
+  /// @param foods The list of typical foods in that location.
+  /// {@category Functions}
   void addCircle(double lat, double lng, List<TypicalFood> foods) {
     final id = CircleId(lat.toString() + lng.toString());
     final circle = Circle(
-        circleId: id,
-        center: LatLng(lat, lng),
-        radius: 3 * 1000, // 15 kms
-        strokeWidth: 2,
-        strokeColor: Theme.of(context).primaryColor,
-        fillColor: Theme.of(context).primaryColor.withOpacity(0.5),
-        consumeTapEvents: true,
-        onTap: () {
-          BuildContext context = this.context;
-          // show a bottom sheet with the list of foods
-          ScaffoldState scaffoldState = Scaffold.of(context);
-          scaffoldState.showBottomSheet(
-            enableDrag: true,
-            (context) {
-              return SizedBox(
-                height: 256,
-                child: Column(
-                  children: [
-                    // add handle to the bottom sheet
-                    Container(
-                      height: 4,
-                      width: 32,
-                      margin: const EdgeInsets.fromLTRB(0, 22, 0, 8),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surfaceVariant,
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                    ),
-                    LocationText(
-                      text: "Typical foods in",
-                      hasCustomCity: true,
-                      lat: lat,
-                      lng: lng,
-                      isSmall: true,
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: foods.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: MagicImage(
-                              food: foods[index],
-                              width: 40,
-                            ),
-                            title: Text(foods[index].name),
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => TypicalFoodDetailsPage(
-                                    food: foods[index],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-            //   context: context,
-            //   isDismissible: true,
-            //   showDragHandle: true,
-            //   useSafeArea: true,
-            //   builder: (context) {
-            //     return SizedBox(
-            //       height: 256,
-            //       child: Column(
-            //         children: [
-            //           const LocationText(
-            //             text: "Typical foods in",
-            //           ),
-            //           Expanded(
-            //             child: ListView.builder(
-            //               itemCount: foods.length,
-            //               itemBuilder: (context, index) {
-            //                 return ListTile(
-            //                   title: Text(foods[index].name),
-            //                   onTap: () {
-            //                     Navigator.of(context).push(
-            //                       MaterialPageRoute(
-            //                         builder: (context) => TypicalFoodDetailsPage(
-            //                           food: foods[index],
-            //                         ),
-            //                       ),
-            //                     );
-            //                   },
-            //                 );
-            //               },
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     );
-            //   },
-            // );
-          );
-        });
+      circleId: id,
+      center: LatLng(lat, lng),
+      radius: 3 * 1000, // 15 kms
+      strokeWidth: 2,
+      strokeColor: Theme.of(context).primaryColor,
+      fillColor: Theme.of(context).primaryColor.withOpacity(0.5),
+      consumeTapEvents: true,
+      onTap: () {
+        BuildContext context = this.context;
+        // show a bottom sheet with the list of foods
+        ScaffoldState scaffoldState = Scaffold.of(context);
+        scaffoldState.showBottomSheet(
+          (context) => FoodBottomSheet(
+            lat: lat,
+            lng: lng,
+            foods: foods,
+          ),
+          enableDrag: true,
+        );
+      },
+    );
     setState(() {
       circles[id] = circle;
     });

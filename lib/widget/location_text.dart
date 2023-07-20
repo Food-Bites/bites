@@ -55,13 +55,18 @@ class _LocationTextState extends State<LocationText> {
                     isSmall: widget.isSmall,
                   );
                 } else if (snapshot.hasError) {
-                  return const Text("your location");
+                  return Headline(
+                    text: widget.text,
+                    closestCity: "your location",
+                    isSmall: widget.isSmall,
+                  );
+                } else {
+                  return Headline(
+                    text: widget.text,
+                    closestCity: "your location",
+                    isSmall: widget.isSmall,
+                  );
                 }
-                return Headline(
-                  closestCity: "your location",
-                  text: widget.text,
-                  isSmall: widget.isSmall,
-                );
               },
             ),
           ],
