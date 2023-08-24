@@ -1,18 +1,30 @@
 [
   {
+    "id": "5b5861e7-cae6-4444-abcd-6b52ce86f10d",
     "name": "Ristorante Trentino",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/forsterbrau_trento.jpeg",
-    "description": "🍽️ Traditional Trentino cuisine with a modern twist. 🍴✨ Join us for a delightful culinary journey that blends rich flavors with contemporary flair. 🌟 Like if you're craving a taste of Trentino! ❤️🇮🇹 #RistoranteTrentino #TasteOfTradition #ModernTwist",
+    "photoURL": [
+      "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.hoteldesalpes.it%2Fimg%2FTOP%2Fcanisela3.jpg&f=1&nofb=1&ipt=45620960c5c94b0b5d8f7adf59c12c258db45cbe5afd064a069e23b4c350d109&ipo=images",
+      "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.milanogiringiro.com%2Fwp-content%2Fuploads%2F2020%2F05%2FIMG_8974-scaled.jpg&f=1&nofb=1&ipt=9380a444111bf99f433b60c071bffb9ccc31a730988b3681379396a4224bf94d&ipo=images",
+      "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.giornaletrentino.it%2Fimage%2Fpolicy%3A1.2173698%3A1573054565%2Fimage%2Fstua_02-2.jpg%3F%24p%3Da018855&f=1&nofb=1&ipt=ed6bb381a74e03d9d4133f3d39891b545c4d4d8198f1c1f0e3e6afb9b3c7e772&ipo=images"
+    ],
+    "description": "🍽️ Embark on a Culinary Journey in the Heart of Trentino! 🏔️✨ Discover Ristorante Trentino, where every dish tells a story of tradition and innovation. From the captivating aromas to the exquisite flavors, our culinary artistry takes you on an unforgettable adventure. 😍❤️ Indulge in the Essence of Trentino's Gastronomy! #RistoranteTrentinoMagic #TasteTrentino #CulinaryAdventure",
     "likes": 432,
-    "address": "Via Garibaldi 1",
-    "email": "ristorante-trentino@example.com",
+    "address": "Via Trieste, 15",
+    "email": "tipicotrentino@food.com",
     "phone": "+39 123 456789",
     "latitude": 46.0679,
-    "longitude": 11.1212
+    "longitude": 11.1212,
+    "foods": [
+      "dc9b2b38-6232-4d4d-8b2f-524672e56ec4",
+      "dc9b2b38-6232-4d4d-8c2f-524672e56ec4",
+      "dc9b2b38-6232-4d4d-8d2f-524672e56ec4"
+    ]
   },
   {
     "name": "Trattoria del Lago",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/valle_dei_laghi.jpeg",
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/valle_dei_laghi.jpeg"
+    ],
     "description": "🍽️ Cozy trattoria near the lake, serving homemade Italian dishes. 🍕🍝 Indulge in the authentic flavors of Italy, surrounded by the serene beauty of the lake. 🌅 Double-tap if you're a foodie who loves lakeside dining! ❤️🍷 #TrattoriaDelLago #HomemadeGoodness #LakeViews",
     "likes": 654,
     "address": "Viale dei Tigli 10",
@@ -23,7 +35,9 @@
   },
   {
     "name": "Osteria Trentina",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/trattoria.jpeg",
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/trattoria.jpeg"
+    ],
     "description": "🍽️ Charming osteria specializing in local Trentino dishes. 🧀🍷 Immerse yourself in the authentic tastes of Trentino's culinary heritage. 🏔️❤️ Tag someone who appreciates regional cuisine! #OsteriaTrentina #LocalFlavors #CulinaryHeritage",
     "likes": 876,
     "address": "Piazza Duomo 5",
@@ -34,7 +48,9 @@
   },
   {
     "name": "Pizzeria Alpina",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/pizzeria.jpeg",
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/pizzeria.jpeg"
+    ],
     "description": "🍕 Authentic wood-fired pizza with a breathtaking view of the Alps. 🏔️🌟 Savor the perfect combination of crispy crust, melted cheese, and stunning mountain vistas. 😍🍕 Who's up for a slice in paradise? #PizzeriaAlpina #WoodFiredPizza #AlpineViews",
     "likes": 789,
     "address": "Via Monte Bianco 12",
@@ -45,7 +61,9 @@
   },
   {
     "name": "Trattoria Bella Vista",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/trattoria.jpeg",
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/trattoria.jpeg"
+    ],
     "description": "🍽️ Delicious Italian cuisine with a stunning panoramic view. 🌄🍝 Treat yourself to a memorable dining experience with mouthwatering dishes and breathtaking vistas. 🤩❤️ Tag someone you'd love to dine with here! #TrattoriaBellaVista #PanoramicDelights #ItalianFoodLove",
     "likes": 1023,
     "address": "Via Panoramica 8",
@@ -56,7 +74,9 @@
   },
   {
     "name": "Osteria Rustica",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/osteria.jpeg",
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/osteria.jpeg"
+    ],
     "description": "🍽️ Rustic osteria offering traditional dishes with a cozy atmosphere. 🏡✨ Step into a warm and inviting ambiance while savoring time-honored recipes that have stood the test of time. 🌟❤️ Like if you appreciate rustic charm and good food! #OsteriaRustica #TraditionalEats #CozyVibes",
     "likes": 567,
     "address": "Via dei Vigneti 14",
@@ -67,7 +87,9 @@
   },
   {
     "name": "Ristorante Montagna",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/comici.jpeg",
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/comici.jpeg"
+    ],
     "description": "🍽️ Elevated dining experience with breathtaking mountain views. 🏔️✨ Indulge in refined flavors while gazing at majestic peaks that touch the sky. 😍❤️ Tag someone who would love this mountaintop feast! #RistoranteMontagna #MountainGourmet #ScenicDining",
     "likes": 987,
     "address": "Via Alpina 20",
@@ -78,7 +100,9 @@
   },
   {
     "name": "Trattoria Alpina",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/osteria.jpeg",
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/osteria.jpeg"
+    ],
     "description": "🍽️ Cozy trattoria serving traditional dishes with an alpine touch. 🏔️🍝 Discover the hearty flavors of the mountains in a charming setting that feels like a warm embrace. 🌟❤️ Double-tap if you're a fan of alpine cuisine! #TrattoriaAlpina #MountainEats #WarmHospitality",
     "likes": 654,
     "address": "Via Dolomiti 8",
@@ -89,7 +113,9 @@
   },
   {
     "name": "Ristorante Del Lago",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/valle_dei_laghi.jpeg",
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/valle_dei_laghi.jpeg"
+    ],
     "description": "🍽️ Scenic lakeside restaurant offering fresh seafood and local specialties. 🌊🦞 Immerse yourself in a culinary journey with the finest catch of the day and regional delights. 😋❤️ Share your favorite seafood dish in the comments! #RistoranteDelLago #LakesideDining #FreshFlavors",
     "likes": 765,
     "address": "Via Lungolago 5",
@@ -100,7 +126,9 @@
   },
   {
     "name": "Trattoria Vista Panoramica",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/spatzle.jpg",
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/spatzle.jpg"
+    ],
     "description": "🍽️ Charming trattoria with panoramic views, serving authentic Italian dishes. 🌄🍝 Delight your taste buds while enjoying breathtaking vistas that stretch as far as the eye can see. 🤩❤️ Who would you bring to this picturesque trattoria? Tag them below! #TrattoriaVistaPanoramica #AuthenticFlavors #SpectacularViews",
     "likes": 876,
     "address": "Via Panoramica 10",
@@ -111,7 +139,9 @@
   },
   {
     "name": "Trattoria Al Castello",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/esterno.webp",
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/esterno.webp"
+    ],
     "description": "🍽️ Quaint trattoria nestled near the castle, serving homemade Italian dishes. 🏰🍝 Step back in time and savor traditional recipes passed down through generations in an enchanting setting. 🌟❤️ Like if you love the charm of historical trattorias! #TrattoriaAlCastello #HomemadeGoodness #HistoricEats",
     "likes": 765,
     "address": "Via Castello 2",
@@ -122,7 +152,9 @@
   },
   {
     "name": "Ristorante Pantheon",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/ristorante_romano.jpeg",
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/ristorante_romano.jpeg"
+    ],
     "description": "🍽️ Fine dining experience in the heart of the historic Pantheon square. 🏛️✨ Indulge in culinary excellence amidst the grandeur of ancient Rome. 😍❤️ Tag someone who would love to dine in this iconic location! #RistorantePantheon #LuxuryEats #HistoricAmbiance",
     "likes": 987,
     "address": "Piazza Pantheon 5",
@@ -133,7 +165,9 @@
   },
   {
     "name": "Trattoria dei Fiori",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/verona.jpeg",
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/verona.jpeg"
+    ],
     "description": "🍽️ Cozy trattoria adorned with flowers, serving homemade Italian dishes. 🌺🍝 Delight in a romantic ambiance while savoring delicious recipes made with love and care. ❤️🌟 Double-tap if you adore dining in flower-filled trattorias! #TrattoriaDeiFiori #RomanticVibes #HomemadeGoodness",
     "likes": 654,
     "address": "Via dei Fiori 10",
@@ -144,7 +178,9 @@
   },
   {
     "name": "Osteria Roma",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/esterno.webp",
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/esterno.webp"
+    ],
     "description": "🍽️ Traditional osteria with a Roman twist, serving classic dishes with a modern touch. 🍷🍝 Embark on a culinary journey that pays homage to the eternal city's rich gastronomic heritage. 🌟❤️ Tag someone who dreams of exploring Rome's flavors! #OsteriaRoma #ClassicMeetsModern #RomanTradition",
     "likes": 876,
     "address": "Via Roma 20",
@@ -161,7 +197,9 @@
     "likes": 892,
     "address": "Via Roma 1",
     "phone": "+39 123 456789",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/noemi_ferrara.jpeg"
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/noemi_ferrara.jpeg"
+    ]
   },
   {
     "name": "Dolci Ferraresi",
@@ -171,6 +209,27 @@
     "likes": 712,
     "address": "Via Garibaldi 2",
     "phone": "+39 123 987654",
-    "photoURL": "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/noemi_ferrara.jpeg"
+    "photoURL": [
+      "https://raw.githubusercontent.com/Food-Bites/pictures/main/restaurants/noemi_ferrara.jpeg"
+    ]
+  },
+  {
+    "id": "5b5861e7-cae6-4434-abcd-6b52ce86f10d",
+    "name": "Ristorante Montichiari",
+    "photoURL": [
+      "https://placehold.co/400x400/yellow/black.png?text=Ristorante+Montichiari&font=playfair-display"
+    ],
+    "description": "🍽️ Fine dining experience in the heart of the historic Montichiari square. 🏛️✨ Indulge in culinary excellence amidst the grandeur of ancient Rome. 😍❤️ Tag someone who would love to dine in this iconic location! #RistoranteMontichiari #LuxuryEats #HistoricAmbiance",
+    "likes": 100,
+    "address": "Via Trieste, 15",
+    "email": "monti-food@example.com",
+    "phone": "+39 123 456789",
+    "latitude": 45.4148,
+    "longitude": 10.3928,
+    "foods": [
+      "2c52a605-66a4-4aef-9ea4-48ef74114fe8",
+      "2c52a605-66a4-4aef-9ea4-48ef74114fe9",
+      "2c52a605-66a4-4aef-9ea4-48ef74114ff9"
+    ]
   }
 ]

@@ -131,11 +131,62 @@ Future<Position> determinePosition(context) async {
   return await Geolocator.getCurrentPosition();
 }
 
-/// The [getClosestCity] function returns the closest city to the user's current location.
+/// The [getClosestCityByCurrentLocation] function returns the closest city to the user's current location.
 /// {@category Utils}
-Future<String> getClosestCity(BuildContext context) async {
+Future<String> getClosestCityByCurrentLocation(BuildContext context) async {
   // Get current location
   final currentPosition = await determinePosition(context);
+  final cities = await getCities();
+  ItalianCities closestCity = cities[0];
+
+  // Calculate distance to each city using Haversine formula
+  double minDistance = double.infinity;
+  for (final city in cities) {
+    final lat1 = currentPosition.latitude;
+    final lon1 = currentPosition.longitude;
+    final lat2 = city.lat;
+    final lon2 = city.lng;
+
+    // Calculate distance
+    const R = 6372.8; // In kilometers
+    final dLat = toRad(lat2 - lat1);
+    final dLon = toRad(lon2 - lon1);
+    final a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(toRad(lat1)) * cos(toRad(lat2)) * sin(dLon / 2) * sin(dLon / 2);
+    final c = 2 * asin(sqrt(a));
+    final distance = R * c;
+
+    // Check if distance is the minimum
+    if (distance < minDistance) {
+      minDistance = distance;
+      closestCity = city;
+    }
+  }
+
+  return closestCity.city;
+}
+
+/// The [getClosestCityByCoordinates] function returns the closest city to the given coordinates.
+/// {@category Utils}
+/// {@param lat} The latitude of the coordinates.
+/// {@param lng} The longitude of the coordinates.
+/// {@param context} The context of the app.
+/// {@returns} The closest city to the given coordinates.
+
+Future<String> getClosestCityByCoordinates(
+    double lat, double lng, BuildContext context) async {
+  // Get current location
+  final currentPosition = Position(
+    latitude: lat,
+    longitude: lng,
+    timestamp: DateTime.now(),
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+    isMocked: false,
+  );
   final cities = await getCities();
   ItalianCities closestCity = cities[0];
 

@@ -1,5 +1,4 @@
-import 'package:bites/screens/options_page.dart';
-import 'package:bites/screens/typical_food_details_page.dart';
+import 'package:bites/data/screens/options_page.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:bites/utils/location.dart';
 import 'package:bites/widget/place_card.dart';
@@ -8,6 +7,7 @@ import 'package:geoflutterfire2/geoflutterfire2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:bites/data/typical_foods.dart';
 import 'package:bites/data/italian_cities.dart';
+import 'package:bites/widget/food_bottom_sheet.dart';
 
 /// The [MapView] class is the page that displays the map.
 /// {@category Widgets}
@@ -22,7 +22,6 @@ class MapViewState extends State<MapView> {
   // write an object to represent latitude and longitude of milan
   final LatLng _milanCoordinates = const LatLng(45.4642, 9.1900);
 
-  // getCities
   List<ItalianCities> cities = [];
   List<ItalianCities> filteredCities = [];
 
@@ -58,7 +57,7 @@ class MapViewState extends State<MapView> {
     setState(() {
       mapController = controller;
       moveToCurrentLocation();
-      updateCircles();
+      renderCircles();
     });
   }
 
@@ -79,51 +78,64 @@ class MapViewState extends State<MapView> {
     );
   }
 
-  /// The [addCircle] function adds a circle to the map.
+  /// The [addCircle] function adds a circle to the map, that can open the [FoodBottomSheet].
   /// @param lat The latitude of the circle.
   /// @param lng The longitude of the circle.
-  /// @param food The [TypicalFood] object.
+  /// @param foods The list of typical foods in that location.
   /// {@category Functions}
-  void addCircle(double lat, double lng, TypicalFood food) {
+  void addCircle(double lat, double lng, List<TypicalFood> foods) {
     final id = CircleId(lat.toString() + lng.toString());
     final circle = Circle(
-        circleId: id,
-        center: LatLng(lat, lng),
-        radius: 3 * 1000, // 15 kms
-        strokeWidth: 2,
-        strokeColor: Theme.of(context).primaryColor,
-        fillColor: Theme.of(context).primaryColor.withOpacity(0.5),
-        consumeTapEvents: true,
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => TypicalFoodDetailsPage(food: food),
-            ),
-          );
-        });
+      circleId: id,
+      center: LatLng(lat, lng),
+      radius: 3 * 1000, // 15 kms
+      strokeWidth: 2,
+      strokeColor: Theme.of(context).primaryColor,
+      fillColor: Theme.of(context).primaryColor.withOpacity(0.5),
+      consumeTapEvents: true,
+      onTap: () {
+        BuildContext context = this.context;
+        // show a bottom sheet with the list of foods
+        ScaffoldState scaffoldState = Scaffold.of(context);
+        scaffoldState.showBottomSheet(
+          (context) => FoodBottomSheet(
+            lat: lat,
+            lng: lng,
+            foods: foods,
+          ),
+          enableDrag: true,
+        );
+      },
+    );
     setState(() {
       circles[id] = circle;
     });
   }
 
-  /// The [updateCircles] function updates the circles on the map.
-  /// It uses the [typicalFoods] map from the [typical_foods.dart] file.
-  /// {@category Functions}
-  void updateCircles() {
-    typicalFoods.forEach((key, value) {
-      final point = LatLng(value['latitude'], value['longitude']);
-      addCircle(
-        point.latitude,
-        point.longitude,
-        TypicalFood(
-          id: value['id'],
-          name: value['name'],
-          image: value['image'],
-          latitude: value['latitude'],
-          longitude: value['longitude'],
-          description: value['description'],
-        ),
-      );
+  /// The [renderCircles] function renders the circles on the map.
+  /// It fetches the typical foods from the database and builds a map with the locations of the foods as keys and the foods in that location as values.
+  void renderCircles() async {
+    // fetch typical foods
+    List<TypicalFood> foods = await fetchTypicalFoods();
+
+    // build a map with the locations of the foods as keys and the foods in that location as values
+    Map<String, dynamic> foodsByLocation = {};
+
+    for (var food in foods) {
+      String location = "${food.latitude}-${food.longitude}";
+      if (foodsByLocation.containsKey(location)) {
+        foodsByLocation[location].add(food);
+      } else {
+        foodsByLocation[location] = [food];
+      }
+    }
+
+    // for each map entry, add a circle to the map
+    foodsByLocation.forEach((key, value) {
+      List<String> coordinates = key.split('-');
+      double lat = double.parse(coordinates[0]);
+      double lng = double.parse(coordinates[1]);
+      addCircle(lat, lng, value);
     });
   }
 
@@ -190,6 +202,8 @@ class MapViewState extends State<MapView> {
               zoom: 8,
             ),
             zoomControlsEnabled: false,
+            myLocationEnabled: true,
+            rotateGesturesEnabled: false,
             circles: Set<Circle>.of(circles.values),
           ),
           SafeArea(

@@ -1,6 +1,6 @@
-import 'package:bites/screens/discover_page.dart';
-import 'package:bites/screens/map_page.dart';
-import 'package:bites/screens/market_page.dart';
+import 'package:bites/data/screens/discover_page.dart';
+import 'package:bites/data/screens/map_page.dart';
+import 'package:bites/data/screens/market_page.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +16,7 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutState extends State<MainLayout> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _currentIndex = 0;
   bool _isConnected = true;
 
@@ -29,9 +30,12 @@ class _MainLayoutState extends State<MainLayout> {
 
   void onTabTapped(int index) {
     final int lastIndex = _currentIndex;
-    setState(() {
-      _currentIndex = index;
-    });
+
+    // remove eventual bottom sheet
+    _scaffoldKey.currentState?.showBottomSheet(
+      (context) => const SizedBox(),
+      backgroundColor: Colors.transparent,
+    );
 
     final int delta = index - lastIndex;
 
@@ -51,6 +55,10 @@ class _MainLayoutState extends State<MainLayout> {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
+
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
   Future<void> initConnectivity() async {
@@ -76,6 +84,7 @@ class _MainLayoutState extends State<MainLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       bottomSheet: !_isConnected
           ? BottomSheet(
               onClosing: () {

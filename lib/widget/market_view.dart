@@ -1,6 +1,6 @@
 import 'package:bites/data/purchasable_foods.dart';
 import 'package:bites/data/cart.dart';
-import 'package:bites/screens/purchasable_food_details_page.dart';
+import 'package:bites/data/screens/purchasable_food_details_page.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:bites/widget/market_card.dart';
 import 'package:flutter/material.dart';

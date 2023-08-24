@@ -1,8 +1,12 @@
 import 'package:android_intent/android_intent.dart';
+import 'package:bites/data/social.dart';
 import 'package:bites/data/typical_foods.dart';
+import 'package:bites/data/screens/restaurant_details_page.dart';
+import 'package:bites/utils/data_service.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:heroicons/heroicons.dart';
 
 /// The [TypicalFoodDetailsPage] class is the page that displays the details of a typical food item.
 /// {@category Screens}
@@ -106,19 +110,92 @@ class TypicalFoodDetailsPage extends StatelessWidget {
                   ? const SizedBox.shrink()
                   : TypicalFoodDetails(food: food),
               const SizedBox(height: 16),
-              // add an elevated button which makes an intent to open google maps with the location of the food
-              const SizedBox(height: 16),
               Text(
                 "Where to eat:",
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               const SizedBox(height: 16),
-              FilledButton.icon(
-                icon: const Icon(Icons.location_on),
-                onPressed: () {
-                  _intentToGoogleMaps(food.latitude, food.longitude);
+              FutureBuilder(
+                future: DataService().getRestaurants(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<SocialFeed> social = snapshot.data as List<SocialFeed>;
+                    final foodId = food.id;
+                    // filter the list of restaurants based on the food id
+                    social = social
+                        .where((element) => element.foods.contains(foodId))
+                        .toList();
+
+                    if (social.isEmpty) {
+                      return Center(
+                        child: Column(
+                          children: [
+                            const Text(
+                                'No restaurants found! We are constantly adding new restaurants. You may try using Google Maps to discover some restaurants.'),
+                            const SizedBox(height: 16),
+                            TextButton.icon(
+                              onPressed: () {
+                                _intentToGoogleMaps(
+                                  food.latitude,
+                                  food.longitude,
+                                );
+                              },
+                              icon: const HeroIcon(HeroIcons.magnifyingGlass),
+                              label: const Text('Open Google Maps'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: social.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => RestaurantDetailsPage(
+                                      socialFeed: social[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                child: ListTile(
+                                  title: Text(
+                                    social[index].name,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                  subtitle: Text(
+                                    social[index].address,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  trailing:
+                                      const HeroIcon(HeroIcons.arrowRight),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('Error fetching data. Please try again.'),
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
                 },
-                label: const Text('Search a place on Google Maps'),
               ),
             ],
           ),

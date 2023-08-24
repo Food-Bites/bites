@@ -1,3 +1,4 @@
+import 'package:bites/data/screens/restaurant_details_page.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:bites/widget/discover_story.dart';
 import 'package:bites/widget/location_header.dart';
@@ -33,6 +34,9 @@ class DiscoverViewState extends State<DiscoverView> {
     isMocked: false,
   );
 
+  /// Fetches the restaurants from the data service.
+  /// Returns a list of [Restaurant] objects.
+  /// {@category Functions}
   fetchRestaurants() async {
     final fetchedRestaurants = await dataService.getRestaurants();
     return fetchedRestaurants;
@@ -99,8 +103,16 @@ class DiscoverViewState extends State<DiscoverView> {
                             key: ValueKey(socialFeed.name),
                             socialFeed: socialFeed,
                             isLiked: isLiked,
-                            onPressedDetails: () =>
-                                showFeedItemDetails(socialFeed),
+                            onPressedDetails: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RestaurantDetailsPage(
+                                    socialFeed: socialFeed,
+                                  ),
+                                ),
+                              );
+                            },
                           );
                         }).toList(),
                       ),

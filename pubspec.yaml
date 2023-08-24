@@ -1,7 +1,7 @@
 name: bites
 description: Discover local food around you.
 publish_to: "none"
-version: 0.7.0
+version: 0.8.0
 
 environment:
   sdk: ">=3.0.5 <4.0.0"
@@ -37,6 +37,7 @@ flutter:
     - assets/
     - assets/data/italian_cities.json
     - assets/data/restaurants.json
+    - assets/data/typical_foods.json
 
 flutter_icons:
   android: "launcher_icon"
