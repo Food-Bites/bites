@@ -1,5 +1,5 @@
-import 'package:bites/screens/main_layout.dart';
-import 'package:bites/screens/onboarder.dart';
+import 'package:bites/data/screens/main_layout.dart';
+import 'package:bites/data/screens/onboarder.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

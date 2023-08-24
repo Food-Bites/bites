@@ -1,4 +1,4 @@
-import 'package:bites/screens/options_page.dart';
+import 'package:bites/data/screens/options_page.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:bites/utils/location.dart';
 import 'package:bites/widget/place_card.dart';

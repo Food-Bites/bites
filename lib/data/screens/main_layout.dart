@@ -1,6 +1,6 @@
-import 'package:bites/screens/discover_page.dart';
-import 'package:bites/screens/map_page.dart';
-import 'package:bites/screens/market_page.dart';
+import 'package:bites/data/screens/discover_page.dart';
+import 'package:bites/data/screens/map_page.dart';
+import 'package:bites/data/screens/market_page.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';

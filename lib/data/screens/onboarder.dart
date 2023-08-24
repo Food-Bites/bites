@@ -1,4 +1,4 @@
-import 'package:bites/screens/main_layout.dart';
+import 'package:bites/data/screens/main_layout.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';

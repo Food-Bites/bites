@@ -1,5 +1,5 @@
 import 'package:bites/data/typical_foods.dart';
-import 'package:bites/screens/typical_food_details_page.dart';
+import 'package:bites/data/screens/typical_food_details_page.dart';
 import 'package:bites/widget/location_text.dart';
 import 'package:bites/widget/magic_image.dart';
 import 'package:flutter/material.dart';

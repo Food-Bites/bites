@@ -1,5 +1,5 @@
 import 'package:bites/data/cart.dart';
-import 'package:bites/screens/cart_page.dart';
+import 'package:bites/data/screens/cart_page.dart';
 import 'package:bites/widget/helper_text.dart';
 import 'package:bites/widget/location_header.dart';
 import 'package:bites/widget/market_view.dart';

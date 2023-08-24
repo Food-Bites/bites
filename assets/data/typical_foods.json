@@ -40,14 +40,6 @@
     "longitude": 11.3547
   },
   {
-    "id": "dc9b2b38-6232-4d4d-8a2f-524672e56ec4",
-    "name": "Risotto alla Trentina",
-    "description": "Risotto alla Trentina is a traditional dish from the Trentino region. It is made with locally grown rice, such as Arborio or Carnaroli, and flavored with ingredients like butter, Parmesan cheese, and speck (smoked ham).",
-    "image": "https://raw.githubusercontent.com/Food-Bites/pictures/main/risotto_alla_trentina.jpg",
-    "latitude": 46.074976443080544,
-    "longitude": 11.121041688190743
-  },
-  {
     "id": "f9a0f156-5c0a-4a9e-b8a7-8e2f6f2c8828",
     "name": "Pizza Margherita",
     "description": "Pizza Margherita is a classic Italian pizza topped with tomato sauce, mozzarella cheese, and fresh basil leaves. It was named after Queen Margherita of Italy and is a beloved dish throughout the country.",
@@ -201,5 +193,32 @@
     "latitude": 45.4148,
     "longitude": 10.3928,
     "restaurants": ["5b5861e7-cae6-4434-abcd-6b52ce86f10d"]
+  },
+  {
+    "id": "dc9b2b38-6232-4d4d-8b2f-524672e56ec4",
+    "name": "Spätzle agli spinaci",
+    "description": "Gli spätzle agli spinaci sono i tipici gnocchetti verdi tirolesi, che vi proponiamo con un condimento \"classico\" e irresistibile: speck, panna e formaggio. Una ricetta più semplice del previsto, da preparare per rendersi felici a tavola!",
+    "image": "https://www.cucchiaio.it/content/dam/cucchiaio/it/ricette/2009/12/ricetta-spatzle-spinaci/_R5_7553.jpg",
+    "latitude": 46.074976443080544,
+    "longitude": 11.121041688190743,
+    "restaurants": ["5b5861e7-cae6-4444-abcd-6b52ce86f10d"]
+  },
+  {
+    "id": "dc9b2b38-6232-4d4d-8c2f-524672e56ec4",
+    "name": "Strangolapreti",
+    "description": "Gli strangolapreti sono gustosi gnocchi a base di pane raffermo e spinaci. Un primo piatto tipico del Trentino che si gusta con un condimento di burro fuso e formaggio grattugiato.",
+    "image": "https://www.cucchiaio.it/content/dam/cucchiaio/it/ricette/2009/12/ricetta-strangolapreti/_R5_5631.jpg",
+    "latitude": 46.074976443080544,
+    "longitude": 11.121041688190743,
+    "restaurants": ["5b5861e7-cae6-4444-abcd-6b52ce86f10d"]
+  },
+  {
+    "id": "dc9b2b38-6232-4d4d-8d2f-524672e56ec4",
+    "name": "Strudel di mele",
+    "description": "Lo strudel di mele è un classico dolce della tradizione dell'Alto Adige a base di una sottile sfoglia e un ripieno di mele, uvetta, pinoli, aromatizzato alla cannella. Lo strudel viene anche preparato secondo le varie usanze locali del Nord Italia, con ripieni diversi che prevedono anche versioni salate, a base per esempio di carne o verdura.",
+    "image": "https://www.cucchiaio.it/content/dam/cucchiaio/it/ricette/2013/09/ricetta-strudel-mele/strudel-di-mele-ante.jpg",
+    "latitude": 46.074976443080544,
+    "longitude": 11.121041688190743,
+    "restaurants": ["5b5861e7-cae6-4444-abcd-6b52ce86f10d"]
   }
 ]

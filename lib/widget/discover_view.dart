@@ -1,4 +1,4 @@
-import 'package:bites/screens/restaurant_details_page.dart';
+import 'package:bites/data/screens/restaurant_details_page.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:bites/widget/discover_story.dart';
 import 'package:bites/widget/location_header.dart';

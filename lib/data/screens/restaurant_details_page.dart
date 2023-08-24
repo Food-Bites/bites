@@ -1,7 +1,9 @@
+import 'dart:math';
+
 import 'package:android_intent/android_intent.dart';
 import 'package:bites/data/social.dart';
 import 'package:bites/data/typical_foods.dart';
-import 'package:bites/screens/typical_food_details_page.dart';
+import 'package:bites/data/screens/typical_food_details_page.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:bites/widget/magic_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -65,41 +67,67 @@ class RestaurantDetailsPage extends StatelessWidget {
                         Expanded(
                           flex: 3,
                           child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 256,
-                                  child: Hero(
-                                    tag: socialFeed.name,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: CachedNetworkImage(
-                                        width: 256,
-                                        useOldImageOnUrlChange: true,
-                                        progressIndicatorBuilder:
-                                            (context, url, downloadProgress) =>
-                                                Center(
-                                          child: CircularProgressIndicator(
-                                            value: downloadProgress.progress,
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 256,
+                                    child: Hero(
+                                      tag: socialFeed.name,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: CachedNetworkImage(
+                                          width: 256,
+                                          useOldImageOnUrlChange: true,
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
+                                              Center(
+                                            child: CircularProgressIndicator(
+                                              value: downloadProgress.progress,
+                                            ),
                                           ),
-                                        ),
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset(
-                                          'assets/error.png',
+                                          errorWidget: (context, url, error) =>
+                                              Image.asset(
+                                            'assets/error.png',
+                                            fit: BoxFit.cover,
+                                          ),
+                                          imageUrl: socialFeed.photoURL[
+                                              0], // Display the first image
                                           fit: BoxFit.cover,
                                         ),
-                                        imageUrl: socialFeed.photoURL,
-                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
-                                ),
-                                const FakePicture(),
-                                const FakePicture(),
-                              ],
-                            ),
-                          ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ), // Add some spacing between images
+                                  Row(
+                                    children: List.generate(
+                                      socialFeed.photoURL.length,
+                                      (index) {
+                                        if (index == 0) {
+                                          return const SizedBox(); // Skip the first image
+                                        }
+                                        return Row(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: CachedNetworkImage(
+                                                width: 256,
+                                                imageUrl:
+                                                    socialFeed.photoURL[index],
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 8),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              )),
                         ),
                         Expanded(
                           flex: 6,
@@ -111,34 +139,62 @@ class RestaurantDetailsPage extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                          Hero(
-                            tag: socialFeed.name,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: CachedNetworkImage(
-                                width: 256,
-                                useOldImageOnUrlChange: true,
-                                progressIndicatorBuilder:
-                                    (context, url, downloadProgress) => Center(
-                                  child: CircularProgressIndicator(
-                                    value: downloadProgress.progress,
+                          SizedBox(
+                            width: 256,
+                            child: Hero(
+                              tag: socialFeed.name,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: CachedNetworkImage(
+                                  width: 256,
+                                  useOldImageOnUrlChange: true,
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          Center(
+                                    child: CircularProgressIndicator(
+                                      value: downloadProgress.progress,
+                                    ),
                                   ),
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
-                                  'assets/error.png',
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
+                                    'assets/error.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                  imageUrl: socialFeed
+                                      .photoURL[0], // Display the first image
                                   fit: BoxFit.cover,
                                 ),
-                                imageUrl: socialFeed.photoURL,
-                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
-                          const FakePicture(),
-                          const FakePicture(),
+                          const SizedBox(
+                            width: 8,
+                          ), // Add some spacing between images
+                          Row(
+                            children: List.generate(
+                              socialFeed.photoURL.length,
+                              (index) {
+                                if (index == 0) {
+                                  return const SizedBox(); // Skip the first image
+                                }
+                                return Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: CachedNetworkImage(
+                                        width: 256,
+                                        imageUrl: socialFeed.photoURL[index],
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
                         ],
-                      ),
-                    ),
+                      )),
               isTablet(context)
                   ? const SizedBox.shrink()
                   : RestaurantDetails(
@@ -300,10 +356,14 @@ class FakePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return Container(
+      // random color for each fake picture
+      color:
+          Colors.primaries[Random().nextInt(Colors.primaries.length)].shade100,
+      margin: const EdgeInsets.all(8),
       width: 256,
       height: 256,
-      child: Placeholder(),
+      child: const Center(child: Text("Altre immagini")),
     );
   }
 }

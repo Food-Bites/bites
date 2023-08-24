@@ -1,5 +1,5 @@
 import 'package:bites/data/cart.dart';
-import 'package:bites/screens/initial_page.dart';
+import 'package:bites/data/screens/initial_page.dart';
 import 'package:bites/utils/color_scheme.dart';
 import 'package:bites/utils/suggestions_switch.dart';
 import 'package:bites/utils/theme_switch.dart';

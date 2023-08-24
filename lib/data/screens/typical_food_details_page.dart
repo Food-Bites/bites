@@ -1,7 +1,7 @@
 import 'package:android_intent/android_intent.dart';
 import 'package:bites/data/social.dart';
 import 'package:bites/data/typical_foods.dart';
-import 'package:bites/screens/restaurant_details_page.dart';
+import 'package:bites/data/screens/restaurant_details_page.dart';
 import 'package:bites/utils/data_service.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:cached_network_image/cached_network_image.dart';

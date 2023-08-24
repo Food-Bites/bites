@@ -1,5 +1,5 @@
 import 'package:android_intent/android_intent.dart';
-import 'package:bites/screens/restaurant_details_page.dart';
+import 'package:bites/data/screens/restaurant_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bites/data/social.dart';
@@ -152,7 +152,7 @@ class DiscoverCardState extends State<DiscoverCard>
                           'assets/error.png',
                           fit: BoxFit.cover,
                         ),
-                        imageUrl: widget.socialFeed.photoURL,
+                        imageUrl: widget.socialFeed.photoURL[0],
                         fit: BoxFit.cover,
                       ),
                     ),
