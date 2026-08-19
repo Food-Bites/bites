@@ -38,15 +38,10 @@ class ThemeProvider with ChangeNotifier {
   }
 
   ThemeMode _themeTypeToThemeMode(ThemeType themeType) {
-    switch (themeType) {
-      case ThemeType.system:
-        return ThemeMode.system;
-      case ThemeType.light:
-        return ThemeMode.light;
-      case ThemeType.dark:
-        return ThemeMode.dark;
-      default:
-        return ThemeMode.system;
-    }
+    return switch (themeType) {
+      ThemeType.system => ThemeMode.system,
+      ThemeType.light => ThemeMode.light,
+      ThemeType.dark => ThemeMode.dark,
+    };
   }
 }

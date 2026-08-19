@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:android_intent/android_intent.dart';
 import 'package:bites/data/social.dart';
 import 'package:bites/data/typical_foods.dart';
 import 'package:bites/data/screens/typical_food_details_page.dart';
@@ -9,35 +8,34 @@ import 'package:bites/widget/magic_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RestaurantDetailsPage extends StatelessWidget {
   const RestaurantDetailsPage({Key? key, required this.socialFeed})
       : super(key: key);
   final SocialFeed socialFeed;
 
-  void _intentToGoogleMaps(String address) {
-    final intent = AndroidIntent(
-      action: 'action_view',
-      data: 'geo:0,0?q=$address',
-      package: 'com.google.android.apps.maps',
+  void _openInOSM(String address) async {
+    final uri = Uri.parse(
+      'https://www.openstreetmap.org/search?query=${Uri.encodeComponent(address)}',
     );
-    intent.launch();
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 
-  void _intentToPhone(String phone) {
-    final intent = AndroidIntent(
-      action: 'action_view',
-      data: 'tel:$phone',
-    );
-    intent.launch();
+  void _openPhone(String phone) async {
+    final uri = Uri.parse('tel:$phone');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
   }
 
-  void _intentToMail(String email) {
-    final intent = AndroidIntent(
-      action: 'action_view',
-      data: 'mailto:$email',
-    );
-    intent.launch();
+  void _openMail(String email) async {
+    final uri = Uri.parse('mailto:$email');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
   }
 
   @override
@@ -206,30 +204,30 @@ class RestaurantDetailsPage extends StatelessWidget {
                 children: [
                   TextButton.icon(
                     onPressed: () {
-                      _intentToGoogleMaps(socialFeed.address);
+                      _openInOSM(socialFeed.address);
                     },
                     style: ButtonStyle(
-                      iconSize: MaterialStateProperty.all(16.0),
+                      iconSize: WidgetStateProperty.all(16.0),
                     ),
                     icon: const HeroIcon(HeroIcons.mapPin),
                     label: Text(socialFeed.address),
                   ),
                   TextButton.icon(
                     onPressed: () {
-                      _intentToPhone(socialFeed.phone);
+                      _openPhone(socialFeed.phone);
                     },
                     style: ButtonStyle(
-                      iconSize: MaterialStateProperty.all(16.0),
+                      iconSize: WidgetStateProperty.all(16.0),
                     ),
                     icon: const HeroIcon(HeroIcons.phone),
                     label: Text(socialFeed.phone),
                   ),
                   TextButton.icon(
                     onPressed: () {
-                      _intentToMail(socialFeed.email);
+                      _openMail(socialFeed.email);
                     },
                     style: ButtonStyle(
-                      iconSize: MaterialStateProperty.all(16.0),
+                      iconSize: WidgetStateProperty.all(16.0),
                     ),
                     icon: const HeroIcon(HeroIcons.envelope),
                     label: Text(socialFeed.email),
@@ -248,7 +246,6 @@ class RestaurantDetailsPage extends StatelessWidget {
                   if (snapshot.hasData) {
                     List<TypicalFood> foods =
                         snapshot.data as List<TypicalFood>;
-                    // filter the list of foods based on the restaurant's id
                     foods = foods
                         .where(
                           (food) => food.restaurants.contains(socialFeed.id),
@@ -260,7 +257,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                                'No foods found! We are constantly adding new typical dishes. You may try using Google Maps to discover some restaurants.'),
+                                'No foods found! We are constantly adding new typical dishes. You may try using OpenStreetMap to discover some restaurants.'),
                           ],
                         ),
                       );
@@ -275,7 +272,6 @@ class RestaurantDetailsPage extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                // TODO implement check if food is already opened in the stack
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) =>
@@ -357,7 +353,6 @@ class FakePicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // random color for each fake picture
       color:
           Colors.primaries[Random().nextInt(Colors.primaries.length)].shade100,
       margin: const EdgeInsets.all(8),

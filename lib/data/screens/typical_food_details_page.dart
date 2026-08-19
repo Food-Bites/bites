@@ -1,4 +1,3 @@
-import 'package:android_intent/android_intent.dart';
 import 'package:bites/data/social.dart';
 import 'package:bites/data/typical_foods.dart';
 import 'package:bites/data/screens/restaurant_details_page.dart';
@@ -7,21 +6,20 @@ import 'package:bites/utils/functions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-/// The [TypicalFoodDetailsPage] class is the page that displays the details of a typical food item.
-/// {@category Screens}
 class TypicalFoodDetailsPage extends StatelessWidget {
   const TypicalFoodDetailsPage({Key? key, required this.food})
       : super(key: key);
   final TypicalFood food;
 
-  void _intentToGoogleMaps(latitude, longitude) {
-    final intent = AndroidIntent(
-      action: 'action_view',
-      data: 'geo:$latitude,$longitude',
-      package: 'com.google.android.apps.maps',
+  void _openInOSM(double latitude, double longitude) async {
+    final uri = Uri.parse(
+      'https://www.openstreetmap.org/#map=15/$latitude/$longitude',
     );
-    intent.launch();
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 
   @override
@@ -121,7 +119,6 @@ class TypicalFoodDetailsPage extends StatelessWidget {
                   if (snapshot.hasData) {
                     List<SocialFeed> social = snapshot.data as List<SocialFeed>;
                     final foodId = food.id;
-                    // filter the list of restaurants based on the food id
                     social = social
                         .where((element) => element.foods.contains(foodId))
                         .toList();
@@ -131,17 +128,14 @@ class TypicalFoodDetailsPage extends StatelessWidget {
                         child: Column(
                           children: [
                             const Text(
-                                'No restaurants found! We are constantly adding new restaurants. You may try using Google Maps to discover some restaurants.'),
+                                'No restaurants found! We are constantly adding new restaurants. You may try using OpenStreetMap to discover some restaurants.'),
                             const SizedBox(height: 16),
                             TextButton.icon(
                               onPressed: () {
-                                _intentToGoogleMaps(
-                                  food.latitude,
-                                  food.longitude,
-                                );
+                                _openInOSM(food.latitude, food.longitude);
                               },
                               icon: const HeroIcon(HeroIcons.magnifyingGlass),
-                              label: const Text('Open Google Maps'),
+                              label: const Text('Open OpenStreetMap'),
                             ),
                           ],
                         ),

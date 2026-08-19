@@ -2,7 +2,7 @@ import 'package:bites/data/screens/discover_page.dart';
 import 'package:bites/data/screens/map_page.dart';
 import 'package:bites/data/screens/market_page.dart';
 import 'package:bites/utils/functions.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 
@@ -62,8 +62,11 @@ class _MainLayoutState extends State<MainLayout> {
   }
 
   Future<void> initConnectivity() async {
-    var connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    final hasConnection = connectivityResult.any(
+      (result) => result != ConnectivityResult.none,
+    );
+    if (!hasConnection) {
       setState(() {
         _isConnected = false;
       });

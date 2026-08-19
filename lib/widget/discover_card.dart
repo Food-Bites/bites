@@ -1,14 +1,11 @@
-import 'package:android_intent/android_intent.dart';
 import 'package:bites/data/screens/restaurant_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bites/data/social.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-/// The [DiscoverCard] widget displays a [SocialFeed] object.
-/// It is used in the [DiscoverView] widget.
-/// {@category Widgets}
 class DiscoverCard extends StatefulWidget {
   final SocialFeed socialFeed;
   final bool isLiked;
@@ -31,42 +28,38 @@ class DiscoverCardState extends State<DiscoverCard>
   late AnimationController _controller;
   late Animation<double> _animation;
 
-  void _intentToGoogleMaps(String address) {
-    final intent = AndroidIntent(
-      action: 'action_view',
-      data: 'geo:0,0?q=$address',
-      package: 'com.google.android.apps.maps',
+  void _openInOSM(String address) async {
+    final uri = Uri.parse(
+      'https://www.openstreetmap.org/search?query=${Uri.encodeComponent(address)}',
     );
-    intent.launch();
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 
-  void _intentToPhone(String phone) {
-    final intent = AndroidIntent(
-      action: 'action_view',
-      data: 'tel:$phone',
-    );
-    intent.launch();
+  void _openPhone(String phone) async {
+    final uri = Uri.parse('tel:$phone');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
   }
 
-  void _intentToMail(String email) {
-    final intent = AndroidIntent(
-      action: 'action_view',
-      data: 'mailto:$email',
-    );
-    intent.launch();
+  void _openMail(String email) async {
+    final uri = Uri.parse('mailto:$email');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
   }
 
   @override
   void initState() {
     super.initState();
     _isLiked = widget.isLiked;
-    // retrieve the like status from shared preferences
     SharedPreferences.getInstance().then((prefs) {
       bool? isLiked = prefs.getBool(widget.socialFeed.name.toString());
       if (isLiked != null) {
         setState(() {
           _isLiked = isLiked;
-          // update the likes count if the card was previously liked
           if (_isLiked) {
             widget.socialFeed.likes += 1;
           }
@@ -83,7 +76,6 @@ class DiscoverCardState extends State<DiscoverCard>
   void _onDoubleTap() async {
     setState(() {
       _isLiked = !_isLiked;
-      // add to widget.socialFeed.likes if _isLiked is true
       widget.socialFeed.likes += _isLiked ? 1 : -1;
 
       if (_isLiked) {
@@ -92,7 +84,6 @@ class DiscoverCardState extends State<DiscoverCard>
       }
     });
 
-    // save the like status in shared preferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool(widget.socialFeed.name.toString(), _isLiked);
   }
@@ -208,30 +199,30 @@ class DiscoverCardState extends State<DiscoverCard>
                   children: [
                     TextButton.icon(
                       onPressed: () {
-                        _intentToGoogleMaps(widget.socialFeed.address);
+                        _openInOSM(widget.socialFeed.address);
                       },
                       style: ButtonStyle(
-                        iconSize: MaterialStateProperty.all(16.0),
+                        iconSize: WidgetStateProperty.all(16.0),
                       ),
                       icon: const HeroIcon(HeroIcons.mapPin),
                       label: Text(widget.socialFeed.address),
                     ),
                     TextButton.icon(
                       onPressed: () {
-                        _intentToPhone(widget.socialFeed.phone);
+                        _openPhone(widget.socialFeed.phone);
                       },
                       style: ButtonStyle(
-                        iconSize: MaterialStateProperty.all(16.0),
+                        iconSize: WidgetStateProperty.all(16.0),
                       ),
                       icon: const HeroIcon(HeroIcons.phone),
                       label: Text(widget.socialFeed.phone),
                     ),
                     TextButton.icon(
                       onPressed: () {
-                        _intentToMail(widget.socialFeed.email);
+                        _openMail(widget.socialFeed.email);
                       },
                       style: ButtonStyle(
-                        iconSize: MaterialStateProperty.all(16.0),
+                        iconSize: WidgetStateProperty.all(16.0),
                       ),
                       icon: const HeroIcon(HeroIcons.envelope),
                       label: Text(widget.socialFeed.email),

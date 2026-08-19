@@ -4,7 +4,6 @@ import 'package:bites/data/italian_cities.dart';
 import 'package:bites/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 /// Determine the current position of the device.
 ///
@@ -111,17 +110,17 @@ Future<Position> determinePosition(context) async {
       ),
     );
 
-    const LatLng milanCoordinates = LatLng(45.4642, 9.1900);
-
     return Position(
-      latitude: milanCoordinates.latitude,
-      longitude: milanCoordinates.longitude,
+      latitude: 45.4642,
+      longitude: 9.1900,
       timestamp: DateTime.now(),
       accuracy: 0,
       altitude: 0,
       heading: 0,
       speed: 0,
       speedAccuracy: 0,
+      altitudeAccuracy: 0,
+      headingAccuracy: 0,
       isMocked: false,
     );
   }
@@ -185,6 +184,8 @@ Future<String> getClosestCityByCoordinates(
     heading: 0,
     speed: 0,
     speedAccuracy: 0,
+    altitudeAccuracy: 0,
+    headingAccuracy: 0,
     isMocked: false,
   );
   final cities = await getCities();

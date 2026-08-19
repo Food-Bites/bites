@@ -1,4 +1,3 @@
-import 'package:android_intent/android_intent.dart';
 import 'package:bites/data/purchasable_foods.dart';
 import 'package:bites/data/cart.dart';
 import 'package:bites/utils/functions.dart';
@@ -7,22 +6,21 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-/// The [PurchasableFoodDetailsPage] class is the page that displays the details of a purchasable food item.
-/// {@category Screens}
 class PurchasableFoodDetailsPage extends StatelessWidget {
   final PurchasableFood foodItem;
 
   const PurchasableFoodDetailsPage({Key? key, required this.foodItem})
       : super(key: key);
 
-  void _intentToGoogleMaps(String place) {
-    final intent = AndroidIntent(
-      action: 'action_view',
-      data: 'geo:0,0?q=${place.replaceAll(" ", "+")}',
-      package: 'com.google.android.apps.maps',
+  void _openInOSM(String place) async {
+    final uri = Uri.parse(
+      'https://www.openstreetmap.org/search?query=${Uri.encodeComponent(place)}',
     );
-    intent.launch();
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 
   @override
@@ -109,7 +107,7 @@ class PurchasableFoodDetailsPage extends StatelessWidget {
               const SizedBox(height: 16),
               HelperText(
                 icon: IconType.heroIcons(HeroIcons.informationCircle),
-                text: 'Tap the address to open in Google Maps',
+                text: 'Tap the address to open in OpenStreetMap',
               ),
               Text(
                 "Where to buy:",
@@ -121,7 +119,7 @@ class PurchasableFoodDetailsPage extends StatelessWidget {
                   const HeroIcon(HeroIcons.mapPin),
                   const SizedBox(width: 8),
                   GestureDetector(
-                    onTap: () => _intentToGoogleMaps(foodItem.owner),
+                    onTap: () => _openInOSM(foodItem.owner),
                     child: Text(
                       foodItem.owner,
                       style: Theme.of(context).textTheme.bodyMedium,
